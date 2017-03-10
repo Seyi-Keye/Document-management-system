@@ -1,0 +1,19 @@
+{
+  "name": "document-management-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela-oaromokeye/Document-management-system.git"
+  },
+  "author": "Oluwaseyi Aromokeye",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela-oaromokeye/Document-management-system/issues"
+  },
+  "homepage": "https://github.com/andela-oaromokeye/Document-management-system#readme"
+}
