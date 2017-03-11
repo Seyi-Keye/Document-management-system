@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
@@ -51,12 +52,12 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false
         });
       }
-  },
+    },
 
-      instanceMethods: {
+    instanceMethods: {
         confirmPassword() {
           if (this.password !== this.passwordConfirmation) {
-            throw new Error('Password does not match')
+            throw new Error('Password does not match');
           }
           return true;
         },
@@ -67,24 +68,24 @@ module.exports = (sequelize, DataTypes) => {
        * @param {String} password
        * @returns {Boolean} password match
        */
-      validPassword(password) {
+        validPassword(password) {
         return bcrypt.compareSync(password, this.password);
-      },
+        },
 
       /**
        * Hash user's password
        * @method
        * @returns {void} no return
        */
-      hashPassword() {
+        hashPassword() {
         this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
-      }
+        }
     },
 
     hooks: {
       beforeCreate(user) {
         if (user.confirmPassword()) {
-        user.hashPassword();
+          user.hashPassword();
         }
       },
 
