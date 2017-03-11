@@ -19,6 +19,7 @@
   "homepage": "https://github.com/andela-oaromokeye/Document-management-system#readme",
   "dependencies": {
     "babel-eslint": "^7.1.1",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
