@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 // import Routes from './server/routes/index';
 // import Routes from './server/routes/route'
-const router = require('./server/routes/route');
+// const router = require('./server/routes/route');
+
+const router = require('./server/routes/routes');
 
 const express = require('express');
 const logger = require ('morgan');

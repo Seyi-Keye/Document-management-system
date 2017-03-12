@@ -24,3 +24,7 @@ router.put('/users/:id', UserController.updateUser);
 
 // //Delete user.
 router.delete('/users/:id', UserController.deleteUser);
+
+router.get('/users/:id/documents', UserController.findUserDocuments);
+
+module.exports = router;
