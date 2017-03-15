@@ -1,0 +1,230 @@
+const User = require('../models/index').User;
+// const Document = require('../models/index').Document;
+const authentication = require('../middleware/Authentication');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+const bcrypt = require('bcrypt');
+
+const errorHandler = errors => errors.map(error => error.message);
+
+/**
+ * UserDetails controller
+ */
+const UserController = {
+
+  /**
+   * transformUser
+   * @function
+   * @param {object} user
+   * @return {object} returns newUser
+   */
+  transformUser(user) {
+    const newUser = {
+      id: user.id,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      RoleId: user.RoleId
+    };
+    return newUser;
+  },
+  /**
+   * create User
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   */
+  createUser(req, res) {
+    User.create(req.body)
+      .then((user) => {
+        user = UserController.transformUser(user);
+        const token = authentication.generateToken(user);
+        return res.status(200).json({
+          user,
+          token });
+      })
+      .catch((error) => {
+        res.status(400).json({
+          message: errorHandler(error.errors)
+        });
+      });
+  },
+
+  /**
+   * user login
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   * **/
+  userLogin(req, res) {
+    User.findOne({ where: { email: req.body.email }
+    })
+  .then((user) => {
+    if (user && bcrypt.compareSync(req.body.password, user.password)) {
+      const token = jwt.sign((user.id), process.env.SECRET
+      );
+      return res.status(200).json({
+        message: 'You are successfully Logged in', token
+      });
+    }
+    return res.status(404).json({ message: 'User not found' });
+  })
+  .catch(error => res.status(500).json({ message: error.message })
+  );
+  },
+
+  /**
+   * find user
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   * **/
+  findUser(req, res) {
+    User.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+      .then((user) => {
+        if (!user) {
+          res.status(404).json({
+            message: 'User not found'
+          });
+        } else {
+          user = UserController.transformUser(user);
+          res.status(200).json({
+            message: 'User found',
+            user
+          });
+        }
+      })
+      .catch(error => res.status(500).json({
+        message: error.message
+      }));
+  },
+
+  /**
+   * find users
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   * **/
+  findUsers(req, res) {
+    User.findAll({
+      attributes: ['firstname', 'email', 'lastname', 'username']
+    })
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch(error => res.status(500).json({
+        message: error.message
+      }));
+  },
+
+  /**
+   * update user
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   * **/
+  updateUser(req, res) {
+    User.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+      .then((user) => {
+        user.update(req.body).then(() =>
+            res.status(200).json({
+              message: 'User details updated'
+            }))
+          .catch(error => res.status(500).json({
+            message: error.message
+          }));
+      });
+  },
+
+  /**
+   * delete user
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   **/
+  deleteUser(req, res) {
+    User.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+      .then((user) => {
+        user.destroy()
+          .then(res.status(200).json({
+            message: 'User is deleted'
+          }));
+      })
+      .catch(error => res.status(500).json({
+        message: error.message
+      }));
+  },
+
+  /**
+   * find user documents
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   **/
+  findUserDocuments(req, res) {
+    User.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+      .then((user) => {
+        user.getDocuments().then(documents =>
+          res.status(200).json({
+            message: 'Documents Found',
+            documents
+          }));
+      })
+      .catch(error =>
+        res.status(500).json({
+          error: error.message
+        }));
+  },
+
+  /**
+   *  user logout
+   * @function
+   * @param {object} req is request object
+   * @param {object} res is response object
+   * @return {undefined} returns undefined
+   * */
+  userLogout(req, res) {
+    User.findOne({
+      where: {
+        id: req.body.id
+      }
+    })
+      .then(() => {
+        res.status(200).json({
+          message: 'You have been Logged out'
+        });
+      })
+      .catch(error =>
+        res.status(500).json({
+          message: error.message
+        }));
+  }
+
+};
+
+// export default UserController;
+module.exports = UserController;

@@ -1,13 +1,13 @@
 const router = require('express').Router();
 
-// const router = express.Router();
+// const authenticate = require('../middleware/Authentication');
 
-const UserController = require('../controllers/user');
+const UserController = require('../controllers/UserController');
 // import UserController from '../controllers/user'
-//Creates a new user.
+// Creates a new user.
 router.post('/users', UserController.createUser);
 
-//Logs a user in.
+// Logs a user in.
 router.post('/users/login', UserController.userLogin);
 
 // //Logs a user out.
@@ -25,6 +25,6 @@ router.put('/users/:id', UserController.updateUser);
 // //Delete user.
 router.delete('/users/:id', UserController.deleteUser);
 
-router.get('/users/:id/documents', UserController.findUserDocuments);
+// router.get('/users/:id/documents', UserController.findUserDocuments);
 
 module.exports = router;

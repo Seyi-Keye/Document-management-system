@@ -36,10 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       // validate:{notNull: true}
-    },
-    passwordConfirmation: {
-      type: DataTypes.VIRTUAL
     }
+    // ,
+    // passwordConfirmation: {
+    //   type: DataTypes.VIRTUAL
+    // }
   },
   {
     classMethods: {
@@ -55,12 +56,12 @@ module.exports = (sequelize, DataTypes) => {
       }
   },
   instanceMethods: {
-    confirmPassword() {
-      if (this.password !== this.passwordConfirmation) {
-        throw new Error('Password does not match')
-      }
-      return true;
-    },
+    // confirmPassword() {
+    //   if (this.password !== this.passwordConfirmation) {
+    //     throw new Error('Password does not match')
+    //   }
+    //   return true;
+    // },
 
     /**
      * Compare plain password to user's hashed password
@@ -84,9 +85,9 @@ module.exports = (sequelize, DataTypes) => {
 
   hooks: {
     beforeCreate(user) {
-      if (user.confirmPassword()) {
+      // if (user.confirmPassword()) {
         user.hashPassword();
-      }
+      // }
     },
 
     beforeUpdate(user) {
