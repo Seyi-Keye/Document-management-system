@@ -24,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     RoleId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 2
     },
     email: {
       type: DataTypes.STRING,
@@ -35,68 +37,56 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      // validate:{notNull: true}
+      allowNull: false
     }
-    // ,
-    // passwordConfirmation: {
-    //   type: DataTypes.VIRTUAL
-    // }
   },
-  {
-    classMethods: {
-      associate: (models) => {
+    {
+      classMethods: {
+        associate: (models) => {
         // model association
-        User.hasMany(models.Document, {
-          foreignkey: { allowNull: true }
-        });
-        User.belongsTo(models.Role, {
-          foreignkey: { allowNull: true },
-          allowNull: false
-        });
-      }
-  },
-  instanceMethods: {
-    // confirmPassword() {
-    //   if (this.password !== this.passwordConfirmation) {
-    //     throw new Error('Password does not match')
-    //   }
-    //   return true;
-    // },
-
-    /**
-     * Compare plain password to user's hashed password
-     * @method
-     * @param {String} password
-     * @returns {Boolean} password match
-    */
-    validPassword(password) {
-      return bcrypt.compareSync(password, this.password);
-    },
-
-    /**
-     * Hash user's password
-     * @method
-     * @returns {void} no return
-    */
-    hashPassword() {
-      this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
-    }
-  },
-
-  hooks: {
-    beforeCreate(user) {
-      // if (user.confirmPassword()) {
-        user.hashPassword();
-      // }
-    },
-
-    beforeUpdate(user) {
-      if (user._changed.password) {
-        user.hashPassword();
+          User.hasMany(models.Document, {
+            foreignKey: 'OwnerId',
+            onDelete: 'CASCADE'
+          });
+          User.belongsTo(models.Role, {
+            foreignKey: 'RoleId',
+            onDelete: 'CASCADE',
+          });
         }
-    }
-  }
-  });
+      },
+      instanceMethods: {
+      /**
+       * Compare plain password to user's hashed password
+       * @method
+       * @param {String} password
+       * @returns {Boolean} password match
+       */
+        validPassword(password) {
+          return bcrypt.compareSync(password, this.password);
+        },
+
+      /**
+       * Hash user's password
+       * @method
+       * @returns {void} no return
+       */
+        hashPassword() {
+          this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
+        }
+      },
+
+      hooks: {
+        beforeCreate(user) {
+          user.hashPassword();
+        },
+
+        beforeUpdate(user) {
+          if (user._changed.password) {
+            user.hashPassword();
+          }
+        }
+      }
+    });
   return User;
 };
 

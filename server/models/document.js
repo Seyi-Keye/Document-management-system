@@ -1,11 +1,8 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var Document = sequelize.define('Document', {
-    UserId: {
+  const Document = sequelize.define('Document', {
+    OwnerId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-      }
+      allowNull: false
     },
     title: {
       type: DataTypes.STRING,
@@ -15,10 +12,13 @@ module.exports = (sequelize, DataTypes) => {
         min: 3
       }
     },
+    access: {
+      type: DataTypes.STRING,
+      defaultValue: 'public'
+    },
     content: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         min: 3
       }
@@ -26,8 +26,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        // associations can be defined here
-         Document.belongsTo(models.User);
+        Document.belongsTo(models.User, {
+          foreignKey: 'OwnerId',
+          onDelete: 'CASCADE'
+        });
       }
     }
   });

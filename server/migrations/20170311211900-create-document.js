@@ -7,13 +7,27 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      UserId: {
-        type: Sequelize.INTEGER
+      OwnerId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       content: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      access: {
+        allowNull: false,
+        defaultValue: 'public',
         type: Sequelize.STRING
       },
       createdAt: {

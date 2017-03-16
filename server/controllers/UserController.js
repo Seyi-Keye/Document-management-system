@@ -1,11 +1,10 @@
 const User = require('../models/index').User;
-// const Document = require('../models/index').Document;
+const Document = require('../models/index').Document;
 const authentication = require('../middleware/Authentication');
+const ControllerHelpers = require('../helpers/ControllerHelpers');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const bcrypt = require('bcrypt');
-
-const errorHandler = errors => errors.map(error => error.message);
 
 /**
  * UserDetails controller
@@ -43,11 +42,12 @@ const UserController = {
         const token = authentication.generateToken(user);
         return res.status(200).json({
           user,
-          token });
+          token
+        });
       })
       .catch((error) => {
         res.status(400).json({
-          message: errorHandler(error.errors)
+          message: ControllerHelpers.errorHandler(error.errors)
         });
       });
   },
@@ -60,20 +60,26 @@ const UserController = {
    * @return {undefined} returns undefined
    * **/
   userLogin(req, res) {
-    User.findOne({ where: { email: req.body.email }
+    User.findOne({
+      where: {
+        email: req.body.email
+      }
     })
-  .then((user) => {
-    if (user && bcrypt.compareSync(req.body.password, user.password)) {
-      const token = jwt.sign((user.id), process.env.SECRET
-      );
-      return res.status(200).json({
-        message: 'You are successfully Logged in', token
-      });
-    }
-    return res.status(404).json({ message: 'User not found' });
-  })
-  .catch(error => res.status(500).json({ message: error.message })
-  );
+      .then((user) => {
+        if (user && bcrypt.compareSync(req.body.password, user.password)) {
+          const token = jwt.sign((user.id), process.env.SECRET);
+          return res.status(200).json({
+            message: 'You are successfully Logged in',
+            token
+          });
+        }
+        return res.status(404).json({
+          message: 'User not found'
+        });
+      })
+      .catch(error => res.status(500).json({
+        message: error.message
+      }));
   },
 
   /**
@@ -114,13 +120,24 @@ const UserController = {
    * @param {object} res is response object
    * @return {undefined} returns undefined
    * **/
-  findUsers(req, res) {
-    User.findAll({
-      attributes: ['firstname', 'email', 'lastname', 'username']
+  findAllUsers(req, res) {
+    const limit = req.query.limit || '10';
+    const offset = req.query.offset || '0';
+    return User
+    .findAndCountAll({
+      attributes: ['id', 'username', 'firstname',
+        'lastname', 'email', 'RoleId'],
+      limit,
+      offset,
+      order: '"createdAt" DESC'
     })
-      .then((user) => {
-        res.status(200).json(user);
-      })
+    .then((users) => {
+      const pagination = limit && offset ? { totalCount: users.count,
+        pages: Math.ceil(users.count / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+        pageSize: users.rows.length } : null;
+      res.status(200).send({ users: users.rows, pagination });
+    })
       .catch(error => res.status(500).json({
         message: error.message
       }));
@@ -182,18 +199,21 @@ const UserController = {
    * @return {undefined} returns undefined
    **/
   findUserDocuments(req, res) {
-    User.findOne({
-      where: {
-        id: req.params.id
-      }
+    const limit = req.query.limit || 10;
+    const offset = req.query.offset || '0';
+    const order = '"createdAt" DESC';
+    Document.findAndCountAll({ where: { id: req.params.id },
+      limit,
+      offset,
+      order })
+    .then((documents) => {
+      const pagination = limit && offset ? {
+        totalCount: documents.count,
+        pages: Math.ceil(documents.count / limit),
+        currentPage: Math.floor(offset / limit) + 1,
+        pageSize: documents.rows.lenght } : null;
+      res.status(200).json({ documents: documents.rows, pagination });
     })
-      .then((user) => {
-        user.getDocuments().then(documents =>
-          res.status(200).json({
-            message: 'Documents Found',
-            documents
-          }));
-      })
       .catch(error =>
         res.status(500).json({
           error: error.message
