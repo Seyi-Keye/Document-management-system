@@ -1,5 +1,10 @@
-const Document = require('../models/index.js').Document;
+// import models from '../models';
+// import ControllerHelpers from '../helpers/ControllerHelpers';
+const Document = require('../models/index').Document;
 const ControllerHelpers = require('../helpers/ControllerHelpers');
+
+
+// const Document = models.Document;
 
 const DocumentController = {
   /**
@@ -225,4 +230,5 @@ const DocumentController = {
   },
 };
 
+// export default DocumentController;
 module.exports = DocumentController;

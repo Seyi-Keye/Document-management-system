@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     access: {
       type: DataTypes.STRING,
-      defaultValue: 'public'
+      allowNull: false,
+      defaultValue: 'public',
+      validate: { isIn: [['private', 'public', 'role']] }
     },
     content: {
       type: DataTypes.STRING,

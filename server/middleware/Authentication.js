@@ -7,8 +7,7 @@ require('dotenv').config();
 
 const authentication = {
   verifyToken(request, response, next) {
-    const token = request.body.token ||
-      request.headers.authorization ||
+    const token = request.headers.authorization ||
       request.headers['x-access-token'];
     if (token) {
       jwt.verify(token, process.env.SECRET, (error, decoded) => {
@@ -16,10 +15,9 @@ const authentication = {
           response.status(401).send({
             message: 'Invalid token'
           });
-        } else {
-          request.decoded = decoded;
-          next();
         }
+        request.decoded = decoded;
+        next();
       });
     } else {
       response.status(401).send({
@@ -34,7 +32,8 @@ const authentication = {
    * @returns {Object} jwt
    */
   generateToken(user) {
-    return jwt.sign({ UserId: user.id,
+    return jwt.sign({
+      UserId: user.id,
       RoleId: user.RoleId
     }, process.env.SECRET);
   },
@@ -47,18 +46,21 @@ const authentication = {
    * @returns {Object} response message
    */
   validateAdmin(request, response, next) {
-    Role.findById(request.decoded.RoleId)
+    Role.findById(request.decoded.RoleId
+      )
       .then((role) => {
         if (role.title === 'admin') {
           next();
         } else {
           response.status(401).send({
-            message: 'You are not permitted to perform this action'
+            error: 'Not authorized'
           });
         }
+      }).catch((error) => {
+        response.status(500).send({
+          errors: error
+        });
       });
   }
-
 };
-
 module.exports = authentication;

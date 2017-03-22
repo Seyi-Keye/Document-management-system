@@ -1,7 +1,9 @@
-const Role = require('../models/index').Role;
-// const authentication = require('../middleware/Authentication');
-const ControllerHelpers = require('../helpers/ControllerHelpers');
+// import { Role } from '../models';
+// // const authentication = require('../middleware/Authentication');
+// import ControllerHelpers from '../helpers/ControllerHelpers';
 
+const Role = require('../models/index').Role;
+const ControllerHelpers = require('../helpers/ControllerHelpers');
 /**
  * RoleController class
  */
@@ -46,11 +48,12 @@ const RoleController = {
     .then((role) => {
       if (!role) {
         res.status(404).json({ message: 'Role not found' });
-      } else {
-        res.status(200).json(role);
       }
+      res.status(200).json(role);
     })
-    .catch(error => res.status(500).json({ error: error.message }));
+    .catch((error) => {
+      res.status(500).json({ error: error.message });
+    });
   },
 
   updateRole(req, res) {
@@ -82,4 +85,5 @@ const RoleController = {
   }
 
 };
+// export default RoleController;
 module.exports = RoleController;
