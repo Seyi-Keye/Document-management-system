@@ -1,9 +1,12 @@
-// import jwt from 'jsonwebtoken';
-// import db from '../models';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import {
+  Role
+} from '../models';
 
-const jwt = require('jsonwebtoken');
-const Role = require('../models').Role;
-require('dotenv').config();
+// const jwt = require('jsonwebtoken');
+// const Role = require('../models').Role;
+dotenv.config();
 
 const authentication = {
   verifyToken(request, response, next) {
@@ -12,7 +15,7 @@ const authentication = {
     if (token) {
       jwt.verify(token, process.env.SECRET, (error, decoded) => {
         if (error) {
-          response.status(401).send({
+          return response.status(401).send({
             message: 'Invalid token'
           });
         }
@@ -20,7 +23,7 @@ const authentication = {
         next();
       });
     } else {
-      response.status(401).send({
+      return response.status(401).send({
         message: 'Token required to access this route'
       });
     }
@@ -46,8 +49,7 @@ const authentication = {
    * @returns {Object} response message
    */
   validateAdmin(request, response, next) {
-    Role.findById(request.decoded.RoleId
-      )
+    Role.findById(request.decoded.RoleId)
       .then((role) => {
         if (role.title === 'admin') {
           next();
@@ -63,4 +65,5 @@ const authentication = {
       });
   }
 };
-module.exports = authentication;
+// module.exports = authentication;
+export default authentication;

@@ -10,9 +10,6 @@ let role;
 
 
 describe('Role Model:', () => {
-  // before((done) => {
-
-  // });
   describe('Create Role', () => {
     it('should create new role and have it exist', (done) => {
       Role.create(helper.newRole)

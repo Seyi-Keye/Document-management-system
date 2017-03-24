@@ -1,3 +1,17 @@
-language: node_js
+sudo: required
+dist: trusty
+
+language:
+  - node_js
+
 node_js:
-  - "6"
+  - node
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database testdb;' -U postgres
+
+script:
+  - npm test

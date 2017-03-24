@@ -1,9 +1,5 @@
-// import { Role } from '../models';
-// // const authentication = require('../middleware/Authentication');
-// import ControllerHelpers from '../helpers/ControllerHelpers';
-
-const Role = require('../models/index').Role;
-const ControllerHelpers = require('../helpers/ControllerHelpers');
+import { Role } from '../models';
+import ControllerHelpers from '../helpers/ControllerHelpers';
 /**
  * RoleController class
  */
@@ -85,5 +81,4 @@ const RoleController = {
   }
 
 };
-// export default RoleController;
-module.exports = RoleController;
+export default RoleController;

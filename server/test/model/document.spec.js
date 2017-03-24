@@ -6,8 +6,8 @@ import helper from '../helpers/specHelpers';
 const expect = chai.expect;
 
 const documentAttributes = ['title', 'content', 'OwnerId', 'access'];
-const testDocument = helper.testDocument;
-const testUser = helper.regularUser;
+const publicDocument = helper.publicDocument;
+const regularUser = helper.regularUser;
 const User = models.User;
 const Document = models.Document;
 let newDocument;
@@ -15,7 +15,7 @@ let newUser;
 
 describe('Document Model Unit Test', () => {
   before((done) => {
-    User.create(testUser)
+    User.create(regularUser)
       .then((user) => {
         newUser = user;
         done();
@@ -29,14 +29,14 @@ describe('Document Model Unit Test', () => {
 
   describe('Create Document', () => {
     it('ensures a new document is created', (done) => {
-      testDocument.OwnerId = newUser.id;
-      Document.create(testDocument)
+      publicDocument.OwnerId = newUser.id;
+      Document.create(publicDocument)
         .then((document) => {
           newDocument = document;
-          expect(newDocument.title).equal(testDocument.title);
-          expect(newDocument.content).equal(testDocument.content);
+          expect(newDocument.title).equal(publicDocument.title);
+          expect(newDocument.content).equal(publicDocument.content);
           expect(newDocument).have.property('createdAt');
-          expect(newDocument.OwnerId).equal(testDocument.OwnerId);
+          expect(newDocument.OwnerId).equal(publicDocument.OwnerId);
           done();
         });
     });
@@ -45,7 +45,7 @@ describe('Document Model Unit Test', () => {
   describe('Not Null Validations', () => {
     documentAttributes.forEach((field) => {
       it(`fails without ${field}`, (done) => {
-        const assignedDocument = Object.assign({}, testDocument);
+        const assignedDocument = Object.assign({}, publicDocument);
         assignedDocument[field] = null;
         Document.create(assignedDocument)
           .then(nullDocument =>
@@ -61,7 +61,7 @@ describe('Document Model Unit Test', () => {
 
   describe('Unique', () => {
     it('ensures no duplicate title', (done) => {
-      Document.create(testDocument)
+      Document.create(publicDocument)
       .catch((error) => {
         expect(/SequelizeUniqueConstraintError/.test(error.name)).to.be.true;
         done();
@@ -86,9 +86,9 @@ describe('Document Model Unit Test', () => {
   describe('Access Violation', () => {
     it('ensures access is public, private or role',
     (done) => {
-      testDocument.OwnerId = newUser.id;
-      testDocument.access = 'andela';
-      Document.create(testDocument)
+      publicDocument.OwnerId = newUser.id;
+      publicDocument.access = 'andela';
+      Document.create(publicDocument)
         .then()
         .catch((error) => {
           expect(/SequelizeValidationError/.test(error.name)).to.be.true;

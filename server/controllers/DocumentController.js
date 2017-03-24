@@ -1,10 +1,5 @@
-// import models from '../models';
-// import ControllerHelpers from '../helpers/ControllerHelpers';
-const Document = require('../models/index').Document;
-const ControllerHelpers = require('../helpers/ControllerHelpers');
-
-
-// const Document = models.Document;
+import { Document } from '../models';
+import ControllerHelpers from '../helpers/ControllerHelpers';
 
 const DocumentController = {
   /**
@@ -230,5 +225,4 @@ const DocumentController = {
   },
 };
 
-// export default DocumentController;
-module.exports = DocumentController;
+export default DocumentController;

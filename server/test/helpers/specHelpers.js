@@ -8,7 +8,7 @@ module.exports = {
     title: 'admin'
   },
 
-  role2: {
+  regularRole: {
     title: 'regular'
   },
   newRole: {
@@ -20,11 +20,21 @@ module.exports = {
     lastname: 'Aromokeye',
     username: 'seyikeye',
     email: 'aromokeyes2@gmail.com',
-    password: faker.internet.password(),
+    password: faker.internet.password()
   },
 
-  testDocument: {
+  publicDocument: {
     title: faker.company.catchPhrase(),
     content: faker.lorem.paragraph()
   },
+  userDetails: {
+    firstname: 'Beauty',
+    lastname: 'Lady',
+    username: 'bealad',
+    email: 'blad@gmail.com',
+    password: faker.internet.password()
+  },
+  documentAdmin: {
+    title: 'admin'
+  }
 };

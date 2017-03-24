@@ -1,69 +1,66 @@
-const router = require('express').Router();
-const authenticate = require('../middleware/Authentication');
+import { Router } from 'express';
+import RoleController from '../controllers/RoleController';
+import UserController from '../controllers/UserController';
+import DocumentController from '../controllers/DocumentController';
+import authentication from '../middleware/Authentication';
 // import UserController from '../controllers/user'
-
+const router = Router();
 // default route
 router.get('/', (req, res) => res.status(200).send({
   message: 'Welcome to Document Management System!',
 }));
 
-const RoleController = require('../controllers/RoleController');
-const UserController = require('../controllers/UserController');
-const DocumentController = require('../controllers/DocumentController');
-
 // roles routes
 
 router.route('/roles')
-.post(
-  // authenticate.verifyToken, authenticate.validateAdmin,
-RoleController.createRole)
-.get(authenticate.verifyToken, authenticate.validateAdmin,
+.post(RoleController.createRole)
+.get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findAllRoles);
 
 router.route('/roles/:id')
-.get(authenticate.verifyToken, authenticate.validateAdmin,
+.get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findRole)
-.put(authenticate.verifyToken, authenticate.validateAdmin,
+.put(authentication.verifyToken, authentication.validateAdmin,
 RoleController.updateRole)
-.delete(authenticate.verifyToken, authenticate.validateAdmin,
+.delete(authentication.verifyToken, authentication.validateAdmin,
 RoleController.deleteRole);
 
 // user routes.
 router.route('/users')
 .post(UserController.createUser)
-.get(authenticate.verifyToken, authenticate.validateAdmin,
+.get(authentication.verifyToken, authentication.validateAdmin,
 UserController.findAllUsers);
 
 router.post('/users/login', UserController.userLogin);
 router.post('/users/logout', UserController.userLogout);
 
 router.route('/users/:id')
-.get(authenticate.verifyToken, authenticate.validateAdmin,
+.get(authentication.verifyToken, authentication.validateAdmin,
 UserController.findUser)
-.put(authenticate.verifyToken, authenticate.validateAdmin,
+.put(authentication.verifyToken, authentication.validateAdmin,
 UserController.updateUser)
-.delete(authenticate.verifyToken, authenticate.validateAdmin,
+.delete(authentication.verifyToken, authentication.validateAdmin,
 UserController.deleteUser);
 
 router.route('/users/:id/documents')
-.get(authenticate.verifyToken, authenticate.validateAdmin,
+.get(authentication.verifyToken, authentication.validateAdmin,
 UserController.findUserDocuments);
 
 // document routes
 router.route('/documents')
-.post(authenticate.verifyToken, DocumentController.createDocument)
-.get(authenticate.verifyToken, authenticate.validateAdmin,
+.post(authentication.verifyToken, DocumentController.createDocument)
+.get(authentication.verifyToken, authentication.validateAdmin,
 DocumentController.findAllDocuments);
 
-router.get('/documents/search', authenticate.verifyToken,
+router.get('/documents/search', authentication.verifyToken,
 DocumentController.searchDocument);
-router.get('/documents/roles', authenticate.verifyToken,
-authenticate.validateAdmin, DocumentController.findDocumentByRole);
+router.get('/documents/roles', authentication.verifyToken,
+authentication.validateAdmin, DocumentController.findDocumentByRole);
 
 router.route('/documents/:id')
-.get(authenticate.verifyToken, DocumentController.findDocumentById)
-.put(authenticate.verifyToken, DocumentController.updateDocument)
-.delete(authenticate.verifyToken, DocumentController.deleteDocument);
+.get(authentication.verifyToken, DocumentController.findDocumentById)
+.put(authentication.verifyToken, DocumentController.updateDocument)
+.delete(authentication.verifyToken, DocumentController.deleteDocument);
 
 
-module.exports = router;
+export default router;

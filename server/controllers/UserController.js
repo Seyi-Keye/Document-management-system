@@ -1,21 +1,11 @@
-// import bcrypt from 'bcrypt';
-// import jwt from 'jsonwebtoken';
-// import dotenv from 'dotenv';
-// import models from '../models';
-// import authentication from '../middleware/Authentication';
-// import ControllerHelpers from '../helpers/ControllerHelpers';
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv').config();
-const User = require('../models/index').User;
-const Document = require('../models/index').Document;
-const ControllerHelpers = require('../helpers/ControllerHelpers');
-const authentication = require('../middleware/Authentication');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import { User, Document } from '../models';
+import authentication from '../middleware/Authentication';
+import ControllerHelpers from '../helpers/ControllerHelpers';
 
-// dotenv.config();
-// const User = models.User;
-// const Document = models.Document;
-
+dotenv.config();
 
 /**
  * UserDetails controller
@@ -275,6 +265,4 @@ const UserController = {
 
 };
 
-// export default UserController;
-// export default UserController;
-module.exports = UserController;
+export default UserController;
