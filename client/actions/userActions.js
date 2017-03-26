@@ -1,6 +1,6 @@
 export const createUser = user => ({
-  return {
-    type: 'CRAETE_USER',
+  return: {
+    type: 'CREATE_USER',
     user
   }
 });

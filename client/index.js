@@ -1,22 +1,19 @@
+import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, browserHistory} from 'react-router';
-import routes from './routes';
+// import { Router, browserHistory} from 'react-router';
+// import routes from './routes';
 import { Provider} from 'react-redux';
-import '../node_modules/materialize-css/dist/css/materialize.min.css';
-// import '../client/styles/custom.scss';
-import store from './store/configureStore';
-// import { createRole, fetchRoles, saveRole } from './actions/roleAction';
-// import '../node_modules/toastr/build/toastr.min.css';
-// import { fetchUsers, userSaver, createUser, saveUser, login } from './actions/userAction';
-// import {fetchDocument, documentSaver, createDocument, saveDocument } from './actions/documentAction';
-// import '../node_modules/toastr/build/toastr.min.css';
+import configureStore from './store/configureStore';
+// import { fetchUsers } from './actions/userActions';
+// import { userReducer } from './reducers/userReducer';
+import { initialState } from './reducers/initialState';
+import { App } from './components/index';
 
-const store = configureStore();
-fetchUsers();
+const store = configureStore(initialState);
 render(
     <Provider store={store}>
-        <Router history= {browserHistory} routes={routes} />
+        <App/>
     </Provider>,
     document.getElementById('app')
 );

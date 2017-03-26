@@ -1,7 +1,7 @@
-import { combinedReducers } from 'redux';
+import { combineReducers } from 'redux';
 import users from './userReducer';
 
-const rootReducer = combinedReducers({
+const rootReducer = combineReducers({
   users
 });
 

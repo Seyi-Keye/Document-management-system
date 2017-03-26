@@ -1,11 +1,50 @@
 import React, {PropTypes} from 'react';
-import form
 import connect from 'react-redux';
 import * as userActions from '../actions/userActions';
+import {render} from 'react-dom';
 import { Input, Button, Row, Col, Icon } from 'react-materialize';
 
-const SignUp = () => (
-  <form onSubmit={this.handleSubmit}>
+class SignUp extends React.Component {
+
+  constructor(props) {
+    super(props);
+      this.state = {
+        firstname: '',
+        lastname: '',
+        username: '',
+        password: '',
+        passwordConfirmation: '',
+        email: ''
+      }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.mapDispatchToProps = this.mapDispatchToProps.bind(this);
+    this.mapStateToProps = this.mapStateToProps.bind(this);
+  };
+
+  mapStateToProps(state, ownProps) {
+    users: state.users
+  };
+  mapDispatchToProps(dispatch) {
+    createUser: user => dispatch(userActions.createUser(user))
+  };
+
+   handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+   }
+
+   handleSubmit(event) {
+    event.preventDefault();
+    $.post('/users', this.state)
+   .done((data) => {
+     console.log(data);
+   });
+  }
+
+   render() {
+      return (
+         <form onSubmit={this.handleSubmit}>
             <Row>
               <h4>SIGNUP FORM:</h4>
               <Input className="formControl" name="firstname"
@@ -34,27 +73,9 @@ const SignUp = () => (
               </Col>
             </Row>
          </form>
-);
-
-const handleChange = (event) {
-  console.log(this.state)
-  console.log(this.props);
-      this.setState({ [event.target.name]: event.target.value });
+      );
    }
-
-   handleSubmit(event) {
-    event.preventDefault();
-    $.post('/users', this.state)
-   .done((data) => {
-     console.log(data);
-   });
-  }
-
-const mapStateToProps = (state, ownProps) => ({
-  users: state.users
-});
-const mapDispatchToProps = (dispatch) => ({
-  createUser: user => dispatch(userActions.createUser(user))
-});
+}
 
 export default connect(mapStateToProps, mapDispatchToProps) (SignUp);
+

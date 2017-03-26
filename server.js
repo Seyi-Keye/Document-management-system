@@ -1,17 +1,9 @@
 /* eslint-disable no-console */
-// import { Routes from './server/routes/index';
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 
 import router from './server/routes/routes';
-// const router = require('./server/routes/route');
-
-// const router = require('./server/routes/routes');
-
-// const express = require('express');
-// const logger = require('morgan');
-// const bodyParser = require('body-parser');
 
 // setup the app
 const app = express();
@@ -28,7 +20,6 @@ app.listen(port, () => {
   console.log('\nApplication is running on port ', port);
 });
 
-// module.exports = app;
 export default app;
 
 
