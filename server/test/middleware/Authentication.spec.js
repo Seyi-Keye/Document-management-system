@@ -8,33 +8,47 @@ import supertest from 'supertest';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
 import authentication from '../../middleware/Authentication';
-import models from '../../models';
+import { Role, User } from '../../models';
 
 const expect = chai.expect;
 const request = supertest(app);
 const userDetails = helper.userDetails;
-const User = models.User;
+const adminRole = helper.adminRole;
+const regularRole = helper.regularRole;
 const res = httpMocks.createResponse({
   eventEmitter: events.EventEmitter
 });
 let token;
+let adminUser;
+let regularUser;
 
 describe('Middleware Unit Test', () => {
   before((done) => {
-    User.create(userDetails)
+    Role.bulkCreate([adminRole, regularRole], {
+      returning: true })
       .then(() => {
-        request.post('/api/users/login')
-          .send(userDetails)
-          .end((err, response) => {
-            if (err) return err;
-            token = response.body.token;
-            done();
+        Role.findOne({ where: { title: 'regular' } })
+        .then((found) => {
+          userDetails.RoleId = found.dataValues.id;
+          User.create(userDetails)
+          .then(() => {
+            request.post('/users/login')
+            .send(userDetails)
+            .end((err, response) => {
+              if (err) return err;
+              token = response.body.token;
+              done();
+            });
           });
+        });
       });
   });
 
   after((done) => {
     User.destroy({
+      where: {}
+    });
+    Role.destroy({
       where: {}
     });
     done();
@@ -44,7 +58,7 @@ describe('Middleware Unit Test', () => {
     it('fails on null token', (done) => {
       const req = httpMocks.createRequest({
         method: 'GET',
-        url: '/api/users',
+        url: '/users',
       });
       res.on('end', () => {
         /* eslint-disable no-underscore-dangle */
@@ -58,7 +72,7 @@ describe('Middleware Unit Test', () => {
     // it('fails on wrong token', (done) => {
     //   const req = httpMocks.createRequest({
     //     method: 'GET',
-    //     url: '/api/users',
+    //     url: '/users',
     //     headers: {
     //       'x-access-token': 'goodmorning_andela'
     //     }
@@ -110,7 +124,7 @@ describe('Middleware Unit Test', () => {
     // it('returns an error if user is not an admin', (done) => {
     //   const req = httpMocks.createRequest({
     //     method: 'GET',
-    //     url: '/api/users',
+    //     url: '/users',
     //     decoded: {
     //       RoleId: 2
     //     }
@@ -126,7 +140,7 @@ describe('Middleware Unit Test', () => {
     it('calls the next function for admin', (done) => {
       const req = httpMocks.createRequest({
         method: 'GET',
-        url: '/api/users',
+        url: '/users',
         headers: { Authorization: token },
         decoded: {
           RoleId: 1
@@ -146,7 +160,7 @@ describe('Middleware Unit Test', () => {
       done) => {
       const req = httpMocks.createRequest({
         method: 'GET',
-        url: '/api/users',
+        url: '/users',
         decoded: {
           RoleId: 2
         }
@@ -159,6 +173,6 @@ describe('Middleware Unit Test', () => {
       authentication.validateAdmin(req, res, middlewareStub.callback);
       expect(middlewareStub.callback).not.to.have.been.called;
       done();
-  });
+    });
   });
 });

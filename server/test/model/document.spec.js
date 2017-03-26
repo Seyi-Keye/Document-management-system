@@ -1,6 +1,6 @@
 /* eslint no-unused-expressions: "off"*/
 import chai from 'chai';
-import models from '../../models';
+import { Document, Role, User } from '../../models';
 import helper from '../helpers/specHelpers';
 
 const expect = chai.expect;
@@ -8,17 +8,26 @@ const expect = chai.expect;
 const documentAttributes = ['title', 'content', 'OwnerId', 'access'];
 const publicDocument = helper.publicDocument;
 const regularUser = helper.regularUser;
-const User = models.User;
-const Document = models.Document;
+
+const adminRole = helper.adminRole;
+const regularRole = helper.regularRole;
 let newDocument;
 let newUser;
 
 describe('Document Model Unit Test', () => {
   before((done) => {
-    User.create(regularUser)
-      .then((user) => {
-        newUser = user;
-        done();
+    Role.bulkCreate([adminRole, regularRole], {
+      returning: true })
+      .then(() => {
+        Role.findOne({ where: { title: 'regular' } })
+        .then((found) => {
+          regularUser.RoleId = found.dataValues.id;
+          User.create(regularUser)
+          .then((user) => {
+            newUser = user;
+            done();
+          });
+        });
       });
   });
 
@@ -68,7 +77,6 @@ describe('Document Model Unit Test', () => {
       });
     });
   });
-
 
 
   describe('Mininmum characters', () => {
