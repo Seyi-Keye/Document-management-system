@@ -11,13 +11,10 @@ const DocumentController = {
   createDocument(req, res) {
     Document.create(req.body)
       .then((document) => {
-        res.status(201).json({
-          msg: 'Document created',
-          document
-        });
+        res.status(201).json(document);
       }).catch((error) => {
         res.status(500).json({
-          msg: ControllerHelpers.errorHandler(error.errors)
+          message: ControllerHelpers.errorHandler(error.errors)
         });
       });
   },

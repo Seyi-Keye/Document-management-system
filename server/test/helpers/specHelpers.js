@@ -43,8 +43,13 @@ module.exports = {
 
 
   publicDocument: {
-    title: 'Gottta',
+    title: 'Its out there',
     content: faker.lorem.paragraph()
+  },
+  privateDocument: {
+    title: 'My Secret',
+    content: faker.lorem.paragraph(),
+    access: 'private'
   },
   userDetails: {
     firstname: faker.name.firstName(),
