@@ -15,6 +15,15 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(router);
+app.use(express.static('./client/public'));
+
+// app.get('/', (req, res) => {
+//   res.sendFile(__dirname + '/client/index.html');
+// });
+
+app.get('*', function (request, response){
+  response.sendFile(path.resolve(__dirname + '/client/index.html'));
+})
 
 app.listen(port, () => {
   console.log('\nApplication is running on port ', port);

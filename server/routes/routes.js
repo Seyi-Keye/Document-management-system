@@ -1,3 +1,4 @@
+import path from 'path';
 import { Router } from 'express';
 import RoleController from '../controllers/RoleController';
 import UserController from '../controllers/UserController';
@@ -6,9 +7,9 @@ import authentication from '../middleware/Authentication';
 // import UserController from '../controllers/user'
 const router = Router();
 // default route
-router.get('/', (req, res) => res.status(200).send({
-  message: 'Welcome to Document Management System!',
-}));
+router.get('/', (req, res) => {
+  res.sendFile(path.resolve('client', 'index.html'));
+});
 
 // roles routes
 
@@ -61,6 +62,10 @@ router.route('/documents/:id')
 .get(authentication.verifyToken, DocumentController.findDocumentById)
 .put(authentication.verifyToken, DocumentController.updateDocument)
 .delete(authentication.verifyToken, DocumentController.deleteDocument);
+
+// router.get('*', (req, res) => {
+//  res.sendFile(path.resolve('client', 'public', 'index.html'));
+// });
 
 
 export default router;
