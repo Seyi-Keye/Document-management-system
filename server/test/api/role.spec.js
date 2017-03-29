@@ -52,7 +52,7 @@ describe('Document Api', () => {
           if (err) return err;
           expect(res.status).to.equal(401);
           expect(res.body.message).to.equal(
-            'Token required to access this route');
+            'Token required for access');
           done();
         });
     });

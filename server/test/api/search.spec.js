@@ -20,31 +20,34 @@ describe('Search document', () => {
   let regularToken;
   let privDocument;
   let regularUser;
-  let adminUser
+  let adminUser;
   let adminToken;
 
   before((done) => {
-    Role.findOne({ where: { title: 'admin' } })
-    .then((foundAdmin) => {
-      adminUser.RoleId = foundAdmin.dataValues.id;
-      console.log('adminUser.RoleId......', adminUser.RoleId);
-      Role.findOne({ where: { title: 'regular' } })
-      .then((foundRegular) => {
-        regularUser.RoleId = foundRegular.dataValues.id;
+    // Role.findOne({ where: { title: 'admin' } })
+    // .then((foundAdmin) => {
+    //   console.log('foundAdmin......', foundAdmin);
+    //   console.log('found id', foundAdmin.id)
+    //   adminUser.RoleId = foundAdmin.id;
+    //   console.log('admin fucking role id++++++++++++++++++', adminUser.RoleId)
+    //   console.log('adminUser.RoleId......', adminUser.RoleId);
+    //   Role.findOne({ where: { title: 'regular' } })
+    //   .then((foundRegular) => {
+    //     regularUser.RoleId = foundRegular.id;
 
-        request.post('/users')
+    request.post('/users')
           .send(adminUserDetails)
           .end((error, response) => {
             adminUser = response.body.user;
             adminToken = response.body.token;
-            privateDocument.OwnerId = adminUser.id;
+            privateDocument.OwnerId = response.body.user.id;
 
             request.post('/users')
               .send(regularUserDetails)
               .end((err, res) => {
                 regularUser = res.body.user;
                 regularToken = res.body.token;
-                publicDocument.OwnerId = regularUser.id;
+                publicDocument.OwnerId = res.body.user.id;
 
                 request.post('/documents')
                 .set({ 'x-access-token': adminToken })
@@ -61,29 +64,63 @@ describe('Search document', () => {
                   });
                 });
               });
+          // });
           });
-      });
-    });
   });
+  // });
 
-  after(() => {
-    User.sequelize.sync({ force: true });
-    Docment.sequelize.sync({ force: true });
-  });
+  // after(() => {
+  //   User.sequelize.sync({ force: true });
+  //   Docment.sequelize.sync({ force: true });
+  // });
 
   describe('find document', () => {
     it('searches document for a string query', (done) => {
-      request.get('/documents/search?query=Secret&limit=1&offset=0')
+      request.get('/documents/search?query=out&limit=1&offset=0')
         .set({ 'x-access-token': adminToken })
         .expect(201)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
           expect(res.body.documents).to.exist;
-          expect(res.body.documents[0].title).to.equal('My Secret');
+          expect(res.body.documents[0].title).to.equal('Its out there');
           expect(res.body.pagination).to.not.be.null;
+          done();
+        });
+    });
+
+    it('returns error message for invalid input', (done) => {
+      request.get('/documents/search?query=out&limit=1&offset=hello')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to
+          .equal('invalid input syntax for integer: "hello"');
+          done();
+        });
+    });
+
+    // it('searches a document by role that can access it', (done) => {
+    //   request.get('/documents/role?access=public&limit=1&offset=0')
+    //     .set({ 'x-access-token': adminToken })
+    //     .expect(201)
+    //     .end((err, res) => {
+    //       expect(typeof res.body).to.equal('object');
+    //       // expect(res.body.documents[0].access).to.equal('public');
+    //       console.log('res.body)))))//////////.....>>>>', res.body.pagination);
+    //       expect(res.body.pagination).to.not.be.null;
+    //       done();
+    //     });
+    // });
+
+    it('returns error message for invalid input', (done) => {
+      request.get('/documents/limit=1&offset=hello')
+        .set({ 'x-access-token': regularToken })
+        .expect(200).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to
+          .equal('invalid input syntax for integer: "limit=1&offset=hello"');
           done();
         });
     });
   });
 });
-
