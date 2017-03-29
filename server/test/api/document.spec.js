@@ -1,9 +1,8 @@
 import chai from 'chai';
 import supertest from 'supertest';
-import { Document, Role, User } from '../../models';
+import { Document, User } from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
-import jwt from 'jsonwebtoken';
 
 const expect = chai.expect;
 const publicDocument = helper.publicDocument;
@@ -47,23 +46,10 @@ describe('Document API:', () => {
     Document.destroy({
       where: {}
     });
-    Role.destroy({
-      where: {}
-    });
     done();
   });
 
   describe('Create document', () => {
-    // beforeEach((done) => {
-    //   request.post('/documents')
-    //     .send(publicDocument)
-    //     .set({ Authorization: regularToken })
-    //     .end((err, res) => {
-    //       if (err) return err;
-    //       documentResponse = res;
-    //       done();
-    //     });
-    // });
     it('has published date', (done) => {
       request.post('/documents')
         .set({ 'x-access-token': regularToken })
@@ -77,29 +63,210 @@ describe('Document API:', () => {
         });
     });
 
-    it('Should have valid attributes', (done) => {
+    it('has valid attributes', (done) => {
       expect(document).to.have.property('title');
       expect(document).to.have.property('content');
       done();
     });
 
-    it('Should ensure that document has an owner', (done) => {
+    it('ensures that document has an owner', (done) => {
       request.post('/documents')
         .set({ 'x-access-token': adminToken })
         .send(privateDocument)
         .expect(200)
         .end((err, res) => {
           privateDoc = res.body;
-          console.log('Private doc///////', privateDoc);
           expect(res.body.ownerId).to.equal(adminUser.id);
           done();
         });
     });
 
-    it('Should ensure that document has a role that can access it', (done) => {
+    it('ensures that document has a role that can access it', (done) => {
       expect(document.access).to.equal('public');
-      // expect(privateDoc.access).to.equal('private');
+      expect(privateDoc.access).to.equal('private');
       done();
     });
+
+    it('ensures that document cannot be created if title is null',
+    (done) => {
+      const nullTitleDoc = { title: null, content: 'content', OwnerId: 1 };
+      request.post('/documents')
+        .set({ 'x-access-token': adminToken })
+        .send(nullTitleDoc)
+        .expect(422)
+        .end((err, res) => {
+          expect(res.body.message[0]).to
+          .equal('title cannot be null');
+          done();
+        });
+    });
+  });
+
+  describe('Find document', () => {
+    it('returns all documents with pagination', (done) => {
+      request.get('/documents?limit=1&offset=1')
+        .set({ 'x-access-token': adminToken })
+        .expect(200).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.documents.length).to.be.greaterThan(0);
+          expect(res.body.pagination).not.be.null;
+          done();
+        });
+    });
+
+    it('returns error message for invalid input', (done) => {
+      request.get('/documents?limit=1&offset=asd')
+        .set({ 'x-access-token': adminToken })
+        .expect(400).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to
+          .equal('invalid input syntax for integer: "asd"');
+          done();
+        });
+    });
+
+    it('returns all document with specified id to its owner', (done) => {
+      request.get('/documents/1')
+        .set({ 'x-access-token': regularToken })
+        .expect(200)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.ownerId).to.equal(regularUser.id);
+          expect(res.body.title).to.equal(publicDocument.title);
+          done();
+        });
+    });
+
+    it('fails to return a non-existing document', (done) => {
+      request.get('/documents/123')
+        .set({ 'x-access-token': adminToken })
+        .expect(404)
+        .end((err, res) => {
+          expect(res.body.message).to.equal('Document Not Found');
+          done();
+        });
+    });
+
+    it('fails to return a document to non-permited users', (done) => {
+      request.get('/documents/2')
+        .set({ 'x-access-token': regularToken })
+        .expect(401)
+        .end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to.equal('You cannot view this document');
+          done();
+        });
+    });
+  });
+
+  describe('Update Document', () => {
+    it('returns error message for invalid input', (done) => {
+      request.get('/documents/hello')
+        .set({ 'x-access-token': adminToken })
+        .expect(400).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to
+          .equal('invalid input syntax for integer: "hello"');
+          done();
+        });
+    });
+
+    it('fails to edit if invalid id is provided', (done) => {
+      const newContent = { content: 'replace previous document' };
+      request.put('/documents/123')
+        .set({ 'x-access-token': regularToken })
+        .send(newContent)
+        .expect(404)
+        .end((err, res) => {
+          expect(res.body.message).to.equal('Document Not Found');
+          done();
+        });
+    });
+
+    it('fails to edit for un-authorized User', (done) => {
+      const newContent = { content: 'replace previous document' };
+      request.put('/documents/1')
+        .send(newContent)
+        .expect(401, done);
+    });
+
+    it('fails to edit document if request is not made by the owner',
+    (done) => {
+      const newContent = { content: 'replace previous document' };
+      request.put('/documents/2')
+        .set({ 'x-access-token': regularToken })
+        .send(newContent)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(res.body.message).to.equal('You cannot update this document');
+          done();
+        });
+    });
+
+  //   it('edits document if valid id is provided', (done) => {
+  //     const newContent = { content: 'replace previous document' };
+  //     request.put('/documents/2')
+  //       .set({ 'x-access-token': adminToken })
+  //       .send(newContent)
+  //       .end((err, res) => {
+  //         expect(res.status).to.equal(200);
+  //         expect(res.body.content).to.equal(newContent.content);
+  //         done();
+  //       });
+  //   });
+  });
+
+  describe('Delete document', () => {
+    it('returns error message for invalid input', (done) => {
+      request.get('/documents/hello')
+        .set({ 'x-access-token': adminToken })
+        .expect(400).end((err, res) => {
+          expect(typeof res.body).to.equal('object');
+          expect(res.body.message).to
+          .equal('invalid input syntax for integer: "hello"');
+          done();
+        });
+    });
+  });
+
+  it('fails to delete if user is not authorized', (done) => {
+    const newContent = { content: 'replace previous document' };
+    request.delete('/documents/2')
+        .send(newContent)
+        .expect(401, done);
+  });
+
+  // it('fails to delete a document if request is not made by the owner',
+  //   (done) => {
+  //     request.delete('/documents/2')
+  //       .set({ 'x-access-token': regularToken })
+  //       .end((err, res) => {
+  //         expect(res.status).to.equal(401);
+  //         expect(res.body.message).to.equal('You cannot delete this document');
+  //         done();
+  //       });
+  //   });
+
+  // it('deletes a document', (done) => {
+  //   request.delete('/documents/1')
+  //   .set({ 'x-access-token': regularToken })
+  //     .expect(200)
+  //     .end((err, res) => {
+  //       expect(typeof res.body).to.equal('object');
+  //       expect(res.body.message).to.equal('Document Deleted');
+  //       done();
+  //     });
+  // });
+
+  it('Should fail if document does not exist', (done) => {
+    request.delete('/documents/123')
+      .set({ 'x-access-token': regularToken })
+      .expect(404)
+      .end((err, res) => {
+        expect(typeof res.body).to.equal('object');
+        expect(res.body.message).to.equal('Document Not Found');
+        done();
+      });
   });
 });
+
