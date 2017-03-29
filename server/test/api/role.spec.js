@@ -9,12 +9,6 @@ const expect = chai.expect;
 const adminUser = specHelpers.adminUser;
 let token;
 let role;
-let adminToken;
-let secondToken;
-let userId;
-let publicDocumentId;
-let privateDocumentId;
-let documentWithRoleAccessId;
 
 describe('Document Api', () => {
   before((done) => {
@@ -41,9 +35,9 @@ describe('Document Api', () => {
     Document.destroy({
       where: {}
     });
-    Role.destroy({
-      where: {}
-    });
+    // Role.destroy({
+    //   where: {}
+    // });
     done();
   });
 
