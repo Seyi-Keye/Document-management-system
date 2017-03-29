@@ -32,6 +32,14 @@ module.exports = {
     password: faker.internet.password(),
     RoleId: 1
   },
+  adminUser1: {
+    firstname: 'fatima',
+    lastname: 'fathia',
+    username: 'fati',
+    email: 'fatima@gmail.com',
+    password: 'fatima',
+    RoleId: 1
+  },
 
   createdByAdmin: {
     firstname: faker.name.firstName(),
