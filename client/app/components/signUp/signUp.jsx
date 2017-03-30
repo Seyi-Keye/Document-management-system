@@ -1,5 +1,4 @@
 import React from 'react';
-import {render} from 'react-dom';
 import { Input, Button, Row, Col, Icon } from 'react-materialize';
 
 class SignUpForm extends React.Component {
@@ -36,8 +35,7 @@ class SignUpForm extends React.Component {
          <form onSubmit={this.handleSubmit}>
             <Row>
               <h4>SIGNUP FORM:</h4>
-              <Input className="formControl" name="firstname"
-              placeholder="Placeholder" s={6}
+              <Input className="formControl" name="firstname" s={6}
               label="First Name" value={this.state.firstname}
               onChange={this.handleChange}/>
               <Input name="lastname" className="formControl" s={6}
