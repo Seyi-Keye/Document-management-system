@@ -13,7 +13,7 @@ class App extends React.Component {
       return (
         <div>
           <nav>
-            <div className="nav-wrapper blue darken-4 z-depth-3">
+            <div className="nav-wrapper cyan accent-4 z-depth-3">
               <ul>
                 <li> <Link to="/"> Home </Link> </li>
                 <li> <Link to="/about">  About </Link> </li>
