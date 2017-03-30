@@ -6,26 +6,33 @@ import About from '../about/about';
 import Contact from '../contact/contact';
 import SignUpForm from '../signUp/signUp';
 import Login from '../login/login';
+import Dashboard from '../dashboard/dashboard';
 
 class App extends React.Component {
    render() {
       return (
-         <div>
-           <Navbar brand='KEYE-DOCS' right>
-              <NavItem> <Link to="/"> Home </Link> </NavItem>
-              <NavItem> <Link to="/about">  About </Link> </NavItem>
-              <NavItem> <Link to="/contact">  Contact </Link> </NavItem>
-              <NavItem> <Link to="/signup"> Sign Up </Link></NavItem>
-              <NavItem> <Link to="/login"> Login </Link></NavItem>
-            </Navbar>
+        <div>
+          <nav>
+            <div className="nav-wrapper blue darken-4 z-depth-3">
+              <ul>
+                <li> <Link to="/"> Home </Link> </li>
+                <li> <Link to="/about">  About </Link> </li>
+                <li> <Link to="/contact">  Contact </Link> </li>
+                <li> <Link to="/signup"> Sign Up </Link></li>
+                <li> <Link to="/login"> Login </Link></li>
+                <li> <Link to="/dashboard"> Dashboard </Link></li>
+              </ul>
+            </div>
+          </nav>
           <Route exact path="/" component={Home}/>
           <Route path="/about" component={About}/>
           <Route path="/contact" component={Contact}/>
           <Route path="/signup" component={SignUpForm}/>
           <Route path="/login" component={Login}/>
+          <Route path="/dashboard" component={Dashboard}/>
 
            {this.props.children}
-         </div>
+        </div>
       )
    }
 }

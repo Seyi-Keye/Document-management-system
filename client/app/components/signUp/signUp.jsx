@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { handleSignUp } from '../../actions/userAction.js';
 import { Input, Button, Row, Col, Icon } from 'react-materialize';
 
 class SignUpForm extends React.Component {
@@ -24,10 +26,9 @@ class SignUpForm extends React.Component {
 
    handleSubmit(event) {
     event.preventDefault();
-    $.post('/users', this.state)
-   .done((data) => {
-     console.log(data);
-   });
+    this.props.handleSignUp(this.state.firstname, this.state.lastname,
+    this.state.username, this.state.password, this.state.passwordConfirmation,
+    this.state.email);
   }
 
    render() {
@@ -64,4 +65,19 @@ class SignUpForm extends React.Component {
    }
 }
 
-export default SignUpForm;
+const stateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const dispatchToProps = (dispatch) => {
+  return {
+    handleSignUp: (firstname, lastname, username, password,
+    passwordConfirmation ,email) => dispatch(handleSignUp(firstname, lastname,
+    username, password, passwordConfirmation ,email))
+  };
+}
+
+export default connect(stateToProps, dispatchToProps) (SignUpForm);
+

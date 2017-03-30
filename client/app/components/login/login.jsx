@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handleLogin } from '../../actions/loginAction.js';
+import { handleLogin } from '../../actions/userAction.js';
 import { Button, Col, Input, Row } from 'react-materialize';
 
 class Login extends React.Component {
