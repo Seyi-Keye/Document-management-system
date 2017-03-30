@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         min: 3
       }
@@ -11,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         // associations can be defined here
-        Role.hasOne(models.User);
+        Role.hasMany(models.User, {
+          foreignKey: 'RoleId'
+        });
       }
     }
   });
