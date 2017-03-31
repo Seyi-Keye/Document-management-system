@@ -6,13 +6,17 @@ textarea {
 }
 
 .card-action, button {
-  background-color: grey;
+  background-color: e0e0e0 !important;
 }
 
 .card {
   margin-top: 10%;
 }
 button {
-  background-color: #00b8d4;
+  background-color: #00b8d4 !important;
+  color: white;
+}
 
+.material-icons{
+  color: #fff;
 }

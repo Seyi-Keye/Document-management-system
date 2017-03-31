@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha --reporter spec ./server/test/helpers/seedHelper.js \"./server/test/**/*.spec.js\" --timeout=60000",
+    "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha --reporter ./server/test/helpers/seedHelper.js \"./server/test/**/*.spec.js\" --timeout=60000",
     "coveralls": "nyc report --reporter=text-lcov |  coveralls",
     "start:dev": "nodemon .sequelizerc",
     "start:seyi": "babel-node server.js",
-    "test": "npm run seed && npm run thetest",
+    "test": "npm run seed && npm run thetest ",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
     "thetest": "NODE_ENV=test mocha --compilers js:babel-core/register  ./server/test/**/*.spec.js",
     "test:watch": "npm run test -- --watch"
@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/andela-oaromokeye/Document-management-system#readme",
   "dependencies": {
-    "axios": "^0.15.3",
     "babel": "^6.23.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",

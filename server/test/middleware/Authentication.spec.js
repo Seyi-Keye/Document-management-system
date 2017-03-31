@@ -69,21 +69,21 @@ describe('Middleware Unit Test', () => {
       authentication.verifyToken(req, res);
     });
 
-    // it('fails on wrong token', (done) => {
-    //   const req = httpMocks.createRequest({
-    //     method: 'GET',
-    //     url: '/users',
-    //     headers: {
-    //       'x-access-token': 'goodmorning_andela'
-    //     }
-    //   });
-    //   authentication.verifyToken(req, res);
-    //   res.on('end', () => {
-    //     /* eslint-disable no-underscore-dangle */
-    //     expect(res._getData().message).to.equal('Invalid token');
-    //     done();
-    //   });
-    // });
+    it('fails on wrong token', (done) => {
+      const req = httpMocks.createRequest({
+        method: 'GET',
+        url: '/users',
+        headers: {
+          'x-access-token': 'goodmorning_andela'
+        }
+      });
+      authentication.verifyToken(req, res);
+      res.on('end', () => {
+        /* eslint-disable no-underscore-dangle */
+        expect(res._getData().message).to.equal('Invalid token');
+        done();
+      });
+    });
 
     it('calls the next function on valid token', (done) => {
       const req = httpMocks.createRequest({

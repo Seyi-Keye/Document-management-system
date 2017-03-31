@@ -5,6 +5,8 @@ import App from './components/main';
 import initialState from '../store/initialState.js';
 import '../styles/styles.css';
 import '../../node_modules/materialize-css/dist/js/materialize.min.js';
+import '../../node_modules/material-icons/css/material-icons.css';
+import '../../node_modules/toastr/build/toastr.min.css';
 import Document from './components/document/document';
 import { Provider } from 'react-redux';
 import configureStore from '../store/configureStore.js';
