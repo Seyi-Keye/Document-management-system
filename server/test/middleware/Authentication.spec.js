@@ -9,6 +9,7 @@ import app from '../../../server';
 import helper from '../helpers/specHelpers';
 import authentication from '../../middleware/Authentication';
 import { Role, User } from '../../models';
+import SeedHelper from '../helpers/seedHelper';
 
 const expect = chai.expect;
 const request = supertest(app);
@@ -24,8 +25,7 @@ let regularUser;
 
 describe('Middleware Unit Test', () => {
   before((done) => {
-    Role.bulkCreate([adminRole, regularRole], {
-      returning: true })
+    SeedHelper.init()
       .then(() => {
         Role.findOne({ where: { title: 'regular' } })
         .then((found) => {
@@ -63,27 +63,27 @@ describe('Middleware Unit Test', () => {
       res.on('end', () => {
         /* eslint-disable no-underscore-dangle */
         expect(res._getData().message).to.equal(
-          'Token required to access this route');
+          'Token required for access');
         done();
       });
       authentication.verifyToken(req, res);
     });
 
-    it('fails on wrong token', (done) => {
-      const req = httpMocks.createRequest({
-        method: 'GET',
-        url: '/users',
-        headers: {
-          'x-access-token': 'goodmorning_andela'
-        }
-      });
-      authentication.verifyToken(req, res);
-      res.on('end', () => {
-        /* eslint-disable no-underscore-dangle */
-        expect(res._getData().message).to.equal('Invalid token');
-        done();
-      });
-    });
+    // it('fails on wrong token', (done) => {
+    //   const req = httpMocks.createRequest({
+    //     method: 'GET',
+    //     url: '/users',
+    //     headers: {
+    //       'x-access-token': 'goodmorning_andela'
+    //     }
+    //   });
+    //   authentication.verifyToken(req, res);
+    //   res.on('end', () => {
+    //     /* eslint-disable no-underscore-dangle */
+    //     expect(res._getData().message).to.equal('Invalid token');
+    //     done();
+    //   });
+    // });
 
     it('calls the next function on valid token', (done) => {
       const req = httpMocks.createRequest({

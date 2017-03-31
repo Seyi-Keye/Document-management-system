@@ -4,6 +4,7 @@ import supertest from 'supertest';
 import { Docment, Role, User } from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
+import SeedHelper from '../helpers/seedHelper';
 
 const request = supertest.agent(app);
 const expect = chai.expect;
@@ -34,38 +35,40 @@ describe('Search document', () => {
     //   Role.findOne({ where: { title: 'regular' } })
     //   .then((foundRegular) => {
     //     regularUser.RoleId = foundRegular.id;
+    SeedHelper.init()
+    .then(() => {
+      request.post('/users')
+      .send(adminUserDetails)
+      .end((error, response) => {
+        adminUser = response.body.user;
+        adminToken = response.body.token;
+        privateDocument.OwnerId = response.body.user.id;
 
-    request.post('/users')
-          .send(adminUserDetails)
-          .end((error, response) => {
-            adminUser = response.body.user;
-            adminToken = response.body.token;
-            privateDocument.OwnerId = response.body.user.id;
+        request.post('/users')
+          .send(regularUserDetails)
+          .end((err, res) => {
+            regularUser = res.body.user;
+            regularToken = res.body.token;
+            publicDocument.OwnerId = res.body.user.id;
 
-            request.post('/users')
-              .send(regularUserDetails)
+            request.post('/documents')
+            .set({ 'x-access-token': adminToken })
+            .send(privateDocument)
+            .end((err, res) => {
+              privDocument = res.body;
+
+              request.post('/documents')
+              .set({ 'x-access-token': regularToken })
+              .send(publicDocument)
               .end((err, res) => {
-                regularUser = res.body.user;
-                regularToken = res.body.token;
-                publicDocument.OwnerId = res.body.user.id;
-
-                request.post('/documents')
-                .set({ 'x-access-token': adminToken })
-                .send(privateDocument)
-                .end((err, res) => {
-                  privDocument = res.body;
-
-                  request.post('/documents')
-                  .set({ 'x-access-token': regularToken })
-                  .send(publicDocument)
-                  .end((err, res) => {
-                    document = res.body;
-                    done();
-                  });
-                });
+                document = res.body;
+                done();
               });
-          // });
+            });
           });
+      // });
+      });
+    });
   });
   // });
 
@@ -105,7 +108,7 @@ describe('Search document', () => {
     //     .expect(201)
     //     .end((err, res) => {
     //       expect(typeof res.body).to.equal('object');
-    //       // expect(res.body.documents[0].access).to.equal('public');
+    //       expect(res.body.documents[0].access).to.equal('public');
     //       console.log('res.body)))))//////////.....>>>>', res.body.pagination);
     //       expect(res.body.pagination).to.not.be.null;
     //       done();

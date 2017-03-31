@@ -4,13 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha --reporter ./server/test/helpers/seedHelper.js \"./server/test/**/*.spec.js\" --timeout=60000",
+    "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha ./server/test/**/*.spec.js",
     "coveralls": "nyc report --reporter=text-lcov |  coveralls",
     "start:dev": "nodemon .sequelizerc",
     "start:seyi": "babel-node server.js",
-    "test": "npm run seed && npm run thetest ",
+    "test": "npm run thetest ",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
-    "thetest": "NODE_ENV=test mocha --compilers js:babel-core/register  ./server/test/**/*.spec.js",
+    "thetest": "NODE_ENV=test mocha --timeout 6000 --compilers js:babel-core/register  ./server/test/**/*.spec.js",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {

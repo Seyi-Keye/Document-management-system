@@ -10,7 +10,7 @@ class SeedHelper {
    * @return {Void} - Returns Void
    */
   static init() {
-    db.sequelize.sync({ force: true })
+    return db.sequelize.sync({ force: true })
     .then(() => {
       SeedHelper.populateRoleTable();
     });
@@ -33,4 +33,4 @@ class SeedHelper {
   }
 }
 
-export default SeedHelper.init();
+export default SeedHelper; // .init();

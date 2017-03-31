@@ -2,6 +2,7 @@
 import chai from 'chai';
 import { Document, Role, User } from '../../models';
 import helper from '../helpers/specHelpers';
+import SeedHelper from '../helpers/seedHelper';
 
 const expect = chai.expect;
 
@@ -16,10 +17,9 @@ let newUser;
 
 describe('Document Model Unit Test', () => {
   before((done) => {
-    Role.bulkCreate([adminRole, regularRole], {
-      returning: true })
-      .then(() => {
-        Role.findOne({ where: { title: 'regular' } })
+    SeedHelper.init()
+    .then(() => {
+      Role.findOne({ where: { title: 'regular' } })
         .then((found) => {
           regularUser.RoleId = found.dataValues.id;
           User.create(regularUser)
@@ -28,7 +28,7 @@ describe('Document Model Unit Test', () => {
             done();
           });
         });
-      });
+    });
   });
 
   after((done) => {

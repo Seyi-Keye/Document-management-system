@@ -5,6 +5,7 @@ import supertest from 'supertest';
 import { User, Role } from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
+import SeedHelper from '../helpers/seedHelper';
 
 const request = supertest.agent(app);
 const expect = chai.expect;
@@ -26,16 +27,19 @@ describe('User api', () => {
   let regularToken;
 
   before((done) => {
-    Role.findOne({ where: { title: 'admin' } })
-    .then((foundAdmin) => {
-      adminRole = foundAdmin;
-    });
-    request.post('/users')
-    .send(adminUserParam)
-    .end((err, res) => {
-      adminUser = res.body.user;
-      adminToken = res.body.token;
-      done();
+    SeedHelper.init()
+    .then(() => {
+      Role.findOne({ where: { title: 'admin' } })
+      .then((foundAdmin) => {
+        adminRole = foundAdmin;
+      });
+      request.post('/users')
+      .send(adminUserParam)
+      .end((err, res) => {
+        adminUser = res.body.user;
+        adminToken = res.body.token;
+        done();
+      });
     });
   });
 

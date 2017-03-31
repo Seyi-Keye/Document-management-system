@@ -12,7 +12,7 @@ const handleNewDocument = (title, content, access) => {
     dispatch(newDocumentAction());
     return (
       request.post('/documents')
-      .set({ 'token': localStorage.getItem('token') })
+      .set({ 'x-access-token': localStorage.getItem('token') })
       .send({title, content, access})
       .then((response) => {
         if(response.status === 200) {

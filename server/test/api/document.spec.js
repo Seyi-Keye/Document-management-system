@@ -3,6 +3,7 @@ import supertest from 'supertest';
 import { Document, User } from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
+import SeedHelper from '../helpers/seedHelper';
 
 const expect = chai.expect;
 const publicDocument = helper.publicDocument;
@@ -21,7 +22,9 @@ describe('Document API:', () => {
 
   // Login users to access this endpoint
   before((done) => {
-    request.post('/users')
+    SeedHelper.init()
+    .then(() => {
+      request.post('/users')
       .send(adminUser)
       .end((err, res) => {
         admin = res.body.user;
@@ -37,6 +40,7 @@ describe('Document API:', () => {
             done();
           });
       });
+    });
   });
 
   after((done) => {
