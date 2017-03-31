@@ -10,7 +10,9 @@ class AddDocument extends React.Component {
     this.state = {
       title: '',
       content:'',
-      access: ''
+      access: 'public',
+      OwnerId: 20
+
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

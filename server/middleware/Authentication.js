@@ -1,11 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import {
-  Role
-} from '../models';
+import { Role } from '../models';
 
-// const jwt = require('jsonwebtoken');
-// const Role = require('../models').Role;
 dotenv.config();
 
 const authentication = {

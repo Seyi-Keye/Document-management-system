@@ -1,5 +1,6 @@
 import request from 'superagent';
 import * as types from './actionTypes';
+import jwt from 'jwt-decode';
 
 const newDocumentAction = (documents) => {
   return {type: 'NEWDOCUMENT_SUCCESSFUL', documents};
@@ -7,23 +8,34 @@ const newDocumentAction = (documents) => {
 
 
 const handleNewDocument = (title, content, access) => {
-  debugger;
   return (dispatch) => {
     dispatch(newDocumentAction());
-    return (
-      request.post('/documents')
-      .set({ 'x-access-token': localStorage.getItem('token') })
-      .send({title, content, access})
-      .then((response) => {
-        if(response.status === 200) {
-        dispatch(newDocumentAction(response.body));
-        console.log(response.body);
-      } else {
+      const token = localStorage.getItem('token');
+      const decoded = jwt(token);
+      const OwnerId = decoded.UserId;
+      console.log(decoded);
+    return request.post('/documents')
+      .set({ 'x-access-token': token })
+      .send({title, content, access, OwnerId})
+      .end((error, response) => {
         console.log(response);
-      }
-      }).catch(err => {
-      })
-    )
+        if (response.status === 201) {
+          dispatch(newDocumentAction(response.body));
+          console.log(response.body);
+        } else {
+          console.log(response);
+        }
+      });
+      // .then((response) => {
+      //   if(response.status === 200) {
+      //   dispatch(newDocumentAction(response.body));
+      //   console.log(response.body);
+      // } else {
+      //   console.log(response);
+      // }
+      // }).catch(err => {
+      // })
+
   };
 }
 
