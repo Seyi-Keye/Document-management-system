@@ -24,7 +24,7 @@ const authentication = {
       });
     } else {
       return response.status(401).send({
-        message: 'Token required to access this route'
+        message: 'Token required for access'
       });
     }
   },
@@ -65,5 +65,4 @@ const authentication = {
       });
   }
 };
-// module.exports = authentication;
 export default authentication;

@@ -66,8 +66,8 @@ const UserController = {
   userLogin(req, res) {
     User.findOne({
       where: {
-          email: req.body.email
-        }
+        email: req.body.email
+      }
     })
       .then((user) => {
         console.log(user);
@@ -97,8 +97,8 @@ const UserController = {
   findUser(req, res) {
     User.findOne({
       where: {
-          id: req.params.id
-        }
+        id: req.params.id
+      }
     })
       .then((user) => {
         if (!user) {
@@ -162,20 +162,31 @@ const UserController = {
    * @return {undefined} returns undefined
    * **/
   updateUser(req, res) {
-    User.findOne({
-      where: {
-        id: req.params.id
-      }
-    })
-      .then((user) => {
-        user.update(req.body).then(() =>
-            res.status(200).json({
-              message: 'User details updated'
-            }))
-          .catch(error => res.status(500).json({
-            message: error.message
-          }));
+    if ((req.body.RoleId) && (req.decoded.RoleId !== 1)) {
+      return res.status(401).send({
+        message: 'You are not permitted to assign this user to a role',
       });
+    }
+    return User
+    .findById(req.params.id, {})
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          message: 'User not found',
+        });
+      }
+      if (user.id !== req.decoded.UserId) {
+        return res.status(401).send({
+          message: 'You cannot update this user',
+        });
+      }
+      return user
+        .update(req.body)
+        .then(() => res.status(200).send(UserController.transformUser(user)));
+    })
+    .catch(error => res.status(400).send({
+      message: error.message
+    }));
   },
 
   /**
@@ -188,16 +199,26 @@ const UserController = {
   deleteUser(req, res) {
     User.findOne({
       where: {
-          id: req.params.id
-        }
+        id: req.params.id
+      }
     })
       .then((user) => {
+        if (!user) {
+          return res.status(404).send({
+            message: 'User not found'
+          });
+        }
+        if (user.id === req.decoded.UserId) {
+          return res.status(401).send({
+            message: 'You cannot delete yourself'
+          });
+        }
         user.destroy()
           .then(res.status(200).json({
             message: 'User is deleted'
           }));
       })
-      .catch(error => res.status(500).json({
+      .catch(error => res.status(400).json({
         message: error.message
       }));
   },
@@ -215,8 +236,8 @@ const UserController = {
     const order = '"createdAt" DESC';
     Document.findAndCountAll({
       where: {
-          id: req.params.id
-        },
+        id: req.params.id
+      },
       limit,
       offset,
       order
@@ -249,8 +270,8 @@ const UserController = {
   userLogout(req, res) {
     User.findOne({
       where: {
-          id: req.body.id
-        }
+        id: req.body.id
+      }
     })
       .then(() => {
         res.status(200).json({

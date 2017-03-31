@@ -20,18 +20,50 @@ module.exports = {
     lastname: 'Aromokeye',
     username: 'seyikeye',
     email: 'aromokeyes2@gmail.com',
-    password: faker.internet.password()
+    password: faker.internet.password(),
+    RoleId: 2
   },
 
+  adminUser: {
+    firstname: faker.name.firstName(),
+    lastname: faker.name.lastName(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    RoleId: 1
+  },
+  adminUser1: {
+    firstname: 'fatima',
+    lastname: 'fathia',
+    username: 'fati',
+    email: 'fatima@gmail.com',
+    password: 'fatima',
+    RoleId: 1
+  },
+
+  createdByAdmin: {
+    firstname: faker.name.firstName(),
+    lastname: faker.name.lastName(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+  },
+
+
   publicDocument: {
-    title: faker.company.catchPhrase(),
+    title: 'Its out there',
     content: faker.lorem.paragraph()
   },
+  privateDocument: {
+    title: 'My Secret',
+    content: faker.lorem.paragraph(),
+    access: 'private'
+  },
   userDetails: {
-    firstname: 'Beauty',
-    lastname: 'Lady',
-    username: 'bealad',
-    email: 'blad@gmail.com',
+    firstname: faker.name.firstName(),
+    lastname: faker.name.lastName(),
+    username: faker.internet.userName(),
+    email: faker.internet.email(),
     password: faker.internet.password()
   },
   documentAdmin: {

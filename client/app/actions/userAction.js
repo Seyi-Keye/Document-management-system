@@ -1,7 +1,5 @@
 import request from 'superagent';
-
-export const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
-export const SIGNUP_SUCCESSFUL = 'SIGNUP_SUCCESSFUL';
+import * as types from './actionTypes';
 
 const signUpAction = (user) => {
   return {type: 'SIGNUP_SUCCESSFUL', user};
