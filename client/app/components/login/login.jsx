@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { handleLogin } from '../../actions/userAction.js';
 import { Button, Col, Input, Row } from 'react-materialize';
+import authAction from '../../actions/authAction.js';
 
 class Login extends React.Component {
   constructor(props) {
@@ -20,7 +22,9 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.handleLogin(this.state.email, this.state.password);
+    this.props.handleLogin(this.state.email, this.state.password).then(() => {
+      browserHistory.push('/dashboard');
+    });
   }
 
   render() {

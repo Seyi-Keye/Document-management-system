@@ -70,7 +70,6 @@ const UserController = {
       }
     })
       .then((user) => {
-        console.log(user);
         if (user && bcrypt.compareSync(req.body.password, user.password)) {
           const token = authentication.generateToken(user);
           return res.status(200).json({

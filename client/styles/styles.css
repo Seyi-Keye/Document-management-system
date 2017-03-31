@@ -1,0 +1,18 @@
+textarea {
+  height: 200px;
+}
+.card-content{
+  background-color: #fff;
+}
+
+.card-action, button {
+  background-color: grey;
+}
+
+.card {
+  margin-top: 10%;
+}
+button {
+  background-color: #00b8d4;
+
+}

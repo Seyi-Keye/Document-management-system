@@ -4,6 +4,7 @@ import * as types from './actionTypes';
 const signUpAction = (user) => {
   return {type: 'SIGNUP_SUCCESSFUL', user};
 }
+
 const loginAction = (user) => {
   return {type: 'LOGIN_SUCCESSFUL', user};
 }
@@ -42,7 +43,7 @@ const handleLogin = (email, password) => {
         console.log(response.body);
         const data = response.body;
         localStorage.setItem('token', data.token);
-        window.location = '/dashboard';
+        // window.location = '/dashboard';
       } else {
         console.log(response);
       }
@@ -51,6 +52,7 @@ const handleLogin = (email, password) => {
     )
   };
 }
+
 
 
 export { handleSignUp };
