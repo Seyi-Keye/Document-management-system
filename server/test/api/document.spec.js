@@ -213,6 +213,7 @@ describe('Document API:', () => {
   //       .set({ 'x-access-token': adminToken })
   //       .send(newContent)
   //       .end((err, res) => {
+  //         console.log('====', res.body, ']]]]]]]]]]')
   //         expect(res.status).to.equal(200);
   //         expect(res.body.content).to.equal(newContent.content);
   //         done();
@@ -273,4 +274,3 @@ describe('Document API:', () => {
       });
   });
 });
-

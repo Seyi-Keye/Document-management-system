@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 // roles routes
 
 router.route('/roles')
-.post(RoleController.createRole)
+.post(authentication.verifyToken,authentication.validateAdmin, RoleController.createRole)
 .get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findAllRoles);
 
@@ -35,21 +35,22 @@ router.post('/users/login', UserController.userLogin);
 router.post('/users/logout', UserController.userLogout);
 
 router.route('/users/:id')
-.get(authentication.verifyToken, authentication.validateAdmin,
+.get(authentication.verifyToken,
 UserController.findUser)
-.put(authentication.verifyToken, authentication.validateAdmin,
+.put(authentication.verifyToken,
 UserController.updateUser)
-.delete(authentication.verifyToken, authentication.validateAdmin,
+.delete(authentication.verifyToken,
 UserController.deleteUser);
 
 router.route('/users/:id/documents')
-.get(authentication.verifyToken, authentication.validateAdmin,
+.get(authentication.verifyToken,
 UserController.findUserDocuments);
 
 // document routes
 router.route('/documents')
 .post(authentication.verifyToken, DocumentController.createDocument)
-.get(authentication.verifyToken, authentication.validateAdmin,
+.get(authentication.verifyToken,
+// authentication.validateAdmin,
 DocumentController.findAllDocuments);
 
 router.get('/documents/search', authentication.verifyToken,

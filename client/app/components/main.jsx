@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Route, Redirect } from 'react-router-dom'
 import { Navbar, NavItem, Icon } from 'react-materialize';
-import Home from './home/home';
+import Main from './main';
 import AddDocument from './document/document';
 import SignUpForm from './signUp/signUp';
 import Login from './login/login';
@@ -44,7 +44,7 @@ class App extends React.Component {
           return (
             <div>
               {this.renderNavBar()}
-              <Route exact path="/" component={Home}/>
+              <Route exact path="/" component={Main}/>
               <Route path="/document" component={AddDocument}/>
               <Route path="/signup" component={SignUpForm}/>
               <Route path="/login" component={Login}/>

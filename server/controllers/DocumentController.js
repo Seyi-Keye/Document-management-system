@@ -1,4 +1,4 @@
-import { Document } from '../models';
+import { Document, User } from '../models';
 import ControllerHelpers from '../helpers/ControllerHelpers';
 
 const DocumentController = {
@@ -66,12 +66,12 @@ const DocumentController = {
             .send(foundDocument);
         }
         if ((foundDocument.access === 'private') &&
-          (foundDocument.ownerId === req.decoded.UserId)) {
+          (foundDocument.OwnerId === req.decoded.UserId)) {
           return res.status(200)
             .send(foundDocument);
         }
         if (foundDocument.access === 'role') {
-          return model.User.findById(foundDocument.ownerId)
+          return User.findById(foundDocument.OwnerId)
             .then((documentOwner) => {
               if (documentOwner.RoleId === req.decoded.RoleId) {
                 return res.status(200)

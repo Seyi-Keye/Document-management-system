@@ -28,7 +28,11 @@ class SignUpForm extends React.Component {
     event.preventDefault();
     this.props.handleSignUp(this.state.firstname, this.state.lastname,
     this.state.username, this.state.password, this.state.passwordConfirmation,
-    this.state.email);
+    this.state.email)
+    .then(() => {
+      toastr.success('Sign Up Successful');
+    }
+    );
   }
 
    render() {

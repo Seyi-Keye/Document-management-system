@@ -1,4 +1,4 @@
 export default {
   user: {},
-  documents: []
+  documents: {documents:[], currentDoc:""}
 }

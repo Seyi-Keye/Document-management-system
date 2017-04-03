@@ -10,8 +10,7 @@ class AddDocument extends React.Component {
     this.state = {
       title: '',
       content:'',
-      access: 'public',
-      OwnerId: 20
+      access: 'public'
 
     }
     this.handleChange = this.handleChange.bind(this);
@@ -19,13 +18,17 @@ class AddDocument extends React.Component {
 
   };
 
+  componentDidMount () {
+    $(".dropdown-button").dropdown();
+  }
+
   handleChange(event) {
       this.setState({ [event.target.name]: event.target.value });
    }
 
    handleSubmit(event) {
     event.preventDefault();
-    this.props.handleNewDocument(this.state.title, this.state.content,
+     this.props.handleNewDocument(this.state.title, this.state.content,
     this.state.access);
   }
 
@@ -48,7 +51,16 @@ class AddDocument extends React.Component {
             </div>
             <div className="card-action">
               <button onClick={this.handleSubmit}><i className="material-icons">save</i>Save</button>
-              <button href="#"><i className="material-icons">delete</i>Delete</button>
+              <button href="#"><i className="material-icons">cancel</i>Cancel</button>
+
+              <button className='dropdown-button btn' href='#' data-activates='dropdown1'>Visible to </button>
+
+                <ul id='dropdown1' className='dropdown-content'>
+                  <li><a href="#!">Public</a></li>
+                  <li><a href="#!">Private</a></li>
+                  <li><a href="#!">Access</a></li>
+                </ul>
+
             </div>
           </div>
         </div>
