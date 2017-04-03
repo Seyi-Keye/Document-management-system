@@ -1,59 +1,89 @@
 import request from 'superagent';
-import * as types from './actionTypes';
+import * as ActionTypes from './actionTypes'
 import jwt from 'jwt-decode';
+import { errorMessage } from '../utils/utils';
+import toastr from 'toastr';
 
-const newDocumentAction = (documents) => {
-  return {type: 'NEWDOCUMENT_SUCCESSFUL', documents};
+export const documentRequest = () => {
+  return {type: ActionTypes.CREATE_DOCUMENT_REQUEST};
+}
+export const documentCreateSuccessful = (documents) => {
+  return {type: ActionTypes.CREATE_DOCUMENT_SUCCESSFUL, response: documents};
+}
+export const documentCreateError = (error) => {
+  return {type: ActionTypes.CREATE_DOCUMENT_SUCCESSFUL, error: error};
 }
 
-const documentsAction = (documents) => {
-  return {type: 'DOCUMENTS_SUCCESSFUL', documents};
+export const fetchDocumentRequest = () => {
+  return {type: ActionTypes.FETCH_DOCUMENT_REQUEST};
+}
+export const fetchDocumentSuccessful = (documents) => {
+  return {type: ActionTypes.FETCH_DOCUMENT_REQUEST, response: documents};
+}
+export const fetchDocumentError = (error) => {
+  return {type: ActionTypes.FETCH_DOCUMENT_REQUEST, error: error};
+}
+
+export const deleteDocumentRequest = () => {
+  return {type: ActionTypes.DELETE_DOCUMENT_REQUEST};
+}
+export const deleteDocumentSuccessful = (documents) => {
+  return {type: ActionTypes.DELETE_DOCUMENT_SUCCESSFUL, response: documents};
+}
+export const deleteDocumentError = (error) => {
+  return {type: ActionTypes.DELETE_DOCUMENT_FAIL, error: error};
 }
 
 
-const handleNewDocument = (title, content, access) => {
+export const handleCreateDocument = (title, content, access) => {
   return (dispatch) => {
-    dispatch(newDocumentAction());
+    dispatch(documentRequest());
       const token = localStorage.getItem('token');
       const decoded = jwt(token);
       const OwnerId = decoded.UserId;
-      console.log(decoded);
-    return request.post('/documents')
+      return request.post('/documents')
       .set({ 'x-access-token': token })
       .send({title, content, access, OwnerId})
       .end((error, response) => {
-        console.log(response);
-        if (response.status === 201) {
-          dispatch(newDocumentAction(response.body));
-          console.log(response.body);
-        } else {
-          console.log(response);
+        if(error) {
+          const errorMsg = errorMessage(error);
+          toastr.error(errorMsg);
+          return dispatch(documentCreateError(errorMsg))
         }
+        toastr.success('Document Created');
+        return dispatch(documentCreateSuccessful(response.body));
       });
   };
 }
 
-const handleDocuments = () => {
+export const handleFetchDocuments = () => {
   return (dispatch) => {
-    // dispatch(documentsAction());
+    dispatch(fetchDocumentRequest());
       const token = localStorage.getItem('token');
     return request.get('/documents')
       .set({ 'x-access-token': token })
       .end((error, response) => {
-        console.log(response);
-        if (response.status === 200) {
-          dispatch(documentsAction(response.body));
-          console.log(response.body);
-        } else {
-          console.log(response);
+         if(error) {
+          return dispatch(fetchDocumentError(error))
         }
+
+       return dispatch(fetchDocumentSuccessful(response.body.documents));
       });
   };
 }
 
+export const handleDeleteDocument = () => {
+  return (dispatch) => {
+    dispatch(deleteDocumentRequest());
+      const token = localStorage.getItem('token');
+    return request.delete('/documents/:id')
+      .set({ 'x-access-token': token })
+      .end((error, response) => {
+         if(error) {
+          return dispatch(deleteDocumentError(error))
+        }
+       return dispatch(deleteDocumentSuccessful(response.body));
+      });
+  };
+}
 
-export { handleNewDocument };
-
-export { handleDocuments };
-
-export default newDocumentAction;

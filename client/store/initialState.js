@@ -1,4 +1,3 @@
-export default {
-  user: {},
-  documents: {documents:[], currentDoc:""}
-}
+// export default {
+//   document: {}
+// }

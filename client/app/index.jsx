@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-// import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-import { Router, Route, indexRoute, browserHistory } from 'react-router';
+import { connect, Provider } from 'react-redux';
+import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
 import App from './components/main';
 import initialState from '../store/initialState.js';
 import '../styles/styles.css';
@@ -9,25 +9,33 @@ import '../../node_modules/materialize-css/dist/js/materialize.min.js';
 import '../../node_modules/material-icons/css/material-icons.css';
 import '../../node_modules/toastr/build/toastr.min.css';
 import Document from './components/document/document';
-import { Provider } from 'react-redux';
 import configureStore from '../store/configureStore.js';
 import Main from './components/main';
-// import About from './components/';
-// import Contact from './components/contact/contact';
 import SignUpForm from './components/signUp/signUp';
 import Login from './components/login/login';
 import Dashboard from './components/dashboard/dashboard';
 
-let store = configureStore(initialState);
-
+const store = configureStore;
+const onEnter = (next, replace, cb) => {
+   const token = localStorage.getItem('token');
+  if(!token && next.location.pathname.indexOf('dashboard') > -1) {
+    replace('/login');
+  }
+  if(token && (next.location.pathname.indexOf('login') > -1 || next.location.pathname.indexOf('signup') > -1)) {
+    replace('/dashboard');
+  }
+  cb();
+}
 render(
-  <Provider store={store}>
-    <Router history={browserHistory}>
-          <Route path="/" component={Main}/>
-          {/*<Route path="/signup" component={SignUpForm}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/dashboard" component={Dashboard}/>*/}
-    </Router>
-  </Provider>
-,
+<Provider store={store}>
+<Router history={browserHistory}>
+  <Route path="/" component={Main}>
+    <IndexRedirect to="/login" />
+    <Route path="dashboard/document" component={Document} onEnter={onEnter}/>
+    <Route path="signup" component={SignUpForm} onEnter={onEnter} />
+    <Route path="login" component={Login} onEnter={onEnter} />
+    <Route path="dashboard" component={Dashboard} onEnter={onEnter}/>
+  </Route>
+</Router>
+</Provider>,
  document.getElementById('app'));

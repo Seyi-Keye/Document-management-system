@@ -1,14 +1,10 @@
 import { combineReducers } from 'redux';
-import login from './loginReducer';
-import newDocument from './newDocumentReducer';
-import signUp from './signUpReducer';
-import documents from './documentReducer';
+import user from './user';
+import document from './document';
 
 const rootReducer = combineReducers({
-  documents,
-  login,
-  newDocument,
-  signUp
+  user,
+  document
 });
 
 export default rootReducer;

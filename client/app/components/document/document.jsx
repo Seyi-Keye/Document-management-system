@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
-import { handleNewDocument } from '../../actions/documentAction.js';
+import { browserHistory, Link } from 'react-router';
+import * as documentAction from '../../actions/documentAction.js';
 import { Input} from 'react-materialize';
 
 class AddDocument extends React.Component {
@@ -11,7 +12,6 @@ class AddDocument extends React.Component {
       title: '',
       content:'',
       access: 'public'
-
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,7 +19,9 @@ class AddDocument extends React.Component {
   };
 
   componentDidMount () {
-    $(".dropdown-button").dropdown();
+    $(document).ready(function() {
+    $('select').material_select();
+  });
   }
 
   handleChange(event) {
@@ -28,12 +30,13 @@ class AddDocument extends React.Component {
 
    handleSubmit(event) {
     event.preventDefault();
-     this.props.handleNewDocument(this.state.title, this.state.content,
-    this.state.access);
+     this.props.handleCreateDocument(this.state.title,                this.state.content,
+      this.state.access);
+    browserHistory.push('/dashboard');
   }
 
    render() {
-      return (
+    return (
       <div className="container">
         <div className="row">
         <div className="col s12">
@@ -41,31 +44,34 @@ class AddDocument extends React.Component {
             <div className="card-action grey">
             </div>
             <div className="card-content black-text">
-              <div className="card-title">
-                <input name="title" className="docTitle s7"
+              <div className="card-title s7">
+                <input name="title" className="docTitle"
                 placeholder="Title Goes here" value={this.state.title}
-              onChange={this.handleChange}/></div>
+              onChange={this.handleChange}/>
+
+              <label>Control your access</label>
+              <div className="input-field col s12">
+                <select value={this.state.select} className="browser-default" onChange={this.handleChange} name="access" id="mySelectBox">
+                  <option value="" disabled>Select an access level</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                  <option value="role">Role</option>
+                </select>
+              </div>
+
+              </div>
               <div className="docContent">
                 <textarea  name="content" placeholder="Write Something" onChange={this.handleChange}></textarea>
               </div>
             </div>
             <div className="card-action">
               <button onClick={this.handleSubmit}><i className="material-icons">save</i>Save</button>
-              <button href="#"><i className="material-icons">cancel</i>Cancel</button>
-
-              <button className='dropdown-button btn' href='#' data-activates='dropdown1'>Visible to </button>
-
-                <ul id='dropdown1' className='dropdown-content'>
-                  <li><a href="#!">Public</a></li>
-                  <li><a href="#!">Private</a></li>
-                  <li><a href="#!">Access</a></li>
-                </ul>
+              <button href="#"><i className="material-icons"   >cancel</i><Link to="/dashboard"> Cancel</Link></button>
 
             </div>
           </div>
         </div>
       </div>
-        <a href="#!" className="waves-effect waves-circle waves-lightbtn-floating secondary-content"><i className="material-icons">note_add</i></a>
       </div>
       )
    }
@@ -73,13 +79,13 @@ class AddDocument extends React.Component {
 
 const stateToProps = (state) => {
   return {
-    documents: state.documents,
+    documents: state.document,
   }
 };
 
 const dispatchToProps = (dispatch) => {
   return {
-    handleNewDocument: (title, content, access) => dispatch(handleNewDocument(title, content, access))
+    handleCreateDocument: (title, content, access) => dispatch(documentAction.handleCreateDocument(title, content, access))
   };
 }
 

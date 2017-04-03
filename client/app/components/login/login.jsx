@@ -1,13 +1,10 @@
 import React from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
 import { browserHistory,  Route, Redirect  } from 'react-router';
-import { handleLogin } from '../../actions/userAction.js';
+import * as userAction from '../../actions/userAction.js';
 import { Button, Col, Input, Row } from 'react-materialize';
-import createHistory from 'history/createBrowserHistory'
-
-const history = createHistory()
 
 class Login extends React.Component {
   constructor(props) {
@@ -24,22 +21,12 @@ class Login extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  // redirect() {
-  //   const context = () => [];
-  //   toastr.success('Login Successful');
-  //   this.context.push('/dashboard');
-  // }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.handleLogin(this.state.email, this.state.password)
-    .then(() => {
-      history.push('/dashboard');
-      // toastr.success('Login Successful');
-     // <Redirect to='/dashboard'/>
-      // window.location = '/dashboard';
-    }
-    );
+    this.props.handleLogin(this.state.email, this.state.password);
+    browserHistory.push('/dashboard');
+
   }
 
   render() {
@@ -69,7 +56,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
   return {
-    handleLogin: (email, password) => dispatch(handleLogin(email, password))
+    handleLogin: (email, password) => dispatch(userAction.handleLogin(email, password))
   };
 }
 

@@ -20,3 +20,6 @@ button {
 .material-icons{
   color: #fff;
 }
+select {
+  margin-bottom: 25px;
+}

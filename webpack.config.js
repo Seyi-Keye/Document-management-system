@@ -6,6 +6,7 @@ const APP_DIR = path.resolve(__dirname, 'client/app');
 
 const config = {
   watch: true,
+  devtool: 'eval',
   entry: `${APP_DIR}/index.jsx`,
   output: {
     path: BUILD_DIR,

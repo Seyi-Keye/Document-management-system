@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { handleSignUp } from '../../actions/userAction.js';
+import { browserHistory } from 'react-router';
+import * as userAction from '../../actions/userAction.js';
+import toastr from 'toastr';
 import { Input, Button, Row, Col, Icon } from 'react-materialize';
 
 class SignUpForm extends React.Component {
 
   constructor(props) {
-      super(props);
+    super(props);
       this.state = {
         firstname: '',
         lastname: '',
@@ -28,16 +30,15 @@ class SignUpForm extends React.Component {
     event.preventDefault();
     this.props.handleSignUp(this.state.firstname, this.state.lastname,
     this.state.username, this.state.password, this.state.passwordConfirmation,
-    this.state.email)
-    .then(() => {
-      toastr.success('Sign Up Successful');
-    }
-    );
-  }
+    this.state.email);
+    // browserHistory.push('/dashboard');
+   }
 
    render() {
       return (
          <form onSubmit={this.handleSubmit}>
+          {this.props.hasError && toastr.error(this.props.error)}
+
             <Row>
               <h4>SIGNUP FORM:</h4>
               <Input className="formControl" name="firstname" s={6}
@@ -50,11 +51,11 @@ class SignUpForm extends React.Component {
               label="Username"
               value={this.state.username} onChange={this.handleChange}/>
               <Input name="password" className="formControl" type="password"
-              label="password"
+              label="Password"
               value={this.state.password} onChange={this.handleChange}  s={6}/>
               <Input name="passwordConfirmation" className="formControl" s={6}
               type="password"
-              label="password confirmation"
+              label="Password confirmation"
               value={this.state.passwordConfirmation}
               onChange={this.handleChange}/>
               <Input name="email" className="formControl" type="email"
@@ -71,17 +72,18 @@ class SignUpForm extends React.Component {
 
 const stateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user.currentUser,
+    error: state.user.error,
+    hasError: state.user.hasError
   }
 };
 
 const dispatchToProps = (dispatch) => {
   return {
     handleSignUp: (firstname, lastname, username, password,
-    passwordConfirmation ,email) => dispatch(handleSignUp(firstname, lastname,
+    passwordConfirmation ,email) => dispatch(userAction.handleSignUp(firstname, lastname,
     username, password, passwordConfirmation ,email))
   };
 }
 
 export default connect(stateToProps, dispatchToProps) (SignUpForm);
-
