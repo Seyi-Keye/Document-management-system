@@ -50,7 +50,6 @@ UserController.findUserDocuments);
 router.route('/documents')
 .post(authentication.verifyToken, DocumentController.createDocument)
 .get(authentication.verifyToken,
-// authentication.validateAdmin,
 DocumentController.findAllDocuments);
 
 router.get('/documents/search', authentication.verifyToken,

@@ -24,6 +24,16 @@ export const fetchDocumentError = (error) => {
   return {type: ActionTypes.FETCH_DOCUMENT_REQUEST, error: error};
 }
 
+export const updateDocumentRequest = () => {
+  return {type: ActionTypes.UPDATE_DOCUMENT_REQUEST};
+}
+export const updateDocumentSuccessful = (documents) => {
+  return {type: ActionTypes.UPDATE_DOCUMENT_SUCCESSFUL, response: documents};
+}
+export const updateDocumentError = (error) => {
+  return {type: ActionTypes.UPDATE_DOCUMENT_FAIL, error: error};
+}
+
 export const deleteDocumentRequest = () => {
   return {type: ActionTypes.DELETE_DOCUMENT_REQUEST};
 }
@@ -72,12 +82,29 @@ export const handleFetchDocuments = () => {
   };
 }
 
-export const handleDeleteDocument = () => {
+export const handleUpdateDocument = ({id, title, content, access}) => {
   return (dispatch) => {
-    dispatch(deleteDocumentRequest());
-      const token = localStorage.getItem('token');
-    return request.delete('/documents/:id')
+    dispatch(updateDocumentRequest());
+    const token = localStorage.getItem('token');
+    return request.put(`/documents/${id}`)
       .set({ 'x-access-token': token })
+      .send({title, content, access})
+      .end((error, response) => {
+         if(error) {
+          return dispatch(updateDocumentError(error))
+        }
+       return dispatch(updateDocumentSuccessful(response.body.documents));
+      });
+  };
+}
+
+export const handleDeleteDocument = ({id, title, content, access}) => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    dispatch(deleteDocumentRequest());
+    return request.delete(`/documents/${id}`)
+      .set({ 'x-access-token': token })
+      .send({id, title, content, access})
       .end((error, response) => {
          if(error) {
           return dispatch(deleteDocumentError(error))

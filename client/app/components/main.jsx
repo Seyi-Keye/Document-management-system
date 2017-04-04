@@ -14,6 +14,7 @@ class App extends React.Component {
               { !token &&  <li> <Link to="/signup"> Sign Up </Link></li> }
               { !token &&   <li> <Link to="/login"> Login </Link></li> }
               { token &&  <li> <Link to="/dashboard"> Dashboard</Link></li>}
+              {/*{ token &&  <li> <Link to="/updateDoc"> Edit Document</Link></li>}              */}
               </ul>
           </div>
         </nav>

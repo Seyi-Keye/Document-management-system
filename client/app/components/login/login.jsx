@@ -1,7 +1,6 @@
 import React from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-// import { NavLink } from 'react-router-dom'
 import { browserHistory,  Route, Redirect  } from 'react-router';
 import * as userAction from '../../actions/userAction.js';
 import { Button, Col, Input, Row } from 'react-materialize';

@@ -169,14 +169,14 @@ const DocumentController = {
    */
   updateDocument(req, res) {
     return Document
-    .findById(req.params.id, {})
+    .findById(req.params.id)
     .then((document) => {
       if (!document) {
         return res.status(404).send({
           message: 'Document Not Found',
         });
       }
-      if (document.ownerId !== req.decoded.UserId) {
+      if (document.OwnerId !== req.decoded.UserId) {
         return res.status(401).send({
           message: 'You cannot update this document'
         });
