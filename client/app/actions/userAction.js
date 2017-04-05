@@ -60,7 +60,6 @@ export const handleLogin = (email, password) => {
         toastr.error(errorMsg);
         return dispatch(loginError(error))
       }).catch(error => {
-        console.log('login catch error', Object.keys(error))
         const errorMsg = errorMessage(error);
         toastr.error(errorMsg);
         return dispatch(loginError(error))

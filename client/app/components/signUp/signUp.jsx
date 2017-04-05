@@ -31,7 +31,7 @@ class SignUpForm extends React.Component {
     this.props.handleSignUp(this.state.firstname, this.state.lastname,
     this.state.username, this.state.password, this.state.passwordConfirmation,
     this.state.email);
-    // browserHistory.push('/dashboard');
+    browserHistory.push('/dashboard');
    }
 
    render() {

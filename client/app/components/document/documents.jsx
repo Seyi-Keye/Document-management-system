@@ -39,7 +39,6 @@ class Documents extends React.Component {
             <button><Link to={`updateDoc/${document.id}`}>
               <i className="material-icons">edit</i></Link>
             </button>
-
             <button id={document.id} onClick={this.handleDelete}><i id={document.id} className="material-icons">delete</i>
             </button>
           </div>
