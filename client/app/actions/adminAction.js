@@ -43,6 +43,16 @@ export const createRoleError = (error) => {
   return {type: ActionTypes.CREATE_ROLE_FAIL, error: error};
 }
 
+export const fetchRoleRequest = () => {
+  return {type: ActionTypes.FETCH_ROLE_REQUEST};
+}
+export const fetchRoleSuccessful = () => {
+  return {type: ActionTypes.FETCH_ROLE_SUCCESSFUL, response: role};
+}
+export const fetchRoleError = (error) => {
+  return {type: ActionTypes.FETCH_ROLE_FAIL, error: error};
+}
+
 export const handleUpdateUser = ({id, firstname, lastname}) => {
   return (dispatch) => {
       dispatch(UpdateUserRequest());
@@ -111,6 +121,23 @@ export const handleCreateRole = (title) => {
         }
        toastr.success('Role created');
        return dispatch(createRoleSuccessful(title));
+      });
+  };
+};
+
+export const handleFetchRoles = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    dispatch(fetchRoleRequest());
+    return request.get('/roles')
+      .set({ 'x-access-token': token })
+      .end((error, response) => {
+        console.log('req body', request.body)
+        console.log('response.body', response)
+         if(error) {
+          return dispatch(fetchRoleError(error))
+        }
+       return dispatch(fetchRoleSuccessful(title));
       });
   };
   };
