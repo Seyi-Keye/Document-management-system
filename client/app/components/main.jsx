@@ -10,7 +10,7 @@ class App extends React.Component {
         <nav>
           <div className="nav-wrapper cyan accent-4 z-depth-3">
              <ul>
-              { token &&  <li> <Link to="/dashboard/document">Document </Link> </li> }
+              { token &&  <li> <Link to="/dashboard/document">Create Document </Link> </li> }
               { !token &&  <li> <Link to="/signup"> Sign Up </Link></li> }
               { !token &&   <li> <Link to="/login"> Login </Link></li> }
               { token &&  <li> <Link to="/dashboard"> Dashboard</Link></li>}

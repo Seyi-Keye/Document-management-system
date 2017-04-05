@@ -18,10 +18,10 @@ export const fetchDocumentRequest = () => {
   return {type: ActionTypes.FETCH_DOCUMENT_REQUEST};
 }
 export const fetchDocumentSuccessful = (documents) => {
-  return {type: ActionTypes.FETCH_DOCUMENT_REQUEST, response: documents};
+  return {type: ActionTypes.FETCH_DOCUMENT_SUCCESSFUL, response: documents};
 }
 export const fetchDocumentError = (error) => {
-  return {type: ActionTypes.FETCH_DOCUMENT_REQUEST, error: error};
+  return {type: ActionTypes.FETCH_DOCUMENT_FAIL, error: error};
 }
 
 export const updateDocumentRequest = () => {
@@ -37,8 +37,8 @@ export const updateDocumentError = (error) => {
 export const deleteDocumentRequest = () => {
   return {type: ActionTypes.DELETE_DOCUMENT_REQUEST};
 }
-export const deleteDocumentSuccessful = (documents) => {
-  return {type: ActionTypes.DELETE_DOCUMENT_SUCCESSFUL, response: documents};
+export const deleteDocumentSuccessful = (id) => {
+  return {type: ActionTypes.DELETE_DOCUMENT_SUCCESSFUL, response: id};
 }
 export const deleteDocumentError = (error) => {
   return {type: ActionTypes.DELETE_DOCUMENT_FAIL, error: error};
@@ -74,7 +74,7 @@ export const handleFetchDocuments = () => {
       .set({ 'x-access-token': token })
       .end((error, response) => {
          if(error) {
-          return dispatch(fetchDocumentError(error))
+          return dispatch(fetchDocumentError(error));
         }
 
        return dispatch(fetchDocumentSuccessful(response.body.documents));
@@ -93,23 +93,24 @@ export const handleUpdateDocument = ({id, title, content, access}) => {
          if(error) {
           return dispatch(updateDocumentError(error))
         }
+       toastr.success('Update on document was successful');
        return dispatch(updateDocumentSuccessful(response.body.documents));
       });
   };
 }
 
-export const handleDeleteDocument = ({id, title, content, access}) => {
+export const handleDeleteDocument = (id) => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(deleteDocumentRequest());
     return request.delete(`/documents/${id}`)
       .set({ 'x-access-token': token })
-      .send({id, title, content, access})
       .end((error, response) => {
          if(error) {
           return dispatch(deleteDocumentError(error))
         }
-       return dispatch(deleteDocumentSuccessful(response.body));
+       toastr.success('Document was deleted');
+       return dispatch(deleteDocumentSuccessful(id));
       });
   };
 }

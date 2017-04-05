@@ -205,7 +205,7 @@ const DocumentController = {
             message: 'Document Not Found',
           });
         }
-        if (document.ownerId !== req.decoded.UserId) {
+        if (document.OwnerId !== req.decoded.UserId) {
           return res.status(401).send({
             message: 'You cannot delete this document'
           });

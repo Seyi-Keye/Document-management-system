@@ -21,17 +21,11 @@ export default function document(state = documentsIntialState, action) {
 
   case ActionTypes.FETCH_DOCUMENT_REQUEST:
     const array = action.response ;
-    return [
-      ...state.documents || [],
-      action.response
-    ];
-  case ActionTypes.FETCH_DOCUMENT_SUCCESSFUL: {
-    const documents = state.documents.slice();
-    const newDocuments = [...documents, action.response];
-    return {...state, documents: newDocuments, isLoading: false, hasError: false}
-  }
+    return Object.assign({}, state, {isLoading: true});
+  case ActionTypes.FETCH_DOCUMENT_SUCCESSFUL:
+    return Object.assign({}, state, {documents: action.response, isLoading: false});
   case ActionTypes.FETCH_DOCUMENT_FAIL:
-     return {...state, isLoading: true, hasError: true }
+     return {...state, isLoading: false, hasError: true }
 
   case ActionTypes.UPDATE_DOCUMENT_REQUEST:
     return {...state, isLoading: true, hasError: false }
@@ -43,10 +37,12 @@ export default function document(state = documentsIntialState, action) {
      return {...state, isLoading: true, hasError: true }
 
   case ActionTypes.DELETE_DOCUMENT_REQUEST:
-    return {...state, isLoading: true, hasError: false }
+    return Object.assign({}, state, {isLoading: true});
   case ActionTypes.DELETE_DOCUMENT_SUCCESSFUL: {
-    const newDocuments = state.documents.filter((document) => document.id !== action.response.id );
-    return {...state, documents: newDocuments, isLoading: false, hasError: false}
+    const newDocuments = state.documents.filter(document => {
+      return document.id !== parseInt(action.response, 10);
+    });
+    return Object.assign({}, state, {documents: newDocuments});
   }
   case ActionTypes.DELETE_DOCUMENT_FAIL:
      return {...state, isLoading: true, hasError: true }

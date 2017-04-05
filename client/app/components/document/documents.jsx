@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { Link } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 import ReactDOM from 'react-dom';
 import jwt from 'jwt-decode';
 import * as documentAction from '../../actions/documentAction.js';
@@ -12,15 +12,20 @@ class Documents extends React.Component {
       documents: []
     };
     this.documentView = this.documentView.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   };
 
   componentWillMount() {
     this.props.handleFetchDocuments();
-    this.props.handleDeleteDocument();
   }
 
-  componentDidUpdate() {
-    $('.collapsible').collapsible();
+  componentDidMount() {
+    // $('.collapsible').collapsible();
+  }
+
+  handleDelete(e) {
+    const id = e.target.id;
+    this.props.handleDeleteDocument(id);
   }
 
   documentView(document) {
@@ -29,13 +34,13 @@ class Documents extends React.Component {
         <div className="collapsible-header">
           <i className="material-icons">filter_drama</i>
           <h5>{document.title}</h5>
-          {console.log("doc ", document.OwnerId, "user ", this.props.user.UserId, 'decoded', this.state.decoded)}
           { document.OwnerId === this.props.user.UserId ?
           <div>
             <button><Link to={`updateDoc/${document.id}`}>
               <i className="material-icons">edit</i></Link>
             </button>
-            <button onClick={handleDeleteDocument}><i className="material-icons">delete</i>
+
+            <button id={document.id} onClick={this.handleDelete}><i id={document.id} className="material-icons">delete</i>
             </button>
           </div>
             : ''
@@ -46,9 +51,7 @@ class Documents extends React.Component {
     )
   }
   render() {
-    let  {documents} = this.props;
-    if (documents) {
-      documents = documents[0];
+    let  {documents} = this.props.documents;
        if (documents) {
           return (
           <ul className="collapsible popout" data-collapsible="accordion">
@@ -56,7 +59,6 @@ class Documents extends React.Component {
           </ul>
         )
        }
-    }
     return (
       <div>
         No Document Found
@@ -65,17 +67,16 @@ class Documents extends React.Component {
   }
 }
 
-const stateToProps = (state) => {
+const stateToProps = (state, ownProps) => {
   const token = localStorage.getItem('token');
   const decoded = jwt(token);
-  console.log('decoded', decoded);
   return { user: decoded, documents: state.document }
 };
 
 const dispatchToProps = (dispatch) => {
   return {
     handleFetchDocuments: () => dispatch(documentAction.handleFetchDocuments()),
-    handleDeleteDocument: () => dispatch(documentAction.handleDeleteDocument({id: document.id}))
+    handleDeleteDocument: id => dispatch(documentAction.handleDeleteDocument(id))
   };
 }
 

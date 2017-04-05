@@ -15,6 +15,9 @@ textarea {
 button {
   background-color: #00b8d4 !important;
   color: white;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 10px;
 }
 
 .material-icons{

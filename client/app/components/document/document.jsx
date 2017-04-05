@@ -31,7 +31,7 @@ class AddDocument extends React.Component {
    handleSubmit(event) {
     event.preventDefault();
      this.props.handleCreateDocument(this.state.title, this.state.content,
-      this.state.access);
+     this.state.access);
     browserHistory.push('/dashboard');
   }
 
