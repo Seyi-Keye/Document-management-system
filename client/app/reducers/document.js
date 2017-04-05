@@ -45,7 +45,7 @@ export default function document(state = documentsIntialState, action) {
     return Object.assign({}, state, {documents: newDocuments});
   }
   case ActionTypes.DELETE_DOCUMENT_FAIL:
-     return {...state, isLoading: true, hasError: true }
+     return {...state, error: action.error, hasError: true }
 
   default:
     return state;

@@ -41,6 +41,7 @@ UserController.findUser)
 authentication.validateAdmin,
 UserController.updateUser)
 .delete(authentication.verifyToken,
+authentication.validateAdmin,
 UserController.deleteUser);
 
 router.route('/users/:id/documents')

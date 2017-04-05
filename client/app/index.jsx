@@ -15,6 +15,7 @@ import Dashboard from './components/dashboard/dashboard';
 import UpdateDocument from './components/document/updateDocument';
 import UpdateUser from './components/user/updateUser';
 import Users from './components/user/users';
+import Roles from './components/role/role';
 
 
 const store = configureStore;
@@ -38,8 +39,9 @@ render(
     <Route path="login" component={Login} onEnter={onEnter} />
     <Route path="dashboard" component={Dashboard} onEnter={onEnter}/>
     <Route path="updateDoc" component={UpdateDocument} onEnter={onEnter}/>
-    <Route path="updateUser" component={UpdateUser} onEnter={onEnter}/>
+    <Route path="updateUser/:id" component={UpdateUser} onEnter={onEnter}/>
     <Route path="users" component={Users} onEnter={onEnter}/>
+    <Route path="roles" component={Roles} onEnter={onEnter}/>
   </Route>
 </Router>
 </Provider>,

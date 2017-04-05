@@ -44,7 +44,6 @@ export const deleteDocumentError = (error) => {
   return {type: ActionTypes.DELETE_DOCUMENT_FAIL, error: error};
 }
 
-
 export const handleCreateDocument = (title, content, access) => {
   return (dispatch) => {
     dispatch(documentRequest());

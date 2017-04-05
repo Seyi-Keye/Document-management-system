@@ -1,7 +1,7 @@
 import * as ActionTypes from '../actions/actionTypes'
 
 const adminIntialState = {
-  currentUser: {},
+  role: [],
   isLoading: false,
   error: '',
   hasError: false,
@@ -14,17 +14,38 @@ export default function user(state = adminIntialState, action) {
   case ActionTypes.FETCH_USERS_REQUEST:
     return { ...state, isLoading: true}
   case ActionTypes.FETCH_USERS_SUCCESSFUL:
-    console.log({...state, users: action.response.users }, " reducer");
     return {...state, users: action.response.users }
   case ActionTypes.FETCH_USERS_FAIL:
     return {...state, error: action.error, hasError: true}
 
   case ActionTypes.UPDATE_USER_REQUEST:
-    return { ...state, isLoading: true}
+    return { ...state, isLoading: true};
   case ActionTypes.UPDATE_USER_SUCCESSFUL:
-    return {...state, currentUser: action.response.user}
+    const oldUsers = [...state.users];
+    const updatedUsers = oldUsers.map(user => (
+      user.id === action.response.id ? Object.assign({}, user,
+      action.response ) : user)
+      );
+    return {...state, users: updatedUsers}
   case ActionTypes.UPDATE_USER_FAIL:
     return {...state, error: action.error, hasError: true}
+
+  case ActionTypes.DELETE_USER_REQUEST:
+    return { ...state, isLoading: true};
+  case ActionTypes.DELETE_USER_SUCCESSFUL:
+    const newUsers = state.users.filter(user => {
+      return user.id !== parseInt(action.response, 10);
+    });
+    return Object.assign({}, state, {documents: newUsers});
+  case ActionTypes.DELETE_USER_FAIL:
+     return {...state, error: action.error, hasError: true }
+
+  case ActionTypes.CREATE_ROLE_REQUEST:
+    return { ...state, isLoading: true};
+  case ActionTypes.CREATE_ROLE_SUCCESSFUL:
+    return {...state, role: action.response.title}
+  case ActionTypes.CREATE_ROLE_FAIL:
+     return {...state, error: action.error, hasError: true }
 
   default:
   return state;

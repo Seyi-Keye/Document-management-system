@@ -33,7 +33,7 @@ class Users extends React.Component {
       <li key={user.id}>
         <div className="collapsible-header">
           <i className="material-icons">filter_drama</i>
-          <h5>{user.username}</h5>
+          <h5>{user.firstname} {user.lastname}</h5>
           <div>
             <button><Link to={`updateUser/${user.id}`}>
               <i className="material-icons">edit</i></Link>

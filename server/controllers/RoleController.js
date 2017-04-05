@@ -20,7 +20,7 @@ const RoleController = {
          })
          )
          .catch(error => res.status(400).send({
-           error: ControllerHelpers.errorHandler(error.errors),
+           error: error,
          }));
   },
 

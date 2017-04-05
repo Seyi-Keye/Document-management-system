@@ -161,31 +161,21 @@ const UserController = {
    * @return {undefined} returns undefined
    * **/
   updateUser(req, res) {
-    if ((req.body.RoleId) && (req.decoded.RoleId !== 1)) {
-      return res.status(401).send({
-        message: 'You are not permitted to assign this user to a role',
+  User
+  .findById(req.params.id, {})
+  .then((user) => {
+    if (!user) {
+      return res.status(404).send({
+        message: 'User not found',
       });
     }
-    return User
-    .findById(req.params.id, {})
-    .then((user) => {
-      if (!user) {
-        return res.status(404).send({
-          message: 'User not found',
-        });
-      }
-      if (user.id !== req.decoded.UserId) {
-        return res.status(401).send({
-          message: 'You cannot update this user',
-        });
-      }
-      return user
-        .update(req.body)
-        .then(() => res.status(200).send(UserController.transformUser(user)));
-    })
-    .catch(error => res.status(400).send({
-      message: error.message
-    }));
+    return user
+      .update(req.body)
+      .then(() => res.status(200).send(UserController.transformUser(user)));
+  })
+  .catch(error => res.status(400).send({
+    message: error.message
+  }));
   },
 
   /**
@@ -205,11 +195,6 @@ const UserController = {
         if (!user) {
           return res.status(404).send({
             message: 'User not found'
-          });
-        }
-        if (user.id === req.decoded.UserId) {
-          return res.status(401).send({
-            message: 'You cannot delete yourself'
           });
         }
         user.destroy()

@@ -22,11 +22,13 @@ class UpdateUser extends React.Component {
   };
 
   componentDidMount () {
+    console.log('this.props', this.props);
     this.setState({
-      id: this.props.user.UserId,
+      id: this.props.params.id,
       firstname: this.props.user.firstname,
       lastname: this.props.user.lastname,
     });
+    console.log('this.setState.firstname', this.setState.firstname);
   }
 
    handleChange(event) {
@@ -37,7 +39,7 @@ class UpdateUser extends React.Component {
     event.preventDefault();
     console.log(this.props.user);
     this.props.handleUpdateUser({...this.state});
-    browserHistory.push('/dashboard');
+    browserHistory.push('/users');
    }
 
    render() {
@@ -61,18 +63,22 @@ class UpdateUser extends React.Component {
 }
 
 const stateToProps = (state, ownProps) => {
-  const token = localStorage.getItem('token');
-  const decoded = jwt(token);
-  console.log('decoded', decoded);
-  const RoleId = decoded.RoleId;
-  const id = parseInt(decoded.UserId, 10);
-  console.log('id', id);
-  // console.log('store', store);
+  // const token = localStorage.getItem('token');
+  // const decoded = jwt(token);
+  // const RoleId = decoded.RoleId;
+  // const id = parseInt(decoded.UserId, 10);
   console.log('state', state);
+  // const foundUser = _.findWhere(state.admin.users[0], {id: parseInt(documentId, 10)});
+  // console.log('foundUser', foundUser);
+  console.log('ownProps', ownProps);
+  const UserId = ownProps.params.id;
+  const foundUser = _.findWhere(state.admin.users, {id: parseInt(UserId, 10)});
+  console.log('foundUser', foundUser);
+
 
 
   return {
-    user: decoded,
+    user: foundUser
   }
 };
 
