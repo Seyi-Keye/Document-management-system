@@ -13,6 +13,9 @@ import SignUpForm from './components/signUp/signUp';
 import Login from './components/login/login';
 import Dashboard from './components/dashboard/dashboard';
 import UpdateDocument from './components/document/updateDocument';
+import UpdateUser from './components/user/updateUser';
+import Users from './components/user/users';
+
 
 const store = configureStore;
 const onEnter = (next, replace, cb) => {
@@ -34,7 +37,9 @@ render(
     <Route path="signup" component={SignUpForm} onEnter={onEnter} />
     <Route path="login" component={Login} onEnter={onEnter} />
     <Route path="dashboard" component={Dashboard} onEnter={onEnter}/>
-    <Route path="updateDoc/:id" component={UpdateDocument} onEnter={onEnter}/>
+    <Route path="updateDoc" component={UpdateDocument} onEnter={onEnter}/>
+    <Route path="updateUser" component={UpdateUser} onEnter={onEnter}/>
+    <Route path="users" component={Users} onEnter={onEnter}/>
   </Route>
 </Router>
 </Provider>,

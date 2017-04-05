@@ -59,10 +59,6 @@ export const handleLogin = (email, password) => {
         const errorMsg = error.response.body.message;
         toastr.error(errorMsg);
         return dispatch(loginError(error))
-      }).catch(error => {
-        const errorMsg = errorMessage(error);
-        toastr.error(errorMsg);
-        return dispatch(loginError(error))
       })
     )
   };

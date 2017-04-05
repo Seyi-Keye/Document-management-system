@@ -38,6 +38,7 @@ router.route('/users/:id')
 .get(authentication.verifyToken,
 UserController.findUser)
 .put(authentication.verifyToken,
+authentication.validateAdmin,
 UserController.updateUser)
 .delete(authentication.verifyToken,
 UserController.deleteUser);

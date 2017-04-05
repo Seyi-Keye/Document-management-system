@@ -16,6 +16,13 @@ export default function user(state = userIntialState, action) {
   case ActionTypes.SIGN_UP_FAIL:
     return {...state, error: action.error, hasError: true}
 
+  case ActionTypes.LOGIN_REQUEST:
+    return { ...state, isLoading: true}
+  case ActionTypes.LOGIN_SUCCESSFUL:
+    return {...state, currentUser: action.response.user}
+  case ActionTypes.LOGIN_FAIL:
+    return {...state, error: action.error, hasError: true}
+
   default:
   return state;
   }

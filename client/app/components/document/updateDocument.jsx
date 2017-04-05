@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import ReactDOM from 'react-dom';
 import jwt from 'jwt-decode';
 import _ from 'underscore';
 import { browserHistory, Link } from 'react-router';
