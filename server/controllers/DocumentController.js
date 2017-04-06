@@ -1,4 +1,4 @@
-import { Document } from '../models';
+import { Document, User } from '../models';
 import ControllerHelpers from '../helpers/ControllerHelpers';
 
 const DocumentController = {
@@ -66,12 +66,12 @@ const DocumentController = {
             .send(foundDocument);
         }
         if ((foundDocument.access === 'private') &&
-          (foundDocument.ownerId === req.decoded.UserId)) {
+          (foundDocument.OwnerId === req.decoded.UserId)) {
           return res.status(200)
             .send(foundDocument);
         }
         if (foundDocument.access === 'role') {
-          return model.User.findById(foundDocument.ownerId)
+          return User.findById(foundDocument.OwnerId)
             .then((documentOwner) => {
               if (documentOwner.RoleId === req.decoded.RoleId) {
                 return res.status(200)
@@ -169,14 +169,14 @@ const DocumentController = {
    */
   updateDocument(req, res) {
     return Document
-    .findById(req.params.id, {})
+    .findById(req.params.id)
     .then((document) => {
       if (!document) {
         return res.status(404).send({
           message: 'Document Not Found',
         });
       }
-      if (document.ownerId !== req.decoded.UserId) {
+      if (document.OwnerId !== req.decoded.UserId) {
         return res.status(401).send({
           message: 'You cannot update this document'
         });
@@ -205,7 +205,7 @@ const DocumentController = {
             message: 'Document Not Found',
           });
         }
-        if (document.ownerId !== req.decoded.UserId) {
+        if (document.OwnerId !== req.decoded.UserId) {
           return res.status(401).send({
             message: 'You cannot delete this document'
           });

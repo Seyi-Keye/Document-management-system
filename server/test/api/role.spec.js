@@ -3,6 +3,7 @@ import chai from 'chai';
 import app from '../../../server';
 import specHelpers from '../helpers/specHelpers';
 import { Document, Role, User } from '../../models';
+import SeedHelper from '../helpers/seedHelper';
 
 const request = supertest.agent(app);
 const expect = chai.expect;
@@ -12,18 +13,21 @@ let role;
 
 describe('Document Api', () => {
   before((done) => {
-    Role.findOne({ where: { title: 'admin' } })
-    .then((foundAdmin) => {
-      adminUser.RoleId = foundAdmin.dataValues.id;
-      User.create(adminUser)
-      .then(() => {
-        request.post('/users/login')
-        .send(adminUser)
-              .end((err, res) => {
-                if (err) return err;
-                token = res.body.token;
-                done();
-              });
+    SeedHelper.init()
+    .then(() => {
+      Role.findOne({ where: { title: 'admin' } })
+      .then((foundAdmin) => {
+        adminUser.RoleId = foundAdmin.dataValues.id;
+        User.create(adminUser)
+        .then(() => {
+          request.post('/users/login')
+          .send(adminUser)
+            .end((err, res) => {
+              if (err) return err;
+              token = res.body.token;
+              done();
+            });
+        });
       });
     });
   });

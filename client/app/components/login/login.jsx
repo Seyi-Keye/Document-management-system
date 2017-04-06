@@ -1,6 +1,8 @@
 import React from 'react';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
-import { handleLogin } from '../../actions/userAction.js';
+import { browserHistory,  Route, Redirect  } from 'react-router';
+import * as userAction from '../../actions/userAction.js';
 import { Button, Col, Input, Row } from 'react-materialize';
 
 class Login extends React.Component {
@@ -18,9 +20,12 @@ class Login extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+
   handleSubmit(event) {
     event.preventDefault();
     this.props.handleLogin(this.state.email, this.state.password);
+    browserHistory.push('/dashboard');
+
   }
 
   render() {
@@ -50,7 +55,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
   return {
-    handleLogin: (email, password) => dispatch(handleLogin(email, password))
+    handleLogin: (email, password) => dispatch(userAction.handleLogin(email, password))
   };
 }
 

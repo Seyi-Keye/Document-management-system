@@ -1,62 +1,65 @@
 import request from 'superagent';
-import * as types from './actionTypes';
+import * as ActionTypes from './actionTypes'
+import toastr from 'toastr';
+import { errorMessage } from '../utils/utils'
 
-const signUpAction = (user) => {
-  return {type: 'SIGNUP_SUCCESSFUL', user};
+
+
+export const signUpRequest = () => {
+  return {type: ActionTypes.SIGN_UP_REQUEST};
 }
-const loginAction = (user) => {
-  return {type: 'LOGIN_SUCCESSFUL', user};
+export const signUpSuccessful = (user) => {
+  return {type: ActionTypes.SIGN_UP_SUCCESSFUL, response: user};
+}
+export const signUpError = (error) => {
+  return {type: ActionTypes.SIGN_UP_FAIL, error: error};
 }
 
+export const loginRequest = () => {
+  return {type: ActionTypes.LOGIN_REQUEST};
+}
+export const loginSuccessful = (user) => {
+  return {type: ActionTypes.LOGIN_SUCCESSFUL, response: user};
+}
+export const loginError = (error) => {
+  return {type: ActionTypes.LOGIN_FAIL, error: error};
+}
 
-const handleSignUp = (firstname, lastname,
+export const handleSignUp = (firstname, lastname,
     username, password, passwordConfirmation ,email) => {
   return (dispatch) => {
-    dispatch(signUpAction());
+    dispatch(signUpRequest());
     return (
       request.post('/users')
-      .send({firstname, lastname,
-    username, password, passwordConfirmation ,email})
+      .send({firstname, lastname, username, password, passwordConfirmation ,email})
       .then((response) => {
-        if(response.status === 200) {
-        dispatch(signUpAction(response.body));
-        console.log(response.body);
-        window.location = '/login';
-      } else {
-        console.log(response);
-      }
-      }).catch(err => {
+        localStorage.setItem('token', response.body.token);
+        toastr.success('Sign up successful')
+        return dispatch(signUpSuccessful(response.body));
+      }, (error) => {
+        const errorMsg = errorMessage(error);
+        toastr.error(errorMsg);
+        return dispatch(signUpError(errorMsg));
       })
     )
   };
 }
 
-const handleLogin = (email, password) => {
+export const handleLogin = (email, password) => {
   return (dispatch) => {
-    return (
+      dispatch(loginRequest());
+      return (
       request.post('/users/login')
       .send({email, password})
       .then((response) => {
-        if(response.status === 200) {
-        dispatch(loginAction(response.body));
-        console.log(response.body);
-        const data = response.body;
-        localStorage.setItem('token', data.token);
-        window.location = '/dashboard';
-      } else {
-        console.log(response);
-      }
-      }).catch(err => {
+        localStorage.setItem('token', response.body.token);
+        toastr.success('Login successful')
+        return dispatch(loginSuccessful(response.body));
+      }, (error) => {
+        const errorMsg = error.response.body.message;
+        toastr.error(errorMsg);
+        return dispatch(loginError(error))
       })
     )
   };
 }
-
-
-export { handleSignUp };
-
-export { signUpAction };
-
-export { handleLogin };
-
-export default loginAction;
