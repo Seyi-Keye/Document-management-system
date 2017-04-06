@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import  {handleSearchUsers} from '../actions/adminAction.js';
+import {handleSearchDocuments} from '../actions/documentAction.js';
 import { Form, Input, Button, Row,Col, Icon } from 'react-materialize';
 
 import toastr from 'toastr';
@@ -21,7 +22,8 @@ class App extends React.Component {
   handleSearchSubmit(event) {
     event.preventDefault();
     this.props.handleSearchUsers(this.state.searchInput);
-    browserHistory.push(`/search/users/?query=${this.state.searchInput}`);
+    this.props.handleSearchDocuments(this.state.searchInput);
+    browserHistory.push(`/search/?query=${this.state.searchInput}`);
   }
 
   handleSearchChange(event) {
@@ -81,5 +83,5 @@ class App extends React.Component {
 }
 
 export default connect(null, {
-  handleSearchUsers
+  handleSearchUsers, handleSearchDocuments
 })(App);

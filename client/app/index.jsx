@@ -43,7 +43,7 @@ render(
     <Route path="updateUser/:id" component={UpdateUser} onEnter={onEnter}/>
     <Route path="users" component={Users} onEnter={onEnter}/>
     <Route path="roles" component={Roles} onEnter={onEnter}/>
-    <Route path="search/users/" component={Search} onEnter={onEnter}/>
+    <Route path="search" component={Search} onEnter={onEnter}/>
   </Route>
 </Router>
 </Provider>,

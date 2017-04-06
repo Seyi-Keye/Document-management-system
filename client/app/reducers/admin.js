@@ -61,7 +61,6 @@ export default function user(state = adminIntialState, action) {
   case ActionTypes.SEARCH_USER_FAIL:
     return {...state, error: action.error, hasError: true}
 
-
   default:
   return state;
   }

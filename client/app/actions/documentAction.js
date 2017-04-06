@@ -44,6 +44,16 @@ export const deleteDocumentError = (error) => {
   return {type: ActionTypes.DELETE_DOCUMENT_FAIL, error: error};
 }
 
+export const searchDocumentRequest = () => {
+  return {type: ActionTypes.SEARCH_DOCUMENT_REQUEST};
+}
+export const searchDocumentSuccessful = (documents) => {
+  return {type: ActionTypes.SEARCH_DOCUMENT_SUCCESSFUL, response: documents};
+}
+export const searchDocumentError = (error) => {
+  return {type: ActionTypes.SEARCH_DOCUMENT_FAIL, error: error};
+}
+
 export const handleCreateDocument = (title, content, access) => {
   return (dispatch) => {
     dispatch(documentRequest());
@@ -114,3 +124,19 @@ export const handleDeleteDocument = (id) => {
   };
 }
 
+export const handleSearchDocuments = (userQuery) => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    dispatch(searchDocumentRequest());
+    return request.get(`/api/v1/search/documents/?query=${userQuery}`)
+      .set({ 'x-access-token': token })
+      .send(userQuery)
+      .end((error, response) => {
+         if(error) {
+          return dispatch(searchDocumentError(error))
+        }
+        console.log('res.body', response.body)
+       return dispatch(searchDocumentSuccessful(response.body));
+      });
+  };
+};
