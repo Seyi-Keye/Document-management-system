@@ -54,10 +54,10 @@ router.route('/documents')
 .get(authentication.verifyToken,
 DocumentController.findAllDocuments);
 
-router.get('/search/documents/', authentication.verifyToken,
+router.get('/search/documents/',
 DocumentController.searchDocument);
-router.get('/documents/roles', authentication.verifyToken,
-authentication.validateAdmin, DocumentController.findDocumentByRole);
+router.get('/search/users/', authentication.verifyToken,
+authentication.validateAdmin, UserController.searchUser);
 
 router.route('/documents/:id')
 .get(authentication.verifyToken, DocumentController.findDocumentById)

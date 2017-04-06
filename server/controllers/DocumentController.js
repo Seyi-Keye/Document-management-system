@@ -132,8 +132,7 @@ const DocumentController = {
     const query = {
       where: {
         $and: [{ $or: [
-          { access: 'public' },
-          { OwnerId: req.decoded.UserId }
+          { access: 'public' }
         ] }],
       },
       limit: req.query.limit || 10,

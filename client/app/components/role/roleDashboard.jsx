@@ -50,12 +50,14 @@ class Roles extends React.Component {
 
   render() {
     const { role } = this.props;
+
     return (
       <div>
         <h3>Everything about Roles</h3>
         <Role/>
         { role ?
           <ul className="collapsible popout" data-collapsible="accordion">
+
             { role.map(this.roleView) }
           </ul>
           :

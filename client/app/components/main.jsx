@@ -1,12 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router'
-import { Navbar, NavItem, Icon } from 'react-materialize';
+import { Form, Input, Button, Row, Col, Icon } from 'react-materialize';
+
 import toastr from 'toastr';
 
 class App extends React.Component {
   constructor(props){
     super(props);
+     this.state = {
+      searchInput: ''
+    };
+
     this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleSearchSubmit(e) {
+    e.preventDefault();
+    browserHistory.push(`/search?query=${this.state.searchInput}`);
+  }
+
+  handleSearchChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleLogout(e) {
@@ -27,6 +42,22 @@ class App extends React.Component {
               { token &&  <li> <Link to="/dashboard"> Dashboard</Link></li>}
               { token &&  <li> <Link to="/users"> Users</Link></li>}
               { token && <li> <Link to="/roles"> Manage Role</Link></li>}
+              { token &&  <li>
+                 <form onSubmit={this.handleSearchSubmit}>
+                    <div className="input-field">
+                      <Input
+                       placeholder="Search Here"
+                       id="search"
+                       onChange={this.handleSearchChange}
+                       type="text"
+                       required
+                       name="searchInput"
+                       value={this.state.searchInput}
+                       label={<i className="material-icons">search</i>} />
+                      <i className="material-icons">close</i>
+                    </div>
+                  </form>
+                </li>}
               { token &&  <button id={this.handleLogout} onClick={this.handleLogout}>Logout</button>}
 
               </ul>
@@ -44,4 +75,34 @@ class App extends React.Component {
       )
   }
 }
-export default App;
+
+const stateToProps = (state) => {
+ return {
+   user: state.user
+  };
+};
+
+const dispatchToProps = (dispatch) => ({
+//   return {
+//   const searchDocsAction = searchDocResults => ({
+//   type: 'SEARCHDOCS_ACTION',
+//   searchDocResults
+//   });
+// const searchDocsHelper = (docTitle) => {
+//   token = window.localStorage.getItem('jwtToken');
+//   return (dispatch) => {
+//     return request.get(`/api/v1/search/documents?q=${docTitle}`)
+//     .set({ Authorization: token })
+//     .send(docTitle)
+//     .then((res) => {
+//       if (res.status === 200) {
+//         dispatch(searchDocsAction(res.body.msg));
+//       } else {
+//       }
+//     });
+//   };
+// };
+
+  });
+
+export default connect(stateToProps, dispatchToProps) (App);

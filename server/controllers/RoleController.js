@@ -15,8 +15,8 @@ const RoleController = {
   createRole(req, res) {
     Role
       .create(req.body)
-      .then(() => res.status(201).send({message: 'Role is Created'}))
-      .catch(error => res.status(400).send({error: error}));
+      .then(() => res.status(201).send({ message: 'Role is Created' }))
+      .catch(error => res.status(400).send({ error: error }));
   },
 
   findAllRoles(req, res) {
@@ -24,7 +24,7 @@ const RoleController = {
     const offset = req.query.offset || '0';
     const order = '"createdAt" DESC';
     Role
-      .findAndCountAll({limit, offset, order})
+      .findAndCountAll({ limit, offset, order })
       .then((role) => {
         const pagination = limit && offset
           ? {
@@ -36,9 +36,9 @@ const RoleController = {
           : null;
         res
           .status(200)
-          .json({role: role.rows, pagination});
+          .json({ role: role.rows, pagination });
       })
-      .catch(error => res.status(400).json({error: error.message}));
+      .catch(error => res.status(400).json({ error: error.message }));
   },
 
   findRole(req, res) {
@@ -48,7 +48,7 @@ const RoleController = {
         if (!role) {
           res
             .status(404)
-            .json({message: 'Role not found'});
+            .json({ message: 'Role not found' });
         }
         res
           .status(200)
@@ -57,7 +57,7 @@ const RoleController = {
       .catch((error) => {
         res
           .status(500)
-          .json({error: error.message});
+          .json({ error: error.message });
       });
   },
 
@@ -68,14 +68,14 @@ const RoleController = {
         if (!role) {
           res
             .status(404)
-            .json({message: 'Role not found'});
+            .json({ message: 'Role not found' });
         } else {
           role
             .update(req.body)
             .then(() => res.status(200).json(role));
         }
       })
-      .catch(error => res.status(500).json({error: error.message}));
+      .catch(error => res.status(500).json({ error: error.message }));
   },
 
   deleteRole(req, res) {
@@ -85,14 +85,14 @@ const RoleController = {
         if (!role) {
           res
             .status(404)
-            .json({message: 'Role not found'});
+            .json({ message: 'Role not found' });
         } else {
           role
             .destroy(req.body)
-            .then(() => res.status(200).json({message: 'Role deleted'}));
+            .then(() => res.status(200).json({ message: 'Role deleted' }));
         }
       })
-      .catch(error => res.status(500).json({error: error.message}));
+      .catch(error => res.status(500).json({ error: error.message }));
   }
 
 };
