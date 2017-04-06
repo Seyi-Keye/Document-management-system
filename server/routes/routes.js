@@ -54,7 +54,7 @@ router.route('/documents')
 .get(authentication.verifyToken,
 DocumentController.findAllDocuments);
 
-router.get('/documents/search', authentication.verifyToken,
+router.get('/search/documents/', authentication.verifyToken,
 DocumentController.searchDocument);
 router.get('/documents/roles', authentication.verifyToken,
 authentication.validateAdmin, DocumentController.findDocumentByRole);
