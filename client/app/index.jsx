@@ -15,7 +15,7 @@ import Dashboard from './components/dashboard/dashboard';
 import UpdateDocument from './components/document/updateDocument';
 import UpdateUser from './components/user/updateUser';
 import Users from './components/user/users';
-import Roles from './components/role/role';
+import Roles from './components/role/roleDashboard';
 
 
 const store = configureStore;

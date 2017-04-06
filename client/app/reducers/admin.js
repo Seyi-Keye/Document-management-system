@@ -50,7 +50,7 @@ export default function user(state = adminIntialState, action) {
   case ActionTypes.FETCH_ROLE_REQUEST:
     return { ...state, isLoading: true}
   case ActionTypes.FETCH_ROLE_SUCCESSFUL:
-    return {...state, ROLE: action.response.role}
+    return {...state, role: action.response.role}
   case ActionTypes.FETCH_ROLE_FAIL:
     return {...state, error: action.error, hasError: true}
 

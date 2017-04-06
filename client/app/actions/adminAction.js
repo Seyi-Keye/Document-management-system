@@ -46,7 +46,7 @@ export const createRoleError = (error) => {
 export const fetchRoleRequest = () => {
   return {type: ActionTypes.FETCH_ROLE_REQUEST};
 }
-export const fetchRoleSuccessful = () => {
+export const fetchRoleSuccessful = (role) => {
   return {type: ActionTypes.FETCH_ROLE_SUCCESSFUL, response: role};
 }
 export const fetchRoleError = (error) => {
@@ -133,11 +133,11 @@ export const handleFetchRoles = () => {
       .set({ 'x-access-token': token })
       .end((error, response) => {
         console.log('req body', request.body)
-        console.log('response.body', response)
+        console.log('response.body', response.body)
          if(error) {
           return dispatch(fetchRoleError(error))
         }
-       return dispatch(fetchRoleSuccessful(title));
+       return dispatch(fetchRoleSuccessful(response.body));
       });
   };
   };
