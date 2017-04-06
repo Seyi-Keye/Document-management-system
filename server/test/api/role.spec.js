@@ -60,7 +60,7 @@ describe('Document Api', () => {
       });
     it('fails to get all roles without authorised token', (done) => {
       request
-        .get('/roles')
+        .get('/api/v1/roles')
         .end((err, res) => {
           if (err)
             return err;
@@ -76,7 +76,7 @@ describe('Document Api', () => {
 
     it('returns all roles to an admin user', (done) => {
       request
-        .get('/roles')
+        .get('/api/v1/roles')
         .set({Authorization: token})
         .end((err, res) => {
           if (err)
@@ -90,7 +90,7 @@ describe('Document Api', () => {
 
     it('fails to create new role on null title', () => {
       request
-        .post('/roles')
+        .post('/api/v1/roles')
         .set({Authorization: token})
         .send({})
         .end((err, response) => {
@@ -104,7 +104,7 @@ describe('Document Api', () => {
 
     it('fails to create duplicate role', () => {
       request
-        .post('/roles')
+        .post('/api/v1/roles')
         .set({Authorization: token})
         .send({title: 'admin'})
         .end((err, response) => {
@@ -118,7 +118,7 @@ describe('Document Api', () => {
 
     it('fails for invalid attributes', () => {
       request
-        .post('/roles')
+        .post('/api/v1/roles')
         .send({name: 'hello'})
         .set({Authorization: token})
         .end((err, response) => {
@@ -132,7 +132,7 @@ describe('Document Api', () => {
 
     it('returns correct role when a valid id is passed', (done) => {
       request
-        .get(`/roles/${role.id}`)
+        .get(`/api/v1/roles/${role.id}`)
         .set({Authorization: token})
         .end((err, response) => {
           if (err)
@@ -146,7 +146,7 @@ describe('Document Api', () => {
 
     it('should update an existing role', (done) => {
       request
-        .put(`/roles/${role.id}`)
+        .put(`/api/v1/roles/${role.id}`)
         .send({title: 'role'})
         .set({Authorization: token})
         .end((err, response) => {
@@ -161,7 +161,7 @@ describe('Document Api', () => {
 
     it('deletes a role', (done) => {
       request
-        .delete(`/roles/${role.id}`)
+        .delete(`/api/v1/roles/${role.id}`)
         .set({Authorization: token})
         .end((err, response) => {
           if (err)

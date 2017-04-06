@@ -29,7 +29,7 @@ describe('Search document', () => {
       .init()
       .then(() => {
         request
-          .post('/users')
+          .post('/api/v1/users')
           .send(adminUserDetails)
           .end((error, response) => {
             adminUser = response.body.user;
@@ -37,7 +37,7 @@ describe('Search document', () => {
             privateDocument.OwnerId = response.body.user.id;
 
             request
-              .post('/users')
+              .post('/api/v1/users')
               .send(regularUserDetails)
               .end((err, res) => {
                 regularUser = res.body.user;
@@ -45,14 +45,14 @@ describe('Search document', () => {
                 publicDocument.OwnerId = res.body.user.id;
 
                 request
-                  .post('/documents')
+                  .post('/api/v1/documents')
                   .set({'x-access-token': adminToken})
                   .send(privateDocument)
                   .end((err, res) => {
                     privDocument = res.body;
 
                     request
-                      .post('/documents')
+                      .post('/api/v1/documents')
                       .set({'x-access-token': regularToken})
                       .send(publicDocument)
                       .end((err, res) => {
@@ -71,7 +71,7 @@ describe('Search document', () => {
   describe('find document', () => {
     it('searches document for a string query', (done) => {
       request
-        .get('/search/documents/?query=out&limit=1&offset=0')
+        .get('/api/v1/search/documents/?query=out&limit=1&offset=0')
         .set({'x-access-token': adminToken})
         .expect(201)
         .end((err, res) => {
@@ -89,7 +89,7 @@ describe('Search document', () => {
 
     it('returns error message for invalid input', (done) => {
       request
-        .get('/search/documents?q=out&limit=1&offset=hello')
+        .get('/api/v1/search/documents?q=out&limit=1&offset=hello')
         .set({'x-access-token': adminToken})
         .expect(200)
         .end((err, res) => {
@@ -107,7 +107,7 @@ describe('Search document', () => {
 
     it('returns error message for invalid input', (done) => {
       request
-        .get('/documents/limit=1&offset=hello')
+        .get('/api/v1/documents/limit=1&offset=hello')
         .set({'x-access-token': regularToken})
         .expect(200)
         .end((err, res) => {

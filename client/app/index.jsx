@@ -16,6 +16,7 @@ import UpdateDocument from './components/document/updateDocument';
 import UpdateUser from './components/user/updateUser';
 import Users from './components/user/users';
 import Roles from './components/role/roleDashboard';
+import Search from './components/search/search';
 
 
 const store = configureStore;
@@ -42,6 +43,7 @@ render(
     <Route path="updateUser/:id" component={UpdateUser} onEnter={onEnter}/>
     <Route path="users" component={Users} onEnter={onEnter}/>
     <Route path="roles" component={Roles} onEnter={onEnter}/>
+    <Route path="search/users/" component={Search} onEnter={onEnter}/>
   </Route>
 </Router>
 </Provider>,

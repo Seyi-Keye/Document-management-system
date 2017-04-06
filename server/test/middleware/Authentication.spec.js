@@ -32,7 +32,7 @@ describe('Middleware Unit Test', () => {
           userDetails.RoleId = found.dataValues.id;
           User.create(userDetails)
           .then(() => {
-            request.post('/users/login')
+            request.post('/api/v1/users/login')
             .send(userDetails)
             .end((err, response) => {
               if (err) return err;
@@ -58,7 +58,7 @@ describe('Middleware Unit Test', () => {
     it('fails on null token', (done) => {
       const req = httpMocks.createRequest({
         method: 'GET',
-        url: '/users',
+        url: '/api/v1/users',
       });
       res.on('end', () => {
         /* eslint-disable no-underscore-dangle */
@@ -72,7 +72,7 @@ describe('Middleware Unit Test', () => {
     // it('fails on wrong token', (done) => {
     //   const req = httpMocks.createRequest({
     //     method: 'GET',
-    //     url: '/users',
+    //     url: '/api/v1/users',
     //     headers: {
     //       'x-access-token': 'goodmorning_andela'
     //     }
@@ -88,7 +88,7 @@ describe('Middleware Unit Test', () => {
     it('calls the next function on valid token', (done) => {
       const req = httpMocks.createRequest({
         method: 'POST',
-        url: '/api/users/login',
+        url: '/api/v1users/login',
         headers: {
           Authorization: token
         }
@@ -107,7 +107,7 @@ describe('Middleware Unit Test', () => {
       done) => {
       const req = httpMocks.createRequest({
         method: 'POST',
-        url: '/api/users/login',
+        url: '/api/v1users/login',
       });
       const middlewareStub = {
         callback: () => {}
@@ -124,7 +124,7 @@ describe('Middleware Unit Test', () => {
     // it('returns an error if user is not an admin', (done) => {
     //   const req = httpMocks.createRequest({
     //     method: 'GET',
-    //     url: '/users',
+    //     url: '/api/v1/users',
     //     decoded: {
     //       RoleId: 2
     //     }
@@ -140,7 +140,7 @@ describe('Middleware Unit Test', () => {
     it('calls the next function for admin', (done) => {
       const req = httpMocks.createRequest({
         method: 'GET',
-        url: '/users',
+        url: '/api/v1/users',
         headers: { Authorization: token },
         decoded: {
           RoleId: 1
@@ -160,7 +160,7 @@ describe('Middleware Unit Test', () => {
       done) => {
       const req = httpMocks.createRequest({
         method: 'GET',
-        url: '/users',
+        url: '/api/v1/users',
         decoded: {
           RoleId: 2
         }

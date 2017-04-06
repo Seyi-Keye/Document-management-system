@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router'
-import { Form, Input, Button, Row, Col, Icon } from 'react-materialize';
+import { browserHistory, Link } from 'react-router';
+import  {handleSearchUsers} from '../actions/adminAction.js';
+import { Form, Input, Button, Row,Col, Icon } from 'react-materialize';
 
 import toastr from 'toastr';
 
@@ -13,18 +14,21 @@ class App extends React.Component {
     };
 
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
-  handleSearchSubmit(e) {
-    e.preventDefault();
-    browserHistory.push(`/search?query=${this.state.searchInput}`);
+  handleSearchSubmit(event) {
+    event.preventDefault();
+    this.props.handleSearchUsers(this.state.searchInput);
+    browserHistory.push(`/search/users/?query=${this.state.searchInput}`);
   }
 
-  handleSearchChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  handleSearchChange(event) {
+    this.setState({ searchInput: event.target.value });
   }
 
-  handleLogout(e) {
+  handleLogout(event) {
     localStorage.removeItem('token');
     toastr.success('You have been Logged Out');
     browserHistory.push('/login');
@@ -76,33 +80,6 @@ class App extends React.Component {
   }
 }
 
-const stateToProps = (state) => {
- return {
-   user: state.user
-  };
-};
-
-const dispatchToProps = (dispatch) => ({
-//   return {
-//   const searchDocsAction = searchDocResults => ({
-//   type: 'SEARCHDOCS_ACTION',
-//   searchDocResults
-//   });
-// const searchDocsHelper = (docTitle) => {
-//   token = window.localStorage.getItem('jwtToken');
-//   return (dispatch) => {
-//     return request.get(`/api/v1/search/documents?q=${docTitle}`)
-//     .set({ Authorization: token })
-//     .send(docTitle)
-//     .then((res) => {
-//       if (res.status === 200) {
-//         dispatch(searchDocsAction(res.body.msg));
-//       } else {
-//       }
-//     });
-//   };
-// };
-
-  });
-
-export default connect(stateToProps, dispatchToProps) (App);
+export default connect(null, {
+  handleSearchUsers
+})(App);
