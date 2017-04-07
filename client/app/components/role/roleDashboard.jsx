@@ -70,7 +70,6 @@ class Roles extends React.Component {
 };
 
 const stateToProps = (state) => {
-  // console.log(state, "the roles state in the dashboard");
   return {
     role: state.admin.role
   }

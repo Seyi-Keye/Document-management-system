@@ -18,7 +18,6 @@ class Role extends React.Component {
   };
 
    handleChange(event) {
-     console.log(event.target.name);
       this.setState({ [event.target.name]: event.target.value });
    }
 
@@ -47,7 +46,6 @@ class Role extends React.Component {
 }
 
 const stateToProps = (state) => {
-  console.log(state, "the role state in role page");
   return {
     role: state.admin.role
   }

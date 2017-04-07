@@ -11,8 +11,6 @@ class Search extends React.Component {
 
   constructor(props) {
     super(props);
-
-    // this.view = this.view.bind(this);
   };
 
   componentWillMount() {

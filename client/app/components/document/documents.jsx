@@ -20,7 +20,7 @@ class Documents extends React.Component {
   }
 
   componentDidMount() {
-    // $('.collapsible').collapsible();
+    $('.collapsible').collapsible();
   }
 
   handleDelete(e) {

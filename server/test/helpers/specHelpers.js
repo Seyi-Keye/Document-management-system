@@ -57,7 +57,8 @@ module.exports = {
   privateDocument: {
     title: 'My Secret',
     content: faker.lorem.paragraph(),
-    access: 'private'
+    access: 'private',
+    OwnerId: 1
   },
   userDetails: {
     firstname: faker.name.firstName(),

@@ -4,6 +4,9 @@ import { browserHistory } from 'react-router'
 import  Documents from '../document/documents';
 
 class Dashboard extends React.Component {
+  componentDidMount() {
+    $('.collapsible').collapsible();
+  }
    render() {
       return (
          <div>
