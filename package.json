@@ -10,8 +10,9 @@
     "start:seyi": "babel-node server.js",
     "test": "npm run thetest ",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
-    "thetest": "NODE_ENV=test mocha --timeout 6000 --compilers js:babel-core/register  ./server/test/api/document.spec.js",
-    "test:watch": "npm run test -- --watch"
+    "thetest": "NODE_ENV=test mocha --timeout 6000 --compilers js:babel-core/register  ./server/test/api/role.spec.js",
+    "test:watch": "npm run test -- --watch",
+    "e2e": "node_modules/.bin/nightwatch --config nightwatch.config.js"
   },
   "repository": {
     "type": "git",

@@ -2,6 +2,7 @@ import supertest from 'supertest';
 import chai from 'chai';
 import app from '../../../server';
 import specHelpers from '../helpers/specHelpers';
+import Authentication from '../../middleware/Authentication';
 import {Document, Role, User} from '../../models';
 import SeedHelper from '../helpers/seedHelper';
 
@@ -44,7 +45,6 @@ describe('Document Api', () => {
   after((done) => {
     User.destroy({where: {}});
     Document.destroy({where: {}});
-    // Role.destroy({   where: {} });
     done();
   });
 
@@ -58,7 +58,7 @@ describe('Document Api', () => {
       .then((regular) => {
         role = regular;
       });
-    it('fails to get all roles without authorised token', (done) => {
+    it('fails to get all roles without authorized token', (done) => {
       request
         .get('/api/v1/roles')
         .end((err, res) => {
@@ -75,6 +75,8 @@ describe('Document Api', () => {
     });
 
     it('returns all roles to an admin user', (done) => {
+      const token = Authentication.generateToken();
+      console.log(token)
       request
         .get('/api/v1/roles')
         .set({Authorization: token})
