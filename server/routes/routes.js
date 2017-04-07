@@ -1,17 +1,15 @@
-import path from 'path';
 import { Router } from 'express';
 import RoleController from '../controllers/RoleController';
 import UserController from '../controllers/UserController';
 import DocumentController from '../controllers/DocumentController';
 import authentication from '../middleware/Authentication';
-const router = Router();
-// default route
 
+const router = Router();
 
 // roles routes
 
 router.route('/api/v1/roles')
-.post(authentication.verifyToken,authentication.validateAdmin, RoleController.createRole)
+.post(authentication.verifyToken, authentication.validateAdmin, RoleController.createRole)
 .get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findAllRoles);
 

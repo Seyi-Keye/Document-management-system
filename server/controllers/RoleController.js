@@ -1,5 +1,6 @@
-import {Role} from '../models';
-import ControllerHelpers from '../helpers/ControllerHelpers';
+/* eslint no-unused-vars: "error" */
+import { Role } from '../models';
+
 /**
  * RoleController class
  */
@@ -16,7 +17,7 @@ const RoleController = {
     Role
       .create(req.body)
       .then(() => res.status(201).send({ message: 'Role is Created' }))
-      .catch(error => res.status(400).send({ error: error }));
+      .catch(error => res.status(400).send({ error }));
   },
 
   findAllRoles(req, res) {

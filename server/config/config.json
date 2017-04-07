@@ -7,9 +7,16 @@
     "dialect": "postgres",
     "logging": true
   },
-  "test": {
+  "CI_TEST": {
     "use_env_variable": "TESTDB"
     },
+  "test": {
+    "username": "",
+    "password": "",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
   "production": {
     "username": "root",
     "password": null,

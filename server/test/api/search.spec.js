@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-expressions */
 import chai from 'chai';
 import supertest from 'supertest';
-import {Docment, Role, User} from '../../models';
+import models from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
 import SeedHelper from '../helpers/seedHelper';
 
-const request = supertest.agent(app);
+const server = supertest.agent(app);
 const expect = chai.expect;
 
 const adminRole = helper.adminRole;
@@ -17,18 +17,14 @@ const publicDocument = helper.publicDocument;
 const privateDocument = helper.privateDocument;
 
 describe('Search document', () => {
-  let document; // eslint-disable-line no-unused-vars
-  let regularToken;
-  let privDocument;
-  let regularUser;
-  let adminUser;
-  let adminToken;
+  // eslint-disable-line no-unused-vars
+  let document, regularToken, privDocument, regularUser, adminUser, adminToken;
 
   before((done) => {
     SeedHelper
       .init()
       .then(() => {
-        request
+        server
           .post('/api/v1/users')
           .send(adminUserDetails)
           .end((error, response) => {
@@ -36,7 +32,7 @@ describe('Search document', () => {
             adminToken = response.body.token;
             privateDocument.OwnerId = response.body.user.id;
 
-            request
+            server
               .post('/api/v1/users')
               .send(regularUserDetails)
               .end((err, res) => {
@@ -44,16 +40,16 @@ describe('Search document', () => {
                 regularToken = res.body.token;
                 publicDocument.OwnerId = res.body.user.id;
 
-                request
+                server
                   .post('/api/v1/documents')
-                  .set({'x-access-token': adminToken})
+                  .set({ 'x-access-token': adminToken })
                   .send(privateDocument)
                   .end((err, res) => {
                     privDocument = res.body;
 
-                    request
+                    server
                       .post('/api/v1/documents')
-                      .set({'x-access-token': regularToken})
+                      .set({ 'x-access-token': regularToken })
                       .send(publicDocument)
                       .end((err, res) => {
                         document = res.body;
@@ -61,18 +57,19 @@ describe('Search document', () => {
                       });
                   });
               });
-            // });
           });
       });
   });
-  // }); after(() => {   User.sequelize.sync({ force: true });
-  // Docment.sequelize.sync({ force: true }); });
 
-  describe('find document', () => {
+  after(() => {
+    models.sequelize.sync({ force: true });
+  });
+
+  describe('Search document', () => {
     it('searches document for a string query', (done) => {
-      request
+      server
         .get('/api/v1/search/documents/?query=out&limit=1&offset=0')
-        .set({'x-access-token': adminToken})
+        .set({ 'x-access-token': adminToken })
         .expect(201)
         .end((err, res) => {
           expect(typeof res.body)
@@ -88,9 +85,9 @@ describe('Search document', () => {
     });
 
     it('returns error message for invalid input', (done) => {
-      request
+      server
         .get('/api/v1/search/documents?q=out&limit=1&offset=hello')
-        .set({'x-access-token': adminToken})
+        .set({ 'x-access-token': adminToken })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body)
@@ -106,9 +103,9 @@ describe('Search document', () => {
 
 
     it('returns error message for invalid input', (done) => {
-      request
+      server
         .get('/api/v1/documents/limit=1&offset=hello')
-        .set({'x-access-token': regularToken})
+        .set({ 'x-access-token': regularToken })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body)
@@ -119,6 +116,12 @@ describe('Search document', () => {
             .equal('invalid input syntax for integer: "limit=1&offset=hello"');
           done();
         });
+    });
+  });
+
+  describe('Search User :', () => {
+    it('Search User', () => {
+      expect(true).equal(true);
     });
   });
 });

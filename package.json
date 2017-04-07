@@ -8,9 +8,10 @@
     "coveralls": "nyc report --reporter=text-lcov |  coveralls",
     "start:dev": "nodemon .sequelizerc",
     "start:seyi": "babel-node server.js",
-    "test": "npm run thetest ",
+    "test": "npm run seed && npm run thetest",
+    "test-travis": "npm run NODE_ENV=CI_TEST babel-node server/test/helpers/seedHelper.js && npm run NODE_ENV=CI_TEST mocha --compilers js:babel-core/register  ./server/test/**/*.spec.js",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
-    "thetest": "NODE_ENV=test mocha --timeout 6000 --compilers js:babel-core/register  ./server/test/api/role.spec.js",
+    "thetest": "NODE_ENV=test mocha --compilers js:babel-core/register  ./server/test/api/search.spec.js",
     "test:watch": "npm run test -- --watch",
     "e2e": "node_modules/.bin/nightwatch --config nightwatch.config.js"
   },
