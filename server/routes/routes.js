@@ -6,6 +6,7 @@ import authentication from '../middleware/Authentication';
 
 const router = Router();
 
+
 // roles routes
 
 router.route('/api/v1/roles')

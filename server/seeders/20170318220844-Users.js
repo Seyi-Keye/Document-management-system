@@ -6,7 +6,6 @@ dotenv.config();
 module.exports = {
   up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Users', [{
-      id: 1,
       username: process.env.username,
       firstname: process.env.firstname,
       lastname: process.env.lastname,
