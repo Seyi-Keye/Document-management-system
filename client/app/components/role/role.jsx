@@ -15,16 +15,11 @@ class Role extends React.Component {
 
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
-      this.handleAllRoles = this.handleAllRoles.bind(this);
   };
 
    handleChange(event) {
+     console.log(event.target.name);
       this.setState({ [event.target.name]: event.target.value });
-   }
-
-   handleAllRoles(e) {
-     this.props.handleFetchRoles();
-
    }
 
    handleSubmit(event) {
@@ -35,6 +30,7 @@ class Role extends React.Component {
 
    render() {
       return (
+        <div>
          <form onSubmit={this.handleSubmit}>
           {this.props.hasError && toastr.error(this.props.error)}
             <Row>
@@ -43,24 +39,23 @@ class Role extends React.Component {
               label="Title" value={this.state.title}
               onChange={this.handleChange}/>
               <Button className="button" waves='light'>Create Role</Button>
-              <Button onClick={this.handleAllRoles} className="button" waves='light'>See all   Roles</Button>
             </Row>
          </form>
+        </div>
       );
    }
 }
 
 const stateToProps = (state) => {
-  console.log(state, "the roles");
+  console.log(state, "the role state in role page");
   return {
-    role: state.role
+    role: state.admin.role
   }
 };
 
 const dispatchToProps = (dispatch) => {
   return {
     handleCreateRole: title => dispatch(adminAction.handleCreateRole(title)),
-    handleFetchRoles: () => dispatch(adminAction.handleFetchRoles())
   };
 }
 

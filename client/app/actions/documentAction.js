@@ -44,13 +44,23 @@ export const deleteDocumentError = (error) => {
   return {type: ActionTypes.DELETE_DOCUMENT_FAIL, error: error};
 }
 
+export const searchDocumentRequest = () => {
+  return {type: ActionTypes.SEARCH_DOCUMENT_REQUEST};
+}
+export const searchDocumentSuccessful = (documents) => {
+  return {type: ActionTypes.SEARCH_DOCUMENT_SUCCESSFUL, response: documents};
+}
+export const searchDocumentError = (error) => {
+  return {type: ActionTypes.SEARCH_DOCUMENT_FAIL, error: error};
+}
+
 export const handleCreateDocument = (title, content, access) => {
   return (dispatch) => {
     dispatch(documentRequest());
       const token = localStorage.getItem('token');
       const decoded = jwt(token);
       const OwnerId = decoded.UserId;
-      return request.post('/documents')
+      return request.post('/api/v1/documents')
       .set({ 'x-access-token': token })
       .send({title, content, access, OwnerId})
       .end((error, response) => {
@@ -69,7 +79,7 @@ export const handleFetchDocuments = () => {
   return (dispatch) => {
     dispatch(fetchDocumentRequest());
       const token = localStorage.getItem('token');
-    return request.get('/documents')
+    return request.get('/api/v1/documents')
       .set({ 'x-access-token': token })
       .end((error, response) => {
          if(error) {
@@ -85,7 +95,7 @@ export const handleUpdateDocument = ({id, title, content, access}) => {
   return (dispatch) => {
     dispatch(updateDocumentRequest());
     const token = localStorage.getItem('token');
-    return request.put(`/documents/${id}`)
+    return request.put(`/api/v1/documents/${id}`)
       .set({ 'x-access-token': token })
       .send({title, content, access})
       .end((error, response) => {
@@ -102,7 +112,7 @@ export const handleDeleteDocument = (id) => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(deleteDocumentRequest());
-    return request.delete(`/documents/${id}`)
+    return request.delete(`/api/v1/documents/${id}`)
       .set({ 'x-access-token': token })
       .end((error, response) => {
          if(error) {
@@ -114,3 +124,19 @@ export const handleDeleteDocument = (id) => {
   };
 }
 
+export const handleSearchDocuments = (userQuery) => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    dispatch(searchDocumentRequest());
+    return request.get(`/api/v1/search/documents/?query=${userQuery}`)
+      .set({ 'x-access-token': token })
+      .send(userQuery)
+      .end((error, response) => {
+         if(error) {
+          return dispatch(searchDocumentError(error))
+        }
+        console.log('res.body', response.body)
+       return dispatch(searchDocumentSuccessful(response.body));
+      });
+  };
+};

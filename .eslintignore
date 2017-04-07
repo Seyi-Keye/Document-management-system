@@ -2,3 +2,4 @@ node_modules
 README.md
 webpack.config.js
 .babelrc
+public/bundle.js

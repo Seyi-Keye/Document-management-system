@@ -266,7 +266,25 @@ const UserController = {
         res.status(500).json({
           message: error.message
         }));
-  }
+  },
+
+  searchUser(req, res) {
+    User.findAll({
+      where: {
+        username: {
+          $iLike: `%${req.query.query}%`
+        }
+      }
+    })
+    .then((user) => {
+      res.status(200).json({ user: user });
+    })
+    .catch((error) => {
+      res.status(500).json({ user: 'Error occured' });
+    });
+
+  },
+
 
 };
 

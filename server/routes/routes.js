@@ -6,18 +6,16 @@ import DocumentController from '../controllers/DocumentController';
 import authentication from '../middleware/Authentication';
 const router = Router();
 // default route
-router.get('/', (req, res) => {
-  res.sendFile(path.resolve('client', 'index.html'));
-});
+
 
 // roles routes
 
-router.route('/roles')
+router.route('/api/v1/roles')
 .post(authentication.verifyToken,authentication.validateAdmin, RoleController.createRole)
 .get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findAllRoles);
 
-router.route('/roles/:id')
+router.route('/api/v1/roles/:id')
 .get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findRole)
 .put(authentication.verifyToken, authentication.validateAdmin,
@@ -26,15 +24,15 @@ RoleController.updateRole)
 RoleController.deleteRole);
 
 // user routes.
-router.route('/users')
+router.route('/api/v1/users')
 .post(UserController.createUser)
 .get(authentication.verifyToken, authentication.validateAdmin,
 UserController.findAllUsers);
 
-router.post('/users/login', UserController.userLogin);
-router.post('/users/logout', UserController.userLogout);
+router.post('/api/v1/users/login', UserController.userLogin);
+router.post('/api/v1/users/logout', UserController.userLogout);
 
-router.route('/users/:id')
+router.route('api/v1/users/:id')
 .get(authentication.verifyToken,
 UserController.findUser)
 .put(authentication.verifyToken,
@@ -44,25 +42,24 @@ UserController.updateUser)
 authentication.validateAdmin,
 UserController.deleteUser);
 
-router.route('/users/:id/documents')
+router.route('/api/v1/users/:id/documents')
 .get(authentication.verifyToken,
 UserController.findUserDocuments);
 
 // document routes
-router.route('/documents')
+router.route('/api/v1/documents')
 .post(authentication.verifyToken, DocumentController.createDocument)
 .get(authentication.verifyToken,
 DocumentController.findAllDocuments);
 
-router.get('/documents/search', authentication.verifyToken,
+router.get('/api/v1/search/documents/',
 DocumentController.searchDocument);
-router.get('/documents/roles', authentication.verifyToken,
-authentication.validateAdmin, DocumentController.findDocumentByRole);
+router.get('/api/v1/search/users/', authentication.verifyToken,
+authentication.validateAdmin, UserController.searchUser);
 
-router.route('/documents/:id')
+router.route('/api/v1/documents/:id')
 .get(authentication.verifyToken, DocumentController.findDocumentById)
 .put(authentication.verifyToken, DocumentController.updateDocument)
 .delete(authentication.verifyToken, DocumentController.deleteDocument);
-
 
 export default router;

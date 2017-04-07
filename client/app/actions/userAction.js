@@ -30,7 +30,7 @@ export const handleSignUp = (firstname, lastname,
   return (dispatch) => {
     dispatch(signUpRequest());
     return (
-      request.post('/users')
+      request.post('/api/v1/users')
       .send({firstname, lastname, username, password, passwordConfirmation ,email})
       .then((response) => {
         localStorage.setItem('token', response.body.token);
@@ -49,7 +49,7 @@ export const handleLogin = (email, password) => {
   return (dispatch) => {
       dispatch(loginRequest());
       return (
-      request.post('/users/login')
+      request.post('/api/v1/users/login')
       .send({email, password})
       .then((response) => {
         localStorage.setItem('token', response.body.token);

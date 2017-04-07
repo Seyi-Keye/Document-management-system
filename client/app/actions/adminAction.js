@@ -46,24 +46,32 @@ export const createRoleError = (error) => {
 export const fetchRoleRequest = () => {
   return {type: ActionTypes.FETCH_ROLE_REQUEST};
 }
-export const fetchRoleSuccessful = () => {
+export const fetchRoleSuccessful = (role) => {
   return {type: ActionTypes.FETCH_ROLE_SUCCESSFUL, response: role};
 }
 export const fetchRoleError = (error) => {
   return {type: ActionTypes.FETCH_ROLE_FAIL, error: error};
 }
 
+export const searchUserRequest = () => {
+  return {type: ActionTypes.SEARCH_USER_REQUEST};
+}
+export const searchUserSuccessful = (users) => {
+  return {type: ActionTypes.SEARCH_USER_SUCCESSFUL, response: users};
+}
+export const searchUserError = (error) => {
+  return {type: ActionTypes.SEARCH_USER_FAIL, error: error};
+}
+
 export const handleUpdateUser = ({id, firstname, lastname}) => {
   return (dispatch) => {
       dispatch(UpdateUserRequest());
       const token = localStorage.getItem('token');
-      return request.put(`/users/${id}`)
+      return request.put(`/api/v1/users/${id}`)
       .set({ 'x-access-token': token })
       .send({firstname, lastname})
       .end((error, response) => {
-        console.log('response', response);
          if(error) {
-           console.log('Object.keys of error', Object.keys)
           toastr.error(error);
           return dispatch(UpdateUserError(error))
         }
@@ -77,7 +85,7 @@ export const handleFetchUsers = () => {
   return (dispatch) => {
     dispatch(fetchUserRequest());
       const token = localStorage.getItem('token');
-    return request.get('/users')
+    return request.get('/api/v1/users')
       .set({ 'x-access-token': token })
       .end((error, response) => {
          if(error) {
@@ -92,7 +100,7 @@ export const handleDeleteUser = (id) => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(deleteUserRequest());
-    return request.delete(`/users/${id}`)
+    return request.delete(`/api/v1/users/${id}`)
       .set({ 'x-access-token': token })
       .end((error, response) => {
          if(error) {
@@ -105,16 +113,13 @@ export const handleDeleteUser = (id) => {
   };
 
 export const handleCreateRole = (title) => {
-  console.log('title', title);
   return (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(createRoleRequest());
-    return request.post('/roles')
+    return request.post('/api/v1/roles')
       .set({ 'x-access-token': token })
       .send(title)
       .end((error, response) => {
-        console.log('req body', request.body)
-        console.log('response.body', response)
          if(error) {
           toastr.error('Duplicate Role is not allowed');
           return dispatch(createRoleError(error))
@@ -129,15 +134,31 @@ export const handleFetchRoles = () => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
     dispatch(fetchRoleRequest());
-    return request.get('/roles')
+    return request.get('/api/v1/roles')
       .set({ 'x-access-token': token })
       .end((error, response) => {
-        console.log('req body', request.body)
-        console.log('response.body', response)
          if(error) {
           return dispatch(fetchRoleError(error))
         }
-       return dispatch(fetchRoleSuccessful(title));
+       return dispatch(fetchRoleSuccessful(response.body));
       });
   };
+};
+
+export const handleSearchUsers = (username) => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    dispatch(searchUserRequest());
+    return request.get(`/api/v1/search/users/?query=${username}`)
+      .set({ 'x-access-token': token })
+      .send(username)
+      .end((error, response) => {
+         if(error) {
+          return dispatch(searchUserError(error))
+        }
+       return dispatch(searchUserSuccessful(response.body));
+      });
   };
+};
+
+

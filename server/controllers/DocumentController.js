@@ -132,12 +132,11 @@ const DocumentController = {
     const query = {
       where: {
         $and: [{ $or: [
-          { access: 'public' },
-          // { ownerId: req.decoded.UserId }
+          { access: 'public' }
         ] }],
       },
-      limit: req.query.limit,
-      offset: req.query.offset,
+      limit: req.query.limit || 10,
+      offset: req.query.offset || 0,
       order: '"createdAt" DESC'
     };
 

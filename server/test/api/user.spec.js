@@ -33,7 +33,7 @@ describe('User api', () => {
       .then((foundAdmin) => {
         adminRole = foundAdmin;
       });
-      request.post('/users')
+      request.post('/api/v1/users')
       .send(adminUserParam)
       .end((err, res) => {
         adminUser = res.body.user;
@@ -45,7 +45,7 @@ describe('User api', () => {
 
   describe('User sign in', () => {
     it('signs a user in with correct email and password', (done) => {
-      request.post('/users/login')
+      request.post('/api/v1/users/login')
         .send({ email: adminUser.email,
           password: adminUserParam.password })
         .expect(200)
@@ -56,7 +56,7 @@ describe('User api', () => {
     });
 
     it('fails on incorrect email and/or password', (done) => {
-      request.post('/users/login')
+      request.post('/api/v1/users/login')
         .send({ username: 'incorrect user',
           password: 'incorrect password' })
         .expect(401)
@@ -67,7 +67,7 @@ describe('User api', () => {
     });
 
     it('logs a user out', (done) => {
-      request.post('/users/logout')
+      request.post('/api/v1/users/logout')
         .expect(200)
         .end((err, res) => {
           expect(res.body.message).to.equal('You have been Logged out');
@@ -78,7 +78,7 @@ describe('User api', () => {
 
   describe('Create a user: Validation:', () => {
     it('creates a unique user', (done) => {
-      request.post('/users')
+      request.post('/api/v1/users')
         .send(adminUserParam)
         .expect(400)
         .end((err, res) => {
@@ -88,7 +88,7 @@ describe('User api', () => {
     });
 
     it('tests if new user has first name and last name', (done) => {
-      request.post('/users')
+      request.post('/api/v1/users')
         .set({ 'x-access-token': adminToken })
         .send(regularUserParam)
         .expect(200)
@@ -102,7 +102,7 @@ describe('User api', () => {
     });
 
     it('ensures new user has a role', (done) => {
-      request.post('/users')
+      request.post('/api/v1/users')
         .set({ 'x-access-token': adminToken })
         .expect(200)
         .end((err, res) => {
@@ -116,7 +116,7 @@ describe('User api', () => {
      password is lacking.`, (done) => {
       testUserParam.email = null;
       testUserParam.password = null;
-      request.post('/users')
+      request.post('/api/v1/users')
         .set({ 'x-access-token': adminToken })
         .send(testUserParam)
         .expect(422)
@@ -130,7 +130,7 @@ describe('User api', () => {
 
   describe('Find a user', () => {
     it('fails to get request if token is invalid', (done) => {
-      request.get('/users/')
+      request.get('/api/v1/users/')
         .set({ 'x-access-token': 'invalidXYZABCtoken' })
         .expect(406)
         .end((err, res) => {
@@ -140,7 +140,7 @@ describe('User api', () => {
     });
 
     it('returns error message for invalid input', (done) => {
-      request.get('/users/hello')
+      request.get('/api/v1/users/hello')
         .set({ 'x-access-token': adminToken })
         .expect(400)
         .end((err, res) => {
@@ -152,7 +152,7 @@ describe('User api', () => {
     });
 
     it('fails to return a user if id is invalid', (done) => {
-      request.get('/users/123')
+      request.get('/api/v1/users/123')
         .set({ 'x-access-token': adminToken })
         .expect(404)
         .end((err, res) => {
@@ -163,7 +163,7 @@ describe('User api', () => {
 
     it('returns all users with pagination', (done) => {
       const fields = ['id', 'username', 'lastname', 'email', 'RoleId'];
-      request.get('/users?limit=1&offset=0')
+      request.get('/api/v1/users?limit=1&offset=0')
         .set({ 'x-access-token': adminToken })
         .expect(200)
         .end((err, res) => {
@@ -177,7 +177,7 @@ describe('User api', () => {
     });
 
     it('returns user with a correct id', (done) => {
-      request.get(`/users/${regularUser.id}`)
+      request.get(`/api/v1/users/${regularUser.id}`)
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -189,7 +189,7 @@ describe('User api', () => {
 
   describe('Update user', () => {
     it('returns error message for invalid input', (done) => {
-      request.get('/users/hello')
+      request.get('/api/v1/users/hello')
         .set({ 'x-access-token': adminToken })
         .expect(400)
         .end((err, res) => {
@@ -201,7 +201,7 @@ describe('User api', () => {
     });
 
     it('fails to update a user that does not exist', (done) => {
-      request.put('/users/783')
+      request.put('/api/v1/users/783')
         .set({ 'x-access-token': adminToken })
         .expect(404)
         .end((err, res) => {
@@ -213,7 +213,7 @@ describe('User api', () => {
 
     it('returns all users with pagination', (done) => {
       const fields = ['id', 'username', 'lastname', 'email', 'RoleId'];
-      request.get('/users?limit=1&offset=0')
+      request.get('/api/v1/users?limit=1&offset=0')
         .set({ 'x-access-token': adminToken })
         .expect(200)
         .end((err, res) => {
@@ -227,7 +227,7 @@ describe('User api', () => {
     });
 
     it('returns user with a correct id', (done) => {
-      request.get(`/users/${regularUser.id}`)
+      request.get(`/api/v1/users/${regularUser.id}`)
         .set({ 'x-access-token': adminToken })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -237,7 +237,7 @@ describe('User api', () => {
     });
 
     it('fails to update a user if user is not authorized', (done) => {
-      request.put('/users/783')
+      request.put('/api/v1/users/783')
         .expect(401)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
@@ -249,7 +249,7 @@ describe('User api', () => {
 
     it('fails if a regular user is assigned an admin role by non-admin ',
     (done) => {
-      request.put('/users/2')
+      request.put('/api/v1/users/2')
         .set({ 'x-access-token': regularToken })
         .send({
           RoleId: 1,
@@ -266,7 +266,7 @@ describe('User api', () => {
 
     it('fails to update a user if request is not made by the user',
     (done) => {
-      request.put('/users/1')
+      request.put('/api/v1/users/1')
         .set({ 'x-access-token': regularToken })
         .send({
           firstname: 'Oluwaseyi',
@@ -281,7 +281,7 @@ describe('User api', () => {
     });
 
     it('edits and updates a user', (done) => {
-      request.put(`/users/${adminUser.id}`)
+      request.put(`/api/v1/users/${adminUser.id}`)
         .set({ 'x-access-token': adminToken })
         .send({
           firstname: 'Aromokeye',
@@ -300,7 +300,7 @@ describe('User api', () => {
 
   describe('Delete user', () => {
     it('returns error message for invalid input', (done) => {
-      request.get('/users/hello')
+      request.get('/api/v1/users/hello')
         .set({ 'x-access-token': adminToken })
         .expect(400)
         .end((err, res) => {
@@ -312,7 +312,7 @@ describe('User api', () => {
     });
 
     it('fails to delete a user by non-admin user', (done) => {
-      request.delete(`/users/${regularUser.id}`)
+      request.delete(`/api/v1/users/${regularUser.id}`)
         .set({ 'x-access-token': regularToken })
         .expect(401)
         .end((err, res) => {
@@ -324,7 +324,7 @@ describe('User api', () => {
     });
 
     it('fails when admin wants to delete self', (done) => {
-      request.delete(`/users/${adminUser.id}`)
+      request.delete(`/api/v1/users/${adminUser.id}`)
         .set({ 'x-access-token': adminToken })
         .expect(401)
         .end((err, res) => {
@@ -335,7 +335,7 @@ describe('User api', () => {
         });
     });
     it('fails to delete a user if user is not authorized', (done) => {
-      request.delete('/users/1')
+      request.delete('/api/v1/users/1')
         .expect(401)
         .end((err, res) => {
           expect(typeof res.body).to.equal('object');
@@ -345,7 +345,7 @@ describe('User api', () => {
     });
 
     it('fail to delete a user that does not exist', (done) => {
-      request.delete('/users/123')
+      request.delete('/api/v1/users/123')
         .set({ 'x-access-token': adminToken })
         .expect(404)
         .end((err, res) => {
@@ -356,7 +356,7 @@ describe('User api', () => {
     });
 
     it('finds and deletes a user if user exist', (done) => {
-      request.delete(`/users/${regularUser.id}`)
+      request.delete(`/api/v1/users/${regularUser.id}`)
         .set({ 'x-access-token': adminToken })
         .expect(200)
         .end((err, res) => {
