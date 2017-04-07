@@ -10,7 +10,7 @@ const publicDocument = helper.publicDocument;
 const adminUser = helper.adminUser;
 const regularUser = helper.regularUser;
 const privateDocument = helper.privateDocument;
-const request = supertest.agent(app);
+const server = supertest.agent(app);
 
 describe('Document API:', () => {
   let privateDoc;
@@ -25,16 +25,16 @@ describe('Document API:', () => {
     SeedHelper
       .init()
       .then(() => {
-        request
-          .post('/api/v1/users')
+        server
+          .post('api/v1/users')
           .send(adminUser)
           .end((err, res) => {
             admin = res.body.user;
             adminToken = res.body.token;
             privateDocument.OwnerId = admin.id;
 
-            request
-              .post('/api/v1/users')
+            server
+              .post('api/v1/users')
               .send(regularUser)
               .end((err, res) => {
                 regular = res.body.user;
@@ -54,8 +54,8 @@ describe('Document API:', () => {
 
   describe('Create document', () => {
     it('has published date', (done) => {
-      request
-        .post('/api/v1/documents')
+      server
+        .post('api/v1/documents')
         .set({'x-access-token': regularToken})
         .send(publicDocument)
         .expect(201)
@@ -86,8 +86,8 @@ describe('Document API:', () => {
     });
 
     it('ensures that document has an owner', (done) => {
-      request
-        .post('/api/v1/documents')
+      server
+        .post('api/v1/documents')
         .set({'x-access-token': adminToken})
         .send(privateDocument)
         .expect(200)
@@ -116,8 +116,8 @@ describe('Document API:', () => {
         content: 'content',
         OwnerId: 1
       };
-      request
-        .post('/api/v1/documents')
+      server
+        .post('api/v1/documents')
         .set({'x-access-token': adminToken})
         .send(nullTitleDoc)
         .expect(422)
@@ -132,8 +132,8 @@ describe('Document API:', () => {
 
   describe('Find document', () => {
     it('returns all documents with pagination', (done) => {
-      request
-        .get('/api/v1/documents?limit=1&offset=1')
+      server
+        .get('api/v1/documents?limit=1&offset=1')
         .set({'x-access-token': adminToken})
         .expect(200)
         .end((err, res) => {
@@ -150,8 +150,8 @@ describe('Document API:', () => {
     });
 
     it('returns error message for invalid input', (done) => {
-      request
-        .get('/api/v1/documents?limit=1&offset=asd')
+      server
+        .get('api/v1/documents?limit=1&offset=asd')
         .set({'x-access-token': adminToken})
         .expect(400)
         .end((err, res) => {
@@ -166,8 +166,8 @@ describe('Document API:', () => {
     });
 
     it('returns all document with specified id to its owner', (done) => {
-      request
-        .get('/api/v1/documents/1')
+      server
+        .get('api/v1/documents/1')
         .set({'x-access-token': regularToken})
         .expect(200)
         .end((err, res) => {
@@ -185,8 +185,8 @@ describe('Document API:', () => {
     });
 
     it('fails to return a non-existing document', (done) => {
-      request
-        .get('/api/v1/documents/123')
+      server
+        .get('api/v1/documents/123')
         .set({'x-access-token': adminToken})
         .expect(404)
         .end((err, res) => {
@@ -198,8 +198,8 @@ describe('Document API:', () => {
     });
 
     it('fails to return a document to non-permited users', (done) => {
-      request
-        .get('/api/v1/documents/2')
+      server
+        .get('api/v1/documents/2')
         .set({'x-access-token': regularToken})
         .expect(401)
         .end((err, res) => {
@@ -216,8 +216,8 @@ describe('Document API:', () => {
 
   describe('Update Document', () => {
     it('returns error message for invalid input', (done) => {
-      request
-        .get('/api/v1/documents/hello')
+      server
+        .get('api/v1/documents/hello')
         .set({'x-access-token': adminToken})
         .expect(400)
         .end((err, res) => {
@@ -235,8 +235,8 @@ describe('Document API:', () => {
       const newContent = {
         content: 'replace previous document'
       };
-      request
-        .put('/api/v1/documents/123')
+      server
+        .put('api/v1/documents/123')
         .set({'x-access-token': regularToken})
         .send(newContent)
         .expect(404)
@@ -252,8 +252,8 @@ describe('Document API:', () => {
       const newContent = {
         content: 'replace previous document'
       };
-      request
-        .put('/api/v1/documents/1')
+      server
+        .put('api/v1/documents/1')
         .send(newContent)
         .expect(401, done);
     });
@@ -262,8 +262,8 @@ describe('Document API:', () => {
       const newContent = {
         content: 'replace previous document'
       };
-      request
-        .put('/api/v1/documents/2')
+      server
+        .put('api/v1/documents/2')
         .set({'x-access-token': regularToken})
         .send(newContent)
         .end((err, res) => {
@@ -281,8 +281,8 @@ describe('Document API:', () => {
       const newContent = {
         content: 'replace previous document'
       };
-      request
-        .put('/api/v1/documents/2')
+      server
+        .put('api/v1/documents/2')
         .set({'x-access-token': adminToken})
         .send(newContent)
         .end((err, res) => {
@@ -299,8 +299,8 @@ describe('Document API:', () => {
 
   describe('Delete document', () => {
     it('returns error message for invalid input', (done) => {
-      request
-        .get('/api/v1/documents/hello')
+      server
+        .get('api/v1/documents/hello')
         .set({'x-access-token': adminToken})
         .expect(400)
         .end((err, res) => {
@@ -319,15 +319,15 @@ describe('Document API:', () => {
     const newContent = {
       content: 'replace previous document'
     };
-    request
-      .delete('/api/v1/documents/2')
+    server
+      .delete('api/v1/documents/2')
       .send(newContent)
       .expect(401, done);
   });
 
   it('fails to delete a document if request is not made by the owner', (done) => {
-    request
-      .delete('/api/v1/documents/2')
+    server
+      .delete('api/v1/documents/2')
       .set({'x-access-token': regularToken})
       .end((err, res) => {
         expect(res.status)
@@ -341,8 +341,8 @@ describe('Document API:', () => {
   });
 
   it('deletes a document', (done) => {
-    request
-      .delete('/api/v1/documents/1')
+    server
+      .delete('api/v1/documents/1')
       .set({'x-access-token': regularToken})
       .expect(200)
       .end((err, res) => {
@@ -357,8 +357,8 @@ describe('Document API:', () => {
   });
 
   it('Should fail if document does not exist', (done) => {
-    request
-      .delete('/api/v1/documents/123')
+    server
+      .delete('api/v1/documents/123')
       .set({'x-access-token': regularToken})
       .expect(404)
       .end((err, res) => {

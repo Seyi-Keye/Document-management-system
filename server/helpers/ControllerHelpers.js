@@ -5,7 +5,7 @@ const ControllerHelpers = {
  * @returns {array} error message
  */
   errorHandler(errors) {
-    return errors.map(error => error.message);
+    return errors && errors.map(error => error.message);
   }
 
 };
