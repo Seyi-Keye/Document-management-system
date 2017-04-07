@@ -7,7 +7,7 @@
     "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha ./server/test/**/*.spec.js",
     "coveralls": "nyc report --reporter=text-lcov |  coveralls",
     "start:dev": "nodemon .sequelizerc",
-    "start:seyi": "babel-node server.js",
+    "start": "babel-node server.js",
     "test": "npm run seed && npm run thetest",
     "test-travis": "npm run NODE_ENV=CI_TEST babel-node server/test/helpers/seedHelper.js && npm run NODE_ENV=CI_TEST mocha --compilers js:babel-core/register  ./server/test/**/*.spec.js",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
