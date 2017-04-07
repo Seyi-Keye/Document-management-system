@@ -12,36 +12,41 @@ import { Role, User } from '../../models';
 import SeedHelper from '../helpers/seedHelper';
 
 const expect = chai.expect;
-const request = supertest(app);
+const server = supertest(app);
 const userDetails = helper.userDetails;
 const adminRole = helper.adminRole;
 const regularRole = helper.regularRole;
 const res = httpMocks.createResponse({
   eventEmitter: events.EventEmitter
 });
-let token;
-let adminUser;
-let regularUser;
 
 describe('Middleware Unit Test', () => {
+  let token, adminUser, regularUser;
+
+  const promisify = (path, data) => new Promise((resolve, reject) => {
+    server
+      .post(path)
+      .set('Content-Type', 'application/json')
+      .send(data)
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+  });
   before((done) => {
     SeedHelper.init()
-      .then(() => {
-        Role.findOne({ where: { title: 'regular' } })
-        .then((found) => {
-          userDetails.RoleId = found.dataValues.id;
-          User.create(userDetails)
-          .then(() => {
-            request.post('/api/v1/users/login')
-            .send(userDetails)
-            .end((err, response) => {
-              if (err) return err;
-              token = response.body.token;
-              done();
-            });
-          });
-        });
-      });
+    .then(() => Role.findOne({ where: { title: 'regular' } }))
+    .then((res) => {
+      userDetails.RoleId = res.dataValues.id;
+    })
+    .then(() => promisify('/api/v1/users', userDetails))
+    .then(() => promisify('/api/v1/users/login', userDetails))
+    .then((res) => {
+      token = res.body.token;
+      done();
+    });
   });
 
   after((done) => {
@@ -69,21 +74,21 @@ describe('Middleware Unit Test', () => {
       authentication.verifyToken(req, res);
     });
 
-    // it('fails on wrong token', (done) => {
-    //   const req = httpMocks.createRequest({
-    //     method: 'GET',
-    //     url: '/api/v1/users',
-    //     headers: {
-    //       'x-access-token': 'goodmorning_andela'
-    //     }
-    //   });
-    //   authentication.verifyToken(req, res);
-    //   res.on('end', () => {
-    //     /* eslint-disable no-underscore-dangle */
-    //     expect(res._getData().message).to.equal('Invalid token');
-    //     done();
-    //   });
-    // });
+    it('fails on wrong token', (done) => {
+      const req = httpMocks.createRequest({
+        method: 'GET',
+        url: '/api/v1/users',
+        headers: {
+          'x-access-token': 'goodmorning_andela'
+        }
+      });
+      authentication.verifyToken(req, res);
+      res.on('end', () => {
+        /* eslint-disable no-underscore-dangle */
+        expect(res._getData().message).to.equal('Invalid token');
+        done();
+      });
+    });
 
     it('calls the next function on valid token', (done) => {
       const req = httpMocks.createRequest({
@@ -121,21 +126,21 @@ describe('Middleware Unit Test', () => {
   });
 
   describe('Validate Admin', () => {
-    // it('returns an error if user is not an admin', (done) => {
-    //   const req = httpMocks.createRequest({
-    //     method: 'GET',
-    //     url: '/api/v1/users',
-    //     decoded: {
-    //       RoleId: 2
-    //     }
-    //   });
-    //   res.on('end', () => {
-    //     expect(res._getData().message).to.equal(
-    //       'Token required to access this route');
-    //     done();
-    //   });
-    //   authentication.verifyToken(req, res);
-    // });
+    it('returns an error if user is not an admin', (done) => {
+      const req = httpMocks.createRequest({
+        method: 'GET',
+        url: '/api/v1/users',
+        decoded: {
+          RoleId: 2
+        }
+      });
+      res.on('end', () => {
+        expect(res._getData().message).to.equal(
+          'Token required to access this route');
+        done();
+      });
+      authentication.verifyToken(req, res);
+    });
 
     it('calls the next function for admin', (done) => {
       const req = httpMocks.createRequest({

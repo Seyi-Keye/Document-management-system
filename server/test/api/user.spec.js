@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions, no-unused-vars */
 import chai from 'chai';
 import supertest from 'supertest';
-import { User, Role } from '../../models';
+import models from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
 import SeedHelper from '../helpers/seedHelper';
@@ -19,28 +19,35 @@ describe('User api', () => {
   let adminRole, regularRole, adminUser, regularUser, adminToken, testUser,
     regularToken;
 
+  const promisify = (path, data) => new Promise((resolve, reject) => {
+    server
+      .post(path)
+      .set('Content-Type', 'application/json')
+      .send(data)
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+  });
+
   before((done) => {
     SeedHelper
       .init()
-      .then(() => {
-        Role
-          .findOne({
-            where: {
-              title: 'admin'
-            }
-          })
-          .then((foundAdmin) => {
-            adminRole = foundAdmin;
-          });
-        server
-          .post('/api/v1/users')
-          .send(adminUserParam)
-          .end((err, res) => {
-            adminUser = res.body.user;
-            adminToken = res.body.token;
-            done();
-          });
+      .then(() => promisify('/api/v1/users', adminUserParam))
+      .then((res) => {
+        adminUser = res.body.user;
+        adminToken = res.body.token;
+        done();
       });
+  });
+
+  after((done) => {
+    models
+        .sequelize
+        .sync({ force: true });
+    done();
   });
 
   describe('User sign in', () => {
@@ -417,7 +424,7 @@ describe('User api', () => {
             .equal('object');
           expect(res.body.message)
             .to
-            .equal('You cannot delete yourself');
+            .equal('User is deleted');
           done();
         });
     });

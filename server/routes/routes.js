@@ -30,7 +30,7 @@ UserController.findAllUsers);
 router.post('/api/v1/users/login', UserController.userLogin);
 router.post('/api/v1/users/logout', UserController.userLogout);
 
-router.route('api/v1/users/:id')
+router.route('/api/v1/users/:id')
 .get(authentication.verifyToken,
 UserController.findUser)
 .put(authentication.verifyToken,

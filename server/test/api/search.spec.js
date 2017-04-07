@@ -9,8 +9,8 @@ import SeedHelper from '../helpers/seedHelper';
 const server = supertest.agent(app);
 const expect = chai.expect;
 
-const adminRole = helper.adminRole;
-const regularRole = helper.regularRole;
+// const adminRole = helper.adminRole;
+// const regularRole = helper.regularRole;
 const adminUserDetails = helper.adminUser;
 const regularUserDetails = helper.regularUser;
 const publicDocument = helper.publicDocument;
@@ -20,44 +20,43 @@ describe('Search document', () => {
   // eslint-disable-line no-unused-vars
   let document, regularToken, privDocument, regularUser, adminUser, adminToken;
 
+  const promisify = (path, data, header) => new Promise((resolve, reject) => {
+    server
+      .post(path)
+      .set('Content-Type', 'application/json')
+      .set({ 'x-access-token': header || '' })
+      .send(data)
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+  });
+
   before((done) => {
     SeedHelper
       .init()
-      .then(() => {
-        server
-          .post('/api/v1/users')
-          .send(adminUserDetails)
-          .end((error, response) => {
-            adminUser = response.body.user;
-            adminToken = response.body.token;
-            privateDocument.OwnerId = response.body.user.id;
-
-            server
-              .post('/api/v1/users')
-              .send(regularUserDetails)
-              .end((err, res) => {
-                regularUser = res.body.user;
-                regularToken = res.body.token;
-                publicDocument.OwnerId = res.body.user.id;
-
-                server
-                  .post('/api/v1/documents')
-                  .set({ 'x-access-token': adminToken })
-                  .send(privateDocument)
-                  .end((err, res) => {
-                    privDocument = res.body;
-
-                    server
-                      .post('/api/v1/documents')
-                      .set({ 'x-access-token': regularToken })
-                      .send(publicDocument)
-                      .end((err, res) => {
-                        document = res.body;
-                        done();
-                      });
-                  });
-              });
-          });
+      .then(() => promisify('/api/v1/users', adminUserDetails))
+      .then((res) => {
+        adminUser = res.body.user;
+        adminToken = res.body.token;
+        privateDocument.OwnerId = res.body.user.id;
+      })
+      .then(() => promisify('/api/v1/users', regularUserDetails))
+      .then((res) => {
+        regularUser = res.body.user;
+        regularToken = res.body.token;
+        publicDocument.OwnerId = res.body.user.id;
+      })
+      .then(() => promisify('/api/v1/documents', privateDocument, adminToken))
+      .then((res) => {
+        privDocument = res.body;
+      })
+      .then(() => promisify('/api/v1/documents', publicDocument, regularToken))
+      .then((res) => {
+        document = res.body;
+        done();
       });
   });
 
@@ -101,7 +100,6 @@ describe('Search document', () => {
     });
 
 
-
     it('returns error message for invalid input', (done) => {
       server
         .get('/api/v1/documents/limit=1&offset=hello')
@@ -116,12 +114,6 @@ describe('Search document', () => {
             .equal('invalid input syntax for integer: "limit=1&offset=hello"');
           done();
         });
-    });
-  });
-
-  describe('Search User :', () => {
-    it('Search User', () => {
-      expect(true).equal(true);
     });
   });
 });

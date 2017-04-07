@@ -161,7 +161,7 @@ const UserController = {
    * @return {undefined} returns undefined
    * **/
   updateUser(req, res) {
-  User
+    User
   .findById(req.params.id, {})
   .then((user) => {
     if (!user) {
@@ -277,12 +277,11 @@ const UserController = {
       }
     })
     .then((user) => {
-      res.status(200).json({ user: user });
+      res.status(200).json({ user });
     })
     .catch((error) => {
       res.status(500).json({ user: 'Error occured' });
     });
-
   },
 
 

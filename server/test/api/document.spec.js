@@ -36,8 +36,7 @@ describe('Document API:', () => {
   before((done) => {
     SeedHelper
       .init()
-      .then(() => promisify('/api/v1/users', adminUser)
-      )
+      .then(() => promisify('/api/v1/users', adminUser))
       .then((res) => {
         admin = res.body.user;
         adminToken = res.body.token;
@@ -52,9 +51,9 @@ describe('Document API:', () => {
       });
   });
   after((done) => {
-    models
-        .sequelize
-        .sync({ force: true });
+    models.sequelize.sync({
+      force: true
+    });
     done();
   });
 
