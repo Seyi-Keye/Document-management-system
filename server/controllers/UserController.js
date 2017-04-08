@@ -37,13 +37,19 @@ const UserController = {
    * @return {undefined} returns undefined
    */
   createUser(req, res) {
+    if (req.body && Number(req.body.RoleId) === 1) {
+      res.status(400).json({
+        message: 'Creation of Admin User Forbidden'
+      });
+      return;
+    }
     User.create(req.body)
       .then((user) => {
         user = UserController.transformUser(user);
         const token = jwt.sign({
           UserId: user.id,
           RoleId: user.RoleId
-        }, process.env.SECRET, { expiresIn: '1h' });
+        }, process.env.SECRET, { expiresIn: '1 day' });
         return res.status(200).json({
           user,
           token
@@ -280,7 +286,7 @@ const UserController = {
       res.status(200).json({ user });
     })
     .catch((error) => {
-      res.status(500).json({ user: 'Error occured' });
+      res.status(500).json({ error: 'Error occured' });
     });
   },
 

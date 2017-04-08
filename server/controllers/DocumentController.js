@@ -9,7 +9,9 @@ const DocumentController = {
    * @returns {Object} res Response object
    */
   createDocument(req, res) {
-    Document.create(req.body)
+    const doc = req.body;
+    doc.OwnerId = req.decoded.UserId;
+    Document.create(doc)
       .then((document) => {
         res.status(201).json(document);
       }).catch((error) => {
@@ -32,14 +34,43 @@ const DocumentController = {
     .findAndCountAll({
       limit,
       offset,
-      order: '"createdAt" DESC'
+      order: '"createdAt" DESC',
+      include: [{
+        model: User,
+        attributes: ['RoleId']
+      }]
     })
-    .then((documents) => {
-      const pagination = limit && offset ? { totalCount: documents.count,
-        pages: Math.ceil(documents.count / limit),
+    .then((result) => {
+      const allDocuments = result.rows;
+      if (allDocuments.length <= 0) {
+        return res.status(404)
+        .send({
+          message: 'No document(s) found'
+        });
+      }
+      const documents = allDocuments.filter((document) => {
+        if (document.dataValues.access === 'public') {
+          return true;
+        }
+        if ((document.dataValues.access === 'private') &&
+        ((document.dataValues.OwnerId === req.decoded.UserId) ||
+        req.decoded.RoleId === 1)) {
+          return true;
+        }
+        if (
+          document.dataValues.access === 'role' &&
+          ((req.decoded.RoleId === document.dataValues.User.RoleId) ||
+          (req.decoded.RoleId === 1))) {
+          return true;
+        }
+        return false;
+      });
+
+      const pagination = limit && offset ? { totalCount: result.count,
+        pages: Math.ceil(result.count / limit),
         currentPage: Math.floor(offset / limit) + 1,
-        pageSize: documents.rows.length } : null;
-      res.status(200).send({ documents: documents.rows, pagination, });
+        pageSize: result.rows.length } : null;
+      res.status(200).send({ documents, pagination });
     })
     .catch(error => res.status(400).send({
       message: error.message

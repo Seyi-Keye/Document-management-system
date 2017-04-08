@@ -50,7 +50,6 @@ export default function document(state = documentsIntialState, action) {
   case ActionTypes.SEARCH_DOCUMENT_REQUEST:
     return { ...state, isLoading: true}
   case ActionTypes.SEARCH_DOCUMENT_SUCCESSFUL:
-  debugger;
     return {...state, documents: action.response.documents}
   case ActionTypes.SEARCH_DOCUMENT_FAIL:
     return {...state, error: action.error, hasError: true}
