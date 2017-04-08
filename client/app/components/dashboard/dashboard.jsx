@@ -1,20 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { browserHistory } from 'react-router'
-import  Documents from '../document/documents';
+import Documents from '../document/documents';
 
 class Dashboard extends React.Component {
   componentDidMount() {
     $('.collapsible').collapsible();
   }
-   render() {
-      return (
-         <div>
-            <h1>All Documents...</h1>
-            <Documents/>
-         </div>
-      )
-   }
+  render() {
+    return (
+      <div>
+        <h1>All Documents...</h1>
+        <Documents />
+      </div>
+    );
+  }
 }
 
 export default Dashboard;
