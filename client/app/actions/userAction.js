@@ -8,7 +8,6 @@ export const signUpRequest = () => ({
 export const signUpSuccessful = user => ({
   type: ActionTypes.SIGN_UP_SUCCESSFUL, response: user
 });
-
 export const signUpError = error => ({
   type: ActionTypes.SIGN_UP_FAIL, error
 });
