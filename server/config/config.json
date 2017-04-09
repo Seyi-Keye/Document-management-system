@@ -7,9 +7,6 @@
     "dialect": "postgres",
     "logging": true
   },
-  "CI_TEST": {
-    "use_env_variable": "TESTDB"
-    },
   "test": {
     "username": "",
     "password": "",

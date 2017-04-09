@@ -9,7 +9,6 @@
     "start:dev": "nodemon .sequelizerc",
     "start": "babel-node server.js",
     "test": "npm run seed && npm run thetest",
-    "test-travis": "NODE_ENV=CI_TEST babel-node server/test/helpers/seedHelper.js && NODE_ENV=CI_TEST  mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
     "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
     "test:watch": "npm run test -- --watch",
