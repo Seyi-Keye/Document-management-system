@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import * as userAction from '../../actions/userAction.js';
+import { Input, Button, Row, Col } from 'react-materialize';
 import toastr from 'toastr';
-import { Input, Button, Row, Col, Icon } from 'react-materialize';
+import * as userAction from '../../actions/userAction.js';
 
 class SignUpForm extends React.Component {
 
@@ -23,8 +23,8 @@ class SignUpForm extends React.Component {
   }
 
   handleChange(event) {
-     this.setState({ [event.target.name]: event.target.value });
-   }
+    this.setState({ [event.target.name]: event.target.value });
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -36,43 +36,43 @@ class SignUpForm extends React.Component {
 
   render() {
     return (
-       <form onSubmit={this.handleSubmit}>
-          {this.props.hasError && toastr.error(this.props.error)}
+      <form onSubmit={this.handleSubmit}>
+        {this.props.hasError && toastr.error(this.props.error)}
 
-          <Row>
-             <h4>SIGNUP FORM:</h4>
-             <Input
-className="formControl" name="firstname" s={6}
+        <Row>
+          <h4>SIGNUP FORM:</h4>
+          <Input
+          className="formControl" name="firstname" s={6}
               label="First Name" value={this.state.firstname}
               onChange={this.handleChange} />
-             <Input
-name="lastname" className="formControl" s={6}
+          <Input
+          name="lastname" className="formControl" s={6}
               label="Last Name"
               value={this.state.lastname} onChange={this.handleChange} />
-             <Input
-name="username" className="formControl" s={6}
+          <Input
+          name="username" className="formControl" s={6}
               label="Username"
               value={this.state.username} onChange={this.handleChange} />
-             <Input
-name="password" className="formControl" type="password"
+          <Input
+          name="password" className="formControl" type="password"
               label="Password"
               value={this.state.password} onChange={this.handleChange} s={6} />
-             <Input
-name="passwordConfirmation" className="formControl" s={6}
+          <Input
+          name="passwordConfirmation" className="formControl" s={6}
               type="password"
               label="Password confirmation"
               value={this.state.passwordConfirmation}
               onChange={this.handleChange} />
-             <Input
-name="email" className="formControl" type="email"
+          <Input
+          name="email" className="formControl" type="email"
               label="Email" s={6}
               value={this.state.email} onChange={this.handleChange} />
-             <Col s={7}>
-                <Button className="button" waves="light">Sign Up</Button>
-              </Col>
-           </Row>
-        </form>
-     );
+          <Col s={7}>
+            <Button className="button" waves="light">Sign Up</Button>
+          </Col>
+        </Row>
+      </form>
+    );
   }
 }
 
