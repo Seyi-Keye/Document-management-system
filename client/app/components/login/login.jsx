@@ -5,7 +5,7 @@ import { browserHistory,  Route, Redirect  } from 'react-router';
 import * as userAction from '../../actions/userAction.js';
 import { Button, Col, Input, Row } from 'react-materialize';
 
-class Login extends React.Component {
+export class Login extends React.Component {
   constructor(props) {
     super(props);
       this.state = {
@@ -47,13 +47,13 @@ class Login extends React.Component {
   }
 }
 
-const stateToProps = (state) => {
+export const stateToProps = (state) => {
   return {
     user: state.user
   }
 };
 
-const dispatchToProps = (dispatch) => {
+export const dispatchToProps = (dispatch) => {
   return {
     handleLogin: (email, password) => dispatch(userAction.handleLogin(email, password))
   };

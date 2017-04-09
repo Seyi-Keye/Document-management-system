@@ -17,12 +17,14 @@ global.navigator = {
   userAgent: 'node.js'
 };
 
-process.env.NODE_ENV = 'test';
-
 function noop() {
   return null;
 }
-
+global.localStorage = {
+  getItem: () => 'we have a token',
+  setItem: noop,
+}
+global.$ = () => ({collapsible: () => null });
 require.extensions['.css'] = noop;
 require.extensions['.scss'] = noop;
 require.extensions['.md'] = noop;

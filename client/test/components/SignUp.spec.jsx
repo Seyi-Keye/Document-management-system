@@ -3,15 +3,11 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { browserHistory } from 'react-router';
-import { Input, Button, Row, Col } from 'react-materialize';
+import { Input, Col } from 'react-materialize';
 
 
 import { SignUpForm, stateToProps, dispatchToProps } from '../../app/components/signUp/signUp';
 
-// describe('SignUp Component Test:', () => {
-//   it('it', () => {
-//   });
-// });
 describe('Describe <SignUp /> Component:', () => {
   let wrapper;
   const initialState = {

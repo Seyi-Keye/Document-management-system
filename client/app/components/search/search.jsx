@@ -7,7 +7,7 @@ import toastr from 'toastr';
 import jwt from 'jwt-decode';
 import { Input, Button, Row, Col, Icon } from 'react-materialize';
 
-class Search extends React.Component {
+export class Search extends React.Component {
 
   constructor(props) {
     super(props);
@@ -87,7 +87,7 @@ class Search extends React.Component {
   }
 }
 
-const stateToProps = (state, ownProps) => {
+export const stateToProps = (state, ownProps) => {
   const searchQuery = ownProps.location.query.query;
   return {
     searchQuery,
@@ -96,7 +96,7 @@ const stateToProps = (state, ownProps) => {
   };
 };
 
-const dispatchToProps = (dispatch) => {
+export const dispatchToProps = (dispatch) => {
   return {
   handleSearchUsers: (searchQeury) => dispatch(adminAction.handleSearchUsers(searchQeury)),
   handleSearchDocuments: (searchQeury) => dispatch(documentAction.handleSearchDocuments(searchQeury))

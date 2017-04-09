@@ -7,7 +7,7 @@ import { Form, Input, Button, Row, Col, Icon } from 'react-materialize';
 
 import toastr from 'toastr';
 
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
