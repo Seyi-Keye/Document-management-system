@@ -5,7 +5,7 @@ import { browserHistory, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction.js';
 import { Input} from 'react-materialize';
 
-class AddDocument extends React.Component {
+export class AddDocument extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -77,13 +77,13 @@ class AddDocument extends React.Component {
    }
 }
 
-const stateToProps = (state) => {
+export const stateToProps = (state) => {
   return {
     documents: state.document,
   }
 };
 
-const dispatchToProps = (dispatch) => {
+export const dispatchToProps = (dispatch) => {
   return {
     handleCreateDocument: (title, content, access) => dispatch(documentAction.handleCreateDocument(title, content, access))
   };

@@ -1,7 +1,7 @@
 import React from 'react';
-import Documents from '../document/documents';
+import Documents from '../document/Documents';
 
-class Dashboard extends React.Component {
+export class Dashboard extends React.Component {
   componentDidMount() {
     $('.collapsible').collapsible();
   }

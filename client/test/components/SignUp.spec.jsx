@@ -4,8 +4,6 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import { browserHistory } from 'react-router';
 import { Input, Col } from 'react-materialize';
-
-
 import { SignUpForm, stateToProps, dispatchToProps } from '../../app/components/signUp/signUp';
 
 describe('Describe <SignUp /> Component:', () => {

@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import jwt from 'jwt-decode';
+const jwt  = require('jwt-decode');
 import _ from 'underscore';
 import { browserHistory, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction.js';
 import { Input} from 'react-materialize';
 
-class UpdateDocument extends React.Component {
+export class UpdateDocument extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,9 +83,12 @@ class UpdateDocument extends React.Component {
    }
 }
 
-const stateToProps = (state, ownProps) => {
+export const stateToProps = (state, ownProps) => {
   const token = localStorage.getItem('token');
+  console.log(token, 'did we get to the token')
+  console.log(jwt.toString(), 'tostrings');
   const decoded = jwt(token);
+  console.log(decoded, 'decoded');
   const documentId = ownProps.params.id;
   const doc = _.findWhere(state.document[0], {id: parseInt(documentId, 10)});
   console.log(doc);
@@ -95,10 +98,10 @@ const stateToProps = (state, ownProps) => {
   }
 };
 
-const dispatchToProps = (dispatch) => {
+export const dispatchToProps = (dispatch) => {
   return {
     handleUpdateDocument: (id, title, content, access) =>
-    dispatch(documentAction.handleUpdateDocument(id, title, content, access))
+    dispatch(documentAction.handleUpdateDocument({id, title, content, access}))
   };
 }
 

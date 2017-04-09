@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import jwt from 'jwt-decode';
 import * as documentAction from '../../actions/documentAction.js';
 
-class Documents extends React.Component {
+export class Documents extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +24,7 @@ class Documents extends React.Component {
   }
 
   handleDelete(e) {
+    console.log(e.target, 'target');
     const id = e.target.id;
     this.props.handleDeleteDocument(id);
   }
@@ -66,13 +67,13 @@ class Documents extends React.Component {
   }
 }
 
-const stateToProps = (state, ownProps) => {
+export const stateToProps = (state, ownProps) => {
   const token = localStorage.getItem('token');
   const decoded = jwt(token);
   return { user: decoded, documents: state.document }
 };
 
-const dispatchToProps = (dispatch) => {
+export const dispatchToProps = (dispatch) => {
   return {
     handleFetchDocuments: () => dispatch(documentAction.handleFetchDocuments()),
     handleDeleteDocument: id => dispatch(documentAction.handleDeleteDocument(id))

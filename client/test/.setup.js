@@ -21,7 +21,7 @@ function noop() {
   return null;
 }
 global.localStorage = {
-  getItem: () => 'we have a token',
+  getItem: () => 'atokenforall',
   setItem: noop,
 }
 global.$ = () => ({collapsible: () => null });

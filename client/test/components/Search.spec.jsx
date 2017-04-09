@@ -9,9 +9,6 @@ import { Search, stateToProps, dispatchToProps } from '../../app/components/sear
 
 describe('Describe <Search /> Component:', () => {
   let wrapper;
-  // beforeEach(() => {
-  //   wrapper = shallow(<Search />);
-  // });
 
   it('should fire ComponentWillMount', () => {
     const someDocuments = [{title: 'ttt', content: 'hello', id: 4}];
