@@ -5,7 +5,7 @@ import { Input, Button, Row, Col } from 'react-materialize';
 import toastr from 'toastr';
 import * as userAction from '../../actions/userAction.js';
 
-class SignUpForm extends React.Component {
+export class SignUpForm extends React.Component {
 
   constructor(props) {
     super(props);
@@ -76,16 +76,16 @@ class SignUpForm extends React.Component {
   }
 }
 
-const stateToProps = state => ({
+export const stateToProps = state => ({
   user: state.user.currentUser,
   error: state.user.error,
   hasError: state.user.hasError
 });
 
-const dispatchToProps = dispatch => ({
+export const dispatchToProps = dispatch => ({
   handleSignUp: (firstname, lastname, username, password,
-    passwordConfirmation,email) => dispatch(userAction.handleSignUp(firstname, lastname,
-    username, password, passwordConfirmation,email))
+    passwordConfirmation, email) => dispatch(userAction.handleSignUp(firstname, lastname,
+    username, password, passwordConfirmation, email))
 });
 
 export default connect(stateToProps, dispatchToProps)(SignUpForm);
