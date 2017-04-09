@@ -25,12 +25,12 @@ module.exports = {
   },
 
   adminUser: {
-    firstname: faker.name.firstName(),
-    lastname: faker.name.lastName(),
-    username: faker.internet.userName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    RoleId: 1
+    firstname: 'admin',
+    lastname: 'admin',
+    username: 'admin',
+    email: 'admin@gmail.com',
+    password: 'password',
+    RoleId: '1'
   },
   adminUser1: {
     firstname: 'fatima',

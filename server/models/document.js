@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: { isIn: [['private', 'public', 'role']] }
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         min: 3

@@ -11,9 +11,9 @@ class SeedHelper {
    */
   static init() {
     return db.sequelize.sync({ force: true })
-    .then(() => {
-      SeedHelper.populateRoleTable();
-    });
+    .then(() => Promise.all([SeedHelper.populateRoleTable(),
+      SeedHelper.populateUserTable()]), (err) => console.log('error from sync', err)
+    );
   }
 
   /**
@@ -30,6 +30,22 @@ class SeedHelper {
       },
     ];
     return db.Role.bulkCreate(roles);
+  }
+  /**
+   * Populates db with default user
+   * @returns {object} - A Promise object
+   */
+  static populateUserTable() {
+    const user =
+      {
+        firstname: 'admin',
+        lastname: 'admin',
+        username: 'admin',
+        password: 'password',
+        email: 'admin@gmail.com',
+        RoleId: 1
+      };
+    return db.User.create(user);
   }
 }
 

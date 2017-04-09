@@ -14,6 +14,10 @@ const DocumentController = {
     Document.create(doc)
       .then((document) => {
         res.status(201).json(document);
+      }, (err) => {
+        res.status(500).json({
+          message: ControllerHelpers.errorHandler(err.errors)
+        });
       }).catch((error) => {
         res.status(500).json({
           message: ControllerHelpers.errorHandler(error.errors)

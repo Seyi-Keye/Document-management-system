@@ -2,6 +2,7 @@
 import chai from 'chai';
 import models from '../../models';
 import helper from '../helpers/specHelpers';
+import SeedHelper from '../helpers/seedHelper';
 
 const expect = chai.expect;
 
@@ -13,6 +14,19 @@ const User = models.User;
 let newUser;
 
 describe('User Model Unit Test', () => {
+  before((done) => {
+    SeedHelper
+      .init()
+      .then(() => {
+        done();
+      });
+  });
+  after((done) => {
+    models.sequelize.sync({
+      force: true
+    }).then(() => done());
+  });
+
   describe('Create User', () => {
     it('ensures a new user is created', (done) => {
       User.create(regularUser)

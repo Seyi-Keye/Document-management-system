@@ -36,9 +36,11 @@ describe('Document API:', () => {
   before((done) => {
     SeedHelper
       .init()
-      .then(() => promisify('/api/v1/users', adminUser))
       .then((res) => {
-        admin = res.body.user;
+        admin = res[1];
+        return promisify('/api/v1/users/login', adminUser);
+      })
+      .then((res) => {
         adminToken = res.body.token;
         privateDocument.OwnerId = admin.id;
         return promisify('/api/v1/users', regularUser);
@@ -53,10 +55,8 @@ describe('Document API:', () => {
   after((done) => {
     models.sequelize.sync({
       force: true
-    });
-    done();
+    }).then(() => done());
   });
-
   it('Create document: has published date', (done) => {
     server
         .post('/api/v1/documents')

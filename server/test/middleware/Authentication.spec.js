@@ -8,7 +8,7 @@ import supertest from 'supertest';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
 import authentication from '../../middleware/Authentication';
-import { Role, User } from '../../models';
+import models from '../../models';
 import SeedHelper from '../helpers/seedHelper';
 
 const expect = chai.expect;
@@ -16,13 +16,15 @@ const server = supertest(app);
 const userDetails = helper.userDetails;
 const adminRole = helper.adminRole;
 const regularRole = helper.regularRole;
-const res = httpMocks.createResponse({
-  eventEmitter: events.EventEmitter
-});
+
 
 describe('Middleware Unit Test', () => {
-  let token, adminUser, regularUser;
-
+  let token, adminUser, regularUser, res;
+  beforeEach(() => {
+    res = httpMocks.createResponse({
+      eventEmitter: events.EventEmitter
+    });
+  });
   const promisify = (path, data) => new Promise((resolve, reject) => {
     server
       .post(path)
@@ -37,7 +39,7 @@ describe('Middleware Unit Test', () => {
   });
   before((done) => {
     SeedHelper.init()
-    .then(() => Role.findOne({ where: { title: 'regular' } }))
+    .then(() => models.Role.findOne({ where: { title: 'regular' } }))
     .then((res) => {
       userDetails.RoleId = res.dataValues.id;
     })
@@ -50,13 +52,9 @@ describe('Middleware Unit Test', () => {
   });
 
   after((done) => {
-    User.destroy({
-      where: {}
-    });
-    Role.destroy({
-      where: {}
-    });
-    done();
+    models.sequelize.sync({
+      force: true
+    }).then(() => done());
   });
 
   describe('Verify Token', () => {
@@ -112,7 +110,7 @@ describe('Middleware Unit Test', () => {
       done) => {
       const req = httpMocks.createRequest({
         method: 'POST',
-        url: '/api/v1users/login',
+        url: '/api/v1/users/login',
       });
       const middlewareStub = {
         callback: () => {}
@@ -136,7 +134,7 @@ describe('Middleware Unit Test', () => {
       });
       res.on('end', () => {
         expect(res._getData().message).to.equal(
-          'Token required to access this route');
+          'Token required for access');
         done();
       });
       authentication.verifyToken(req, res);

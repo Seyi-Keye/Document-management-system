@@ -37,11 +37,13 @@ describe('Search document', () => {
   before((done) => {
     SeedHelper
       .init()
-      .then(() => promisify('/api/v1/users', adminUserDetails))
       .then((res) => {
-        adminUser = res.body.user;
+        adminUser = res[1];
+        return promisify('/api/v1/users/login', adminUserDetails);
+      })
+      .then((res) => {
         adminToken = res.body.token;
-        privateDocument.OwnerId = res.body.user.id;
+        privateDocument.OwnerId = adminUser.id;
       })
       .then(() => promisify('/api/v1/users', regularUserDetails))
       .then((res) => {
@@ -60,8 +62,10 @@ describe('Search document', () => {
       });
   });
 
-  after(() => {
-    models.sequelize.sync({ force: true });
+  after((done) => {
+    models.sequelize.sync({
+      force: true
+    }).then(() => done());
   });
 
   describe('Search document', () => {

@@ -11,7 +11,7 @@ const expect = chai.expect;
 
 const adminRoleParam = helper.adminRole;
 const regularRoleParam = helper.regularRole;
-const adminUserParam = helper.adminUser1;
+const adminUserParam = helper.adminUser;
 const regularUserParam = helper.regularUser;
 const testUserParam = helper.userDetails;
 
@@ -19,7 +19,7 @@ describe('User api', () => {
   let adminRole, regularRole, adminUser, regularUser, adminToken, testUser,
     regularToken;
 
-  const promisify = (path, data) => new Promise((resolve, reject) => {
+  const promisify = (path, data, token) => new Promise((resolve, reject) => {
     server
       .post(path)
       .set('Content-Type', 'application/json')
@@ -35,19 +35,20 @@ describe('User api', () => {
   before((done) => {
     SeedHelper
       .init()
-      .then(() => promisify('/api/v1/users', adminUserParam))
       .then((res) => {
-        adminUser = res.body.user;
+        adminUser = res[1];
+        return promisify('/api/v1/users/login', adminUserParam);
+      })
+      .then((res) => {
         adminToken = res.body.token;
         done();
       });
   });
 
   after((done) => {
-    models
-        .sequelize
-        .sync({ force: true });
-    done();
+    models.sequelize.sync({
+      force: true
+    }).then(() => done());
   });
 
   describe('User sign in', () => {
@@ -90,16 +91,16 @@ describe('User api', () => {
     });
   });
 
-  describe('Create a user: Validation:', () => {
-    it('creates a unique user', (done) => {
+  describe('Create an Admin user: Validation:', () => {
+    it('fails to create an admin user', (done) => {
       server
         .post('/api/v1/users')
         .send(adminUserParam)
         .expect(400)
         .end((err, res) => {
-          expect(res.body.message[0])
+          expect(res.body.message)
             .to
-            .equal('username must be unique');
+            .equal('Creation of Admin User Forbidden');
           done();
         });
     });

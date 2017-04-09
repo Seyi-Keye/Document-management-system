@@ -26,18 +26,7 @@ describe('Role Api:', () => {
   });
 
   before((done) => {
-    SeedHelper
-      .init()
-      .then(() => models.Role
-      .findOne({
-        where: {
-          title: 'admin'
-        }
-      }))
-  .then((foundAdmin) => {
-    adminUser.RoleId = foundAdmin.dataValues.id;
-    return models.User.create(adminUser);
-  })
+    SeedHelper.init()
   .then(() => promisify('/api/v1/users/login', adminUser))
   .then((res) => {
     token = res.body.token;
@@ -55,10 +44,9 @@ describe('Role Api:', () => {
   });
 
   after((done) => {
-    models
-      .sequelize
-      .sync({ force: true });
-    done();
+    models.sequelize.sync({
+      force: true
+    }).then(() => done());
   });
 
   describe('Create Role', () => {
