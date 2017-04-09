@@ -10,8 +10,8 @@
     "start": "babel-node server.js",
     "test": "npm run seed && npm run thetest",
     "test-travis": "npm run NODE_ENV=CI_TEST babel-node server/test/helpers/seedHelper.js && npm run NODE_ENV=CI_TEST mocha --compilers js:babel-core/register  ./server/test/**/*.spec.js",
-    "seed": "NODE_ENV=CI_TEST babel-node server/test/helpers/seedHelper.js",
-    "thetest": "NODE_ENV=CI_TEST mocha --compilers js:babel-core/register  ./server/test/**/*.spec.js",
+    "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
+    "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
     "test:watch": "npm run test -- --watch",
     "e2e": "node_modules/.bin/nightwatch --config nightwatch.config.js"
   },
@@ -36,6 +36,7 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.22.0",
+    "babel-register": "^6.24.1",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "chai": "^3.5.0",
