@@ -12,8 +12,7 @@
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
     "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
     "test:watch": "npm run test -- --watch",
-    "e2e-setup": "node_modules/selenium-standalone/bin/selenium-standalone install",
-    "e2e": "node_modules/.bin/nightwatch --config nightwatch.config.js"
+    "e2e": "nightwatch --config nightwatch.conf.js"
   },
   "repository": {
     "type": "git",

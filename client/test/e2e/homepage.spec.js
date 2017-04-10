@@ -1,10 +1,12 @@
-module.exports = {
-  'Home page': (browser) => {
+const config = require('../../../nightwatch.conf');
+
+module.exports = { // adapted from: https://git.io/vodU0
+  'Guinea Pig Assert Title': function(browser) {
     browser
-      .url('http://localhost:5000')
-      .waitForElementVisible('head')
-      .assert
-      .title('KEYE-DOCS')
+      .url('https://saucelabs.com/test/guinea-pig')
+      .waitForElementVisible('body')
+      .assert.title('I am a page title - Sauce Labs')
+      .saveScreenshot('guinea-pig-test.png')
       .end();
-  },
+  }
 };
