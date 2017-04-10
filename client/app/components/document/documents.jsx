@@ -35,7 +35,7 @@ export class DocumentsComponent extends React.Component {
           <h5>{document.title}</h5>
           { document.OwnerId === this.props.user.UserId ?
             <div>
-              <button><Link to={`updateDoc/${document.id}`}>
+              <button><Link to={`documents/${document.id}`}>
                 <i className="material-icons">edit</i></Link>
               </button>
               <button id={document.id} onClick={this.handleDelete}>

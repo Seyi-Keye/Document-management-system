@@ -38,8 +38,8 @@ render(
         <Route path="signup" component={SignUpForm} onEnter={onEnter} />
         <Route path="login" component={Login} onEnter={onEnter} />
         <Route path="dashboard" component={Dashboard} onEnter={onEnter} />
-        <Route path="updateDoc" component={UpdateDocument} onEnter={onEnter} />
-        <Route path="updateUser/:id" component={UpdateUser} onEnter={onEnter} />
+        <Route path="documents" component={UpdateDocument} onEnter={onEnter} />
+        <Route path="users/:id" component={UpdateUser} onEnter={onEnter} />
         <Route path="users" component={Users} onEnter={onEnter} />
         <Route path="roles" component={Roles} onEnter={onEnter} />
         <Route path="search" component={Search} onEnter={onEnter} />

@@ -177,8 +177,8 @@ const DocumentController = {
 
     if (userQuery) {
       query.where.$and.push({ $or: [
-        { title: { $like: `%${userQuery}%` } },
-        { content: { $like: `%${userQuery}%` } },
+        { title: { $ilike: `%${userQuery}%` } },
+        { content: { $ilike: `%${userQuery}%` } },
       ] });
     }
     Document.findAndCountAll(query)

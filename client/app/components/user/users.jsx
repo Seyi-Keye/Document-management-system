@@ -34,7 +34,7 @@ class Users extends React.Component {
           <i className="material-icons">filter_drama</i>
           <h5>Username:{user.username} {user.firstname} {user.lastname}</h5>
           <div>
-            <button><Link to={`updateUser/${user.id}`}>
+            <button><Link to={`users/${user.id}`}>
               <i className="material-icons">edit</i></Link>
             </button>
             <button id={user.id} onClick={this.handleDelete}>
