@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/andela-oaromokeye/Document-management-system.svg?branch=staging)](https://travis-ci.org/andela-oaromokeye/Document-management-system)
 
+[![Coverage Status](https://coveralls.io/repos/github/andela-oaromokeye/Document-management-system/badge.svg?branch=master)](https://coveralls.io/github/andela-oaromokeye/Document-management-system?branch=staging)
+
+[![Code Climate](https://codeclimate.com/github/andela-oaromokeye/Document-management-system/badges/gpa.svg)](https://codeclimate.com/github/andela-oaromokeye/Document-management-system)
+
 # DOCUMENT MANAGEMENT SYSTEM
 
 About the Application

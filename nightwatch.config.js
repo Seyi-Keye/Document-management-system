@@ -1,9 +1,11 @@
 require('env2')('.env'); // optionally store youre Evironment Variables in .env
+require('babel-core/register');
+const path = require('path');
 const SCREENSHOT_PATH = "./screenshots/";
 const BINPATH = './node_modules/nightwatch/bin/';
 // we use a nightwatch.conf.js file so we can include comments and helper functions
 module.exports = {
-  "src_folders": ["client/test/e2e"],
+  "src_folders": [path.resolve("client/test/e2e")],
   "output_folder": "reports",
   "custom_commands_path": "",
   "custom_assertions_path": "",
@@ -11,13 +13,13 @@ module.exports = {
   "globals_path": "globals",
 
   "selenium": {
-    "start_process": true,
+    "start_process": false,
     "server_path": "./bin/selenium-server/3.3.1-server.jar",
     "log_path": "./reports",
     "host": "127.0.0.1",
     "port": 4444,
     "cli_args": {
-      "webdriver.chrome.driver": "./bin/chromedriver/2.28-x64-chromedriver"
+      "webdriver.chrome.driver": "/usr/local/bin/chromedriver"
     }
   },
   "test_settings": {
