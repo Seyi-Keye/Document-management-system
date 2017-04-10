@@ -74,10 +74,11 @@ export const handleFetchDocuments = () => (dispatch) => {
       });
 };
 
-export const handleUpdateDocument = ({ id, title, content, access }) => (dispatch) => {
-  dispatch(updateDocumentRequest());
-  const token = localStorage.getItem('token');
-  return request
+export const handleUpdateDocument = ({ id, title, content, access }) =>
+  (dispatch) => {
+    dispatch(updateDocumentRequest());
+    const token = localStorage.getItem('token');
+    return request
       .put(`/api/v1/documents/${id}`)
       .set({ 'x-access-token': token })
       .send({ title, content, access })
@@ -88,7 +89,7 @@ export const handleUpdateDocument = ({ id, title, content, access }) => (dispatc
         toastr.success('Update on document was successful');
         return dispatch(updateDocumentSuccessful(response.body.documents));
       });
-};
+  };
 
 export const handleDeleteDocument = id => (dispatch) => {
   const token = localStorage.getItem('token');
@@ -96,7 +97,7 @@ export const handleDeleteDocument = id => (dispatch) => {
   return request
       .delete(`/api/v1/documents/${id}`)
       .set({ 'x-access-token': token })
-      .end((error, response) => {
+      .end((error) => {
         if (error) {
           return dispatch(deleteDocumentError(error));
         }

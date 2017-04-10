@@ -12,7 +12,8 @@ class SeedHelper {
   static init() {
     return db.sequelize.sync({ force: true })
     .then(() => Promise.all([SeedHelper.populateRoleTable(),
-      SeedHelper.populateUserTable()]), (err) => console.log('error from sync', err)
+      SeedHelper.populateUserTable()]), err =>
+      console.log(err, 'this is our error'),
     );
   }
 
@@ -26,7 +27,7 @@ class SeedHelper {
         title: 'admin',
       },
       {
-        title: 'regular'
+        title: 'regular',
       },
     ];
     return db.Role.bulkCreate(roles);
@@ -43,7 +44,7 @@ class SeedHelper {
         username: 'admin',
         password: 'password',
         email: 'admin@gmail.com',
-        RoleId: 1
+        RoleId: 1,
       };
     return db.User.create(user);
   }

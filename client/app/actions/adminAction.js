@@ -79,7 +79,7 @@ export const handleDeleteUser = id => (dispatch) => {
   dispatch(deleteUserRequest());
   return request.delete(`/api/v1/users/${id}`)
       .set({ 'x-access-token': token })
-      .end((error, response) => {
+      .end((error) => {
         if (error) {
           return dispatch(deleteUserError(error));
         }
@@ -94,7 +94,7 @@ export const handleCreateRole = title => (dispatch) => {
   return request.post('/api/v1/roles')
       .set({ 'x-access-token': token })
       .send(title)
-      .end((error, response) => {
+      .end((error) => {
         if (error) {
           toastr.error('Duplicate Role is not allowed');
           return dispatch(createRoleError(error));

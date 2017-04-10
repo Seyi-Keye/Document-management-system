@@ -32,7 +32,7 @@ const RoleController = {
             totalCount: role.count,
             pages: Math.ceil(role.count / limit),
             currentPage: Math.floor(offset / limit) + 1,
-            pageSize: role.rows.lenght
+            pageSize: role.rows.lenght,
           }
           : null;
         res
@@ -94,7 +94,7 @@ const RoleController = {
         }
       })
       .catch(error => res.status(500).json({ error: error.message }));
-  }
+  },
 
 };
 

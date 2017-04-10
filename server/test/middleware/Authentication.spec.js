@@ -14,15 +14,15 @@ import SeedHelper from '../helpers/seedHelper';
 const expect = chai.expect;
 const server = supertest(app);
 const userDetails = helper.userDetails;
-const adminRole = helper.adminRole;
-const regularRole = helper.regularRole;
 
 
 describe('Middleware Unit Test', () => {
-  let token, adminUser, regularUser, res;
+  let
+    token,
+    res;
   beforeEach(() => {
     res = httpMocks.createResponse({
-      eventEmitter: events.EventEmitter
+      eventEmitter: events.EventEmitter,
     });
   });
   const promisify = (path, data) => new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ describe('Middleware Unit Test', () => {
 
   after((done) => {
     models.sequelize.sync({
-      force: true
+      force: true,
     }).then(() => done());
   });
 
@@ -77,8 +77,8 @@ describe('Middleware Unit Test', () => {
         method: 'GET',
         url: '/api/v1/users',
         headers: {
-          'x-access-token': 'goodmorning_andela'
-        }
+          'x-access-token': 'goodmorning_andela',
+        },
       });
       authentication.verifyToken(req, res);
       res.on('end', () => {
@@ -93,11 +93,11 @@ describe('Middleware Unit Test', () => {
         method: 'POST',
         url: '/api/v1users/login',
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
       const middlewareStub = {
-        callback: () => {}
+        callback: () => {},
       };
 
       sinon.spy(middlewareStub, 'callback');
@@ -113,7 +113,7 @@ describe('Middleware Unit Test', () => {
         url: '/api/v1/users/login',
       });
       const middlewareStub = {
-        callback: () => {}
+        callback: () => {},
       };
 
       sinon.spy(middlewareStub, 'callback');
@@ -129,8 +129,8 @@ describe('Middleware Unit Test', () => {
         method: 'GET',
         url: '/api/v1/users',
         decoded: {
-          RoleId: 2
-        }
+          RoleId: 2,
+        },
       });
       res.on('end', () => {
         expect(res._getData().message).to.equal(
@@ -146,11 +146,11 @@ describe('Middleware Unit Test', () => {
         url: '/api/v1/users',
         headers: { Authorization: token },
         decoded: {
-          RoleId: 1
-        }
+          RoleId: 1,
+        },
       });
       const middlewareStub = {
-        callback: () => {}
+        callback: () => {},
       };
 
       sinon.spy(middlewareStub, 'callback');
@@ -165,11 +165,11 @@ describe('Middleware Unit Test', () => {
         method: 'GET',
         url: '/api/v1/users',
         decoded: {
-          RoleId: 2
-        }
+          RoleId: 2,
+        },
       });
       const middlewareStub = {
-        callback: () => {}
+        callback: () => {},
       };
 
       sinon.spy(middlewareStub, 'callback');

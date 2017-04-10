@@ -16,7 +16,13 @@ const regularUserParam = helper.regularUser;
 const testUserParam = helper.userDetails;
 
 describe('User api', () => {
-  let adminRole, regularRole, adminUser, regularUser, adminToken, testUser,
+  let
+    adminRole,
+    regularRole,
+    adminUser,
+    regularUser,
+    adminToken,
+    testUser,
     regularToken;
 
   const promisify = (path, data, token) => new Promise((resolve, reject) => {
@@ -46,9 +52,10 @@ describe('User api', () => {
   });
 
   after((done) => {
-    models.sequelize.sync({
-      force: true
-    }).then(() => done());
+    models
+      .sequelize
+      .sync({ force: true })
+      .then(() => done());
   });
 
   describe('User sign in', () => {
@@ -362,9 +369,7 @@ describe('User api', () => {
       server
         .put(`/api/v1/users/${adminUser.id}`)
         .set({ 'x-access-token': adminToken })
-        .send({ firstname: 'Aromokeye',
-          lastname: 'Omolade',
-          password: 'new password' })
+        .send({ firstname: 'Aromokeye', lastname: 'Omolade', password: 'new password' })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body)

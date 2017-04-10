@@ -1,108 +1,118 @@
-import React from 'react';
-import { connect } from 'react-redux';
-const jwt  = require('jwt-decode');
+import React, { PropTypes } from 'react';
 import _ from 'underscore';
+import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
-import * as documentAction from '../../actions/documentAction.js';
-import { Input} from 'react-materialize';
+import * as documentAction from '../../actions/documentAction';
 
-export class UpdateDocument extends React.Component {
+const jwt = require('jwt-decode');
+
+export class UpdateDocumentComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      content:'',
-      access: ''
-    }
+      content: '',
+      access: '',
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  };
+  }
 
-  componentDidMount () {
+  componentDidMount() {
+    this.sampleSetSTate();
+    $(document).ready(() => {
+      $('select').material_select();
+    });
+  }
+  sampleSetSTate() {
     this.setState({
       id: this.props.document.id,
       title: this.props.document.title,
       content: this.props.document.content,
-      access: this.props.document.access
+      access: this.props.document.access,
     });
-
-    $(document).ready(function() {
-    $('select').material_select();
-  });
+  }
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleChange(event) {
-      this.setState({ [event.target.name]: event.target.value });
-   }
-
-   handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault();
-     this.props.handleUpdateDocument({...this.state});
+    this.props.handleUpdateDocument({ ...this.state });
     browserHistory.push('/dashboard');
   }
 
-   render() {
+  render() {
     return (
       <div className="container">
         <div className="row">
-        <div className="col s12">
-          <div className="card blue-grey darken-1">
-            <div className="card-action grey">
-            </div>
-            <div className="card-content black-text">
-              <div className="card-title s7">
-                <input name="title" className="docTitle"
-                placeholder="Title Goes here" value={this.state.title}
-              onChange={this.handleChange}/>
+          <div className="col s12">
+            <div className="card blue-grey darken-1">
+              <div className="card-action grey" />
+              <div className="card-content black-text">
+                <div className="card-title s7">
+                  <input
+                    name="title" className="docTitle"
+                    placeholder="Title Goes here" value={this.state.title}
+                    onChange={this.handleChange}
+                  />
 
-              <label>Control your access</label>
-              <div className="input-field col s12">
-                <select value={this.state.select} className="browser-default" onChange={this.handleChange} name="access" id="mySelectBox">
-                  <option value="" disabled>Select an access level</option>
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                  <option value="role">Role</option>
-                </select>
-              </div>
+                  <label htmlFor="Control your access">
+                    Control your access</label>
+                  <div className="input-field col s12">
+                    <select
+                      value={this.state.select}
+                      className="browser-default" onChange={this.handleChange}
+                      name="access" id="mySelectBox"
+                    >
+                      <option value="" disabled>Select an access level</option>
+                      <option value="public">Public</option>
+                      <option value="private">Private</option>
+                      <option value="role">Role</option>
+                    </select>
+                  </div>
 
+                </div>
+                <div className="docContent">
+                  <textarea
+                    name="content" value={this.state.content}
+                    placeholder="Write Something" onChange={this.handleChange}
+                  />
+                </div>
               </div>
-              <div className="docContent">
-                <textarea  name="content" value={this.state.content} placeholder="Write Something" onChange={this.handleChange}></textarea>
+              <div className="card-action">
+                <button onClick={this.handleSubmit}>
+                  <i className="material-icons">save</i>Save</button>
+                <button href="#"><i className="material-icons">
+                  cancel</i><Link to="/dashboard"> Cancel</Link></button>
               </div>
-            </div>
-            <div className="card-action">
-              <button onClick={this.handleSubmit}><i className="material-icons">save</i>Save</button>
-              <button href="#"><i className="material-icons">cancel</i><Link to="/dashboard"> Cancel</Link></button>
-
             </div>
           </div>
         </div>
       </div>
-      </div>
-      )
-   }
+    );
+  }
 }
+
+UpdateDocumentComponent.propTypes = {
+  document: PropTypes.func.isRequired,
+  handleUpdateDocument: PropTypes.func.isRequired,
+};
 
 export const stateToProps = (state, ownProps) => {
   const token = localStorage.getItem('token');
-  console.log(token, 'did we get to the token')
-  console.log(jwt.toString(), 'tostrings');
   const decoded = jwt(token);
-  console.log(decoded, 'decoded');
   const documentId = ownProps.params.id;
-  const doc = _.findWhere(state.document[0], {id: parseInt(documentId, 10)});
-  console.log(doc);
+  const doc = _.findWhere(state.document[0], { id: parseInt(documentId, 10) });
   return {
     document: doc,
-    user: decoded
-  }
+    user: decoded,
+  };
 };
 
-export const dispatchToProps = (dispatch) => {
-  return {
-    handleUpdateDocument: (id, title, content, access) =>
-    dispatch(documentAction.handleUpdateDocument({id, title, content, access}))
-  };
-}
+export const dispatchToProps = dispatch => ({
+  handleUpdateDocument: (id, title, content, access) =>
+    dispatch(documentAction.handleUpdateDocument({ id, title, content, access })),
+});
 
-export default connect(stateToProps, dispatchToProps) (UpdateDocument);
+export default connect(stateToProps, dispatchToProps)(UpdateDocumentComponent);

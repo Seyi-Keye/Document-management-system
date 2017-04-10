@@ -10,7 +10,9 @@ const expect = chai.expect;
 const adminUser = specHelpers.adminUser;
 
 describe('Role Api:', () => {
-  let token, regularRole;
+  let
+    token,
+    regularRole;
 
   const promisify = (path, data) => new Promise((resolve, reject) => {
     server
@@ -33,8 +35,8 @@ describe('Role Api:', () => {
     return models.Role
     .findOne({
       where: {
-        title: 'regular'
-      }
+        title: 'regular',
+      },
     });
   })
   .then((regular) => {
@@ -45,7 +47,7 @@ describe('Role Api:', () => {
 
   after((done) => {
     models.sequelize.sync({
-      force: true
+      force: true,
     }).then(() => done());
   });
 

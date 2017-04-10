@@ -6,8 +6,7 @@ const ControllerHelpers = {
  */
   errorHandler(errors) {
     return errors && errors.map(error => error.message);
-  }
-
+  },
 };
 
 module.exports = ControllerHelpers;

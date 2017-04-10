@@ -18,7 +18,13 @@ const privateDocument = helper.privateDocument;
 
 describe('Search document', () => {
   // eslint-disable-line no-unused-vars
-  let document, regularToken, privDocument, regularUser, adminUser, adminToken;
+  let
+    document,
+    regularToken,
+    privDocument,
+    regularUser,
+    adminUser,
+    adminToken;
 
   const promisify = (path, data, header) => new Promise((resolve, reject) => {
     server
@@ -64,7 +70,7 @@ describe('Search document', () => {
 
   after((done) => {
     models.sequelize.sync({
-      force: true
+      force: true,
     }).then(() => done());
   });
 

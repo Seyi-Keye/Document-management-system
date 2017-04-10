@@ -1,7 +1,8 @@
 import React from 'react';
-import Documents from '../document/Documents';
+import { connect } from 'react-redux';
+import DocumentsComponent from '../document/Documents';
 
-export class Dashboard extends React.Component {
+class Dashboard extends React.Component {
   componentDidMount() {
     $('.collapsible').collapsible();
   }
@@ -9,7 +10,7 @@ export class Dashboard extends React.Component {
     return (
       <div>
         <h1>All Documents...</h1>
-        <Documents />
+        <DocumentsComponent />
       </div>
     );
   }

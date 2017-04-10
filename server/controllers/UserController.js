@@ -25,7 +25,7 @@ const UserController = {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      RoleId: user.RoleId
+      RoleId: user.RoleId,
     };
     return newUser;
   },
@@ -39,7 +39,7 @@ const UserController = {
   createUser(req, res) {
     if (req.body && Number(req.body.RoleId) === 1) {
       res.status(400).json({
-        message: 'Creation of Admin User Forbidden'
+        message: 'Creation of Admin User Forbidden',
       });
       return;
     }
@@ -48,16 +48,16 @@ const UserController = {
         user = UserController.transformUser(user);
         const token = jwt.sign({
           UserId: user.id,
-          RoleId: user.RoleId
+          RoleId: user.RoleId,
         }, process.env.SECRET, { expiresIn: '1 day' });
         return res.status(200).json({
           user,
-          token
+          token,
         });
       })
       .catch((error) => {
         res.status(400).json({
-          message: ControllerHelpers.errorHandler(error.errors)
+          message: ControllerHelpers.errorHandler(error.errors),
         });
       });
   },
@@ -72,23 +72,23 @@ const UserController = {
   userLogin(req, res) {
     User.findOne({
       where: {
-        email: req.body.email
-      }
+        email: req.body.email,
+      },
     })
       .then((user) => {
         if (user && bcrypt.compareSync(req.body.password, user.password)) {
           const token = authentication.generateToken(user);
           return res.status(200).json({
             message: 'You are successfully Logged in',
-            token
+            token,
           });
         }
         return res.status(404).json({
-          message: 'User not found'
+          message: 'User not found',
         });
       })
       .catch(error => res.status(500).json({
-        message: error.message
+        message: error.message,
       }));
   },
 
@@ -102,24 +102,24 @@ const UserController = {
   findUser(req, res) {
     User.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
       .then((user) => {
         if (!user) {
           res.status(404).json({
-            message: 'User not found'
+            message: 'User not found',
           });
         } else {
           user = UserController.transformUser(user);
           res.status(200).json({
             message: 'User found',
-            user
+            user,
           });
         }
       })
       .catch(error => res.status(500).json({
-        message: error.message
+        message: error.message,
       }));
   },
 
@@ -136,26 +136,26 @@ const UserController = {
     return User
       .findAndCountAll({
         attributes: ['id', 'username', 'firstname',
-          'lastname', 'email', 'RoleId'
+          'lastname', 'email', 'RoleId',
         ],
         limit,
         offset,
-        order: '"createdAt" DESC'
+        order: '"createdAt" DESC',
       })
       .then((users) => {
         const pagination = limit && offset ? {
           totalCount: users.count,
           pages: Math.ceil(users.count / limit),
           currentPage: Math.floor(offset / limit) + 1,
-          pageSize: users.rows.length
+          pageSize: users.rows.length,
         } : null;
         return res.status(200).send({
           users: users.rows,
-          pagination
+          pagination,
         });
       })
       .catch(error => res.status(500).json({
-        message: error.message
+        message: error.message,
       }));
   },
 
@@ -180,7 +180,7 @@ const UserController = {
       .then(() => res.status(200).send(UserController.transformUser(user)));
   })
   .catch(error => res.status(400).send({
-    message: error.message
+    message: error.message,
   }));
   },
 
@@ -194,22 +194,22 @@ const UserController = {
   deleteUser(req, res) {
     User.findOne({
       where: {
-        id: req.params.id
-      }
+        id: req.params.id,
+      },
     })
       .then((user) => {
         if (!user) {
           return res.status(404).send({
-            message: 'User not found'
+            message: 'User not found',
           });
         }
         user.destroy()
           .then(res.status(200).json({
-            message: 'User is deleted'
+            message: 'User is deleted',
           }));
       })
       .catch(error => res.status(400).json({
-        message: error.message
+        message: error.message,
       }));
   },
 
@@ -226,27 +226,27 @@ const UserController = {
     const order = '"createdAt" DESC';
     Document.findAndCountAll({
       where: {
-        id: req.params.id
+        id: req.params.id,
       },
       limit,
       offset,
-      order
+      order,
     })
       .then((documents) => {
         const pagination = limit && offset ? {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
           currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.lenght
+          pageSize: documents.rows.lenght,
         } : null;
         res.status(200).json({
           documents: documents.rows,
-          pagination
+          pagination,
         });
       })
       .catch(error =>
         res.status(500).json({
-          error: error.message
+          error: error.message,
         }));
   },
 
@@ -260,17 +260,17 @@ const UserController = {
   userLogout(req, res) {
     User.findOne({
       where: {
-        id: req.body.id
-      }
+        id: req.body.id,
+      },
     })
       .then(() => {
         res.status(200).json({
-          message: 'You have been Logged out'
+          message: 'You have been Logged out',
         });
       })
       .catch(error =>
         res.status(500).json({
-          message: error.message
+          message: error.message,
         }));
   },
 
@@ -278,9 +278,9 @@ const UserController = {
     User.findAll({
       where: {
         username: {
-          $iLike: `%${req.query.query}%`
-        }
-      }
+          $iLike: `%${req.query.query}%`,
+        },
+      },
     })
     .then((user) => {
       res.status(200).json({ user });

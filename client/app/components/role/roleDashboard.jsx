@@ -1,20 +1,18 @@
-import React from 'react';
-import { browserHistory, Link } from 'react-router'
+import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import  Role from '../role/role';
-import toastr from 'toastr';
-import * as adminAction from '../../actions/adminAction.js';
-import { Input, Button, Row, Col, Icon } from 'react-materialize';
+import Role from '../role/Role';
+import * as adminAction from '../../actions/adminAction';
 
 class Roles extends React.Component {
 
   constructor(props) {
-  super(props);
+    super(props);
     this.state = {
-      role: []
-    }
+      role: [],
+    };
     this.handleAllRoles = this.handleAllRoles.bind(this);
-  };
+  }
 
   componentWillMount() {
     this.props.handleFetchRoles();
@@ -24,15 +22,15 @@ class Roles extends React.Component {
     $('.collapsible').collapsible();
   }
 
-   handleAllRoles() {
+  handleAllRoles() {
     this.roleView(this.props.role);
-   }
+  }
 
-  roleView(role) {
-     return (
-       <li key={role.id}>
-         <div className="collapsible-header">
-           <i className="material-icons">filter_drama</i>
+  roleView(role) { // eslint-disable-line
+    return (
+      <li key={role.id}>
+        <div className="collapsible-header">
+          <i className="material-icons">filter_drama</i>
           <h5>{role.title}</h5>
           <div>
             <button><Link to={`roles/${role.id}`}>
@@ -42,10 +40,11 @@ class Roles extends React.Component {
             </button>
           </div>
         </div>
-        <div className="collapsible-body"><h5>TITLE:</h5>{role.title} <h5>CREATED AT::</h5>{role.createdAt}</div>
-       </li>
-     )
-   }
+        <div className="collapsible-body">
+          <h5>TITLE:</h5>{role.title} <h5>CREATED AT::</h5>{role.createdAt}</div>
+      </li>
+    );
+  }
 
 
   render() {
@@ -54,7 +53,7 @@ class Roles extends React.Component {
     return (
       <div>
         <h3>Everything about Roles</h3>
-        <Role/>
+        <Role />
         { role ?
           <ul className="collapsible popout" data-collapsible="accordion">
 
@@ -64,21 +63,21 @@ class Roles extends React.Component {
           <div>No Roles</div>}
 
       </div>
-    )
-
+    );
   }
-};
-
-const stateToProps = (state) => {
-  return {
-    role: state.admin.role
-  }
-};
-
-const dispatchToProps = (dispatch) => {
-  return {
-    handleFetchRoles: () => dispatch(adminAction.handleFetchRoles())
-  };
 }
 
-export default connect(stateToProps, dispatchToProps) (Roles);
+Roles.propTypes = {
+  handleFetchRoles: PropTypes.func.isRequired,
+  role: PropTypes.func.isRequired,
+};
+
+const stateToProps = state => ({
+  role: state.admin.role,
+});
+
+const dispatchToProps = dispatch => ({
+  handleFetchRoles: () => dispatch(adminAction.handleFetchRoles()),
+});
+
+export default connect(stateToProps, dispatchToProps)(Roles);

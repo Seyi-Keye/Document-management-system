@@ -6,25 +6,25 @@ import { errorMessage } from '../utils/utils';
 export const signUpRequest = () => ({
   type: ActionTypes.SIGN_UP_REQUEST });
 export const signUpSuccessful = user => ({
-  type: ActionTypes.SIGN_UP_SUCCESSFUL, response: user
+  type: ActionTypes.SIGN_UP_SUCCESSFUL, response: user,
 });
 export const signUpError = error => ({
-  type: ActionTypes.SIGN_UP_FAIL, error
+  type: ActionTypes.SIGN_UP_FAIL, error,
 });
 
 export const loginRequest = () => ({
-  type: ActionTypes.LOGIN_REQUEST
+  type: ActionTypes.LOGIN_REQUEST,
 });
 export const loginSuccessful = user => ({
-  type: ActionTypes.LOGIN_SUCCESSFUL, response: user
+  type: ActionTypes.LOGIN_SUCCESSFUL, response: user,
 });
 export const loginError = error => ({
-  type: ActionTypes.LOGIN_FAIL, error
+  type: ActionTypes.LOGIN_FAIL, error,
 });
 
 export const handleSignUp =
-(firstname, lastname, username, password, passwordConfirmation, email) => {
-  return (dispatch) => {
+(firstname, lastname, username, password, passwordConfirmation, email) =>
+  (dispatch) => {
     dispatch(signUpRequest());
     return (request.post('/api/v1/users').send({
       firstname,
@@ -32,7 +32,7 @@ export const handleSignUp =
       username,
       password,
       passwordConfirmation,
-      email
+      email,
     }).then((response) => {
       localStorage.setItem('token', response.body.token);
       toastr.success('Sign up successful');
@@ -43,12 +43,10 @@ export const handleSignUp =
       return dispatch(signUpError(errorMsg));
     }));
   };
-};
 
-export const handleLogin = (email, password) => {
-  return (dispatch) => {
-    dispatch(loginRequest());
-    return (request.post('/api/v1/users/login')
+export const handleLogin = (email, password) => (dispatch) => {
+  dispatch(loginRequest());
+  return (request.post('/api/v1/users/login')
     .send({ email, password }).then((response) => {
       localStorage.setItem('token', response.body.token);
       toastr.success('Login successful');
@@ -58,5 +56,4 @@ export const handleLogin = (email, password) => {
       toastr.error(errorMsg);
       return dispatch(loginError(error));
     }));
-  };
 };

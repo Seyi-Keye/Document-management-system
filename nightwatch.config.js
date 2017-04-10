@@ -3,36 +3,37 @@ const SCREENSHOT_PATH = "./screenshots/";
 const BINPATH = './node_modules/nightwatch/bin/';
 // we use a nightwatch.conf.js file so we can include comments and helper functions
 module.exports = {
-  "src_folders": [
-    "client/test/e2e"// Where you are storing your Nightwatch e2e tests
-  ],
-  "output_folder": "./reports", // reports (test outcome) output by nightwatch
-  "selenium": { // downloaded by selenium-download module (see readme)
-    "start_process": true, // tells nightwatch to start/stop the selenium process
-    "server_path": "./node_modules/nightwatch/bin/selenium.jar",
+  "src_folders": ["client/test/e2e"],
+  "output_folder": "reports",
+  "custom_commands_path": "",
+  "custom_assertions_path": "",
+  "page_objects_path": "pages",
+  "globals_path": "globals",
+
+  "selenium": {
+    "start_process": true,
+    "server_path": "./bin/selenium-server/3.3.1-server.jar",
+    "log_path": "./reports",
     "host": "127.0.0.1",
-    "port": 4444, // standard selenium port
-    "cli_args": { // chromedriver is downloaded by selenium-download (see readme)
-      "webdriver.chrome.driver" : "./node_modules/nightwatch/bin/chromedriver"
+    "port": 4444,
+    "cli_args": {
+      "webdriver.chrome.driver": "./bin/chromedriver/2.28-x64-chromedriver"
     }
   },
   "test_settings": {
     "default": {
       "screenshots": {
-        "enabled": true, // if you want to keep screenshots
-        "path": './screenshots' // save screenshots here
+        "enabled": true,
+        "path": "./screenshots/"
       },
-      "globals": {
-        "waitForConditionTimeout": 5000 // sometimes internet is slow so wait.
-      },
-      "desiredCapabilities": { // use Chrome as the default browser for tests
-        "browserName": "chrome"
-      }
-    },
-    "chrome": {
+      "launch_url": "https://localhost:3000",
+      "selenium_port": 4444,
+      "selenium_host": "localhost",
+      "silent": true,
       "desiredCapabilities": {
         "browserName": "chrome",
-        "javascriptEnabled": true // turn off to test progressive enhancement
+        "javascriptEnabled": true,
+        "acceptSslCerts": true
       }
     }
   }

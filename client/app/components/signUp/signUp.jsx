@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Input, Button, Row, Col } from 'react-materialize';
 import toastr from 'toastr';
-import * as userAction from '../../actions/userAction.js';
+import * as userAction from '../../actions/userAction';
 
-export class SignUpForm extends React.Component {
+export class SignUpFormComponent extends React.Component {
 
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ export class SignUpForm extends React.Component {
       username: '',
       password: '',
       passwordConfirmation: '',
-      email: ''
+      email: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,31 +42,37 @@ export class SignUpForm extends React.Component {
         <Row>
           <h4>SIGNUP FORM:</h4>
           <Input
-          className="formControl" name="firstname" s={6}
-              label="First Name" value={this.state.firstname}
-              onChange={this.handleChange} />
+            className="formControl" name="firstname" s={6}
+            label="First Name" value={this.state.firstname}
+            onChange={this.handleChange}
+          />
           <Input
-          name="lastname" className="formControl" s={6}
-              label="Last Name"
-              value={this.state.lastname} onChange={this.handleChange} />
+            name="lastname" className="formControl" s={6}
+            label="Last Name"
+            value={this.state.lastname} onChange={this.handleChange}
+          />
           <Input
-          name="username" className="formControl" s={6}
-              label="Username"
-              value={this.state.username} onChange={this.handleChange} />
+            name="username" className="formControl" s={6}
+            label="Username"
+            value={this.state.username} onChange={this.handleChange}
+          />
           <Input
-          name="password" className="formControl" type="password"
-              label="Password"
-              value={this.state.password} onChange={this.handleChange} s={6} />
+            name="password" className="formControl" type="password"
+            label="Password"
+            value={this.state.password} onChange={this.handleChange} s={6}
+          />
           <Input
-          name="passwordConfirmation" className="formControl" s={6}
-              type="password"
-              label="Password confirmation"
-              value={this.state.passwordConfirmation}
-              onChange={this.handleChange} />
+            name="passwordConfirmation" className="formControl" s={6}
+            type="password"
+            label="Password confirmation"
+            value={this.state.passwordConfirmation}
+            onChange={this.handleChange}
+          />
           <Input
-          name="email" className="formControl" type="email"
-              label="Email" s={6}
-              value={this.state.email} onChange={this.handleChange} />
+            name="email" className="formControl" type="email"
+            label="Email" s={6}
+            value={this.state.email} onChange={this.handleChange}
+          />
           <Col s={7}>
             <Button className="button" waves="light">Sign Up</Button>
           </Col>
@@ -76,16 +82,22 @@ export class SignUpForm extends React.Component {
   }
 }
 
+SignUpFormComponent.propTypes = {
+  handleSignUp: PropTypes.func.isRequired,
+  hasError: PropTypes.func.isRequired,
+  error: PropTypes.func.isRequired,
+};
+
 export const stateToProps = state => ({
   user: state.user.currentUser,
   error: state.user.error,
-  hasError: state.user.hasError
+  hasError: state.user.hasError,
 });
 
 export const dispatchToProps = dispatch => ({
   handleSignUp: (firstname, lastname, username, password,
     passwordConfirmation, email) => dispatch(userAction.handleSignUp(firstname, lastname,
-    username, password, passwordConfirmation, email))
+    username, password, passwordConfirmation, email)),
 });
 
-export default connect(stateToProps, dispatchToProps)(SignUpForm);
+export default connect(stateToProps, dispatchToProps)(SignUpFormComponent);

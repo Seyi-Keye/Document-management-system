@@ -5,14 +5,14 @@ if (process.env.NODE_ENV !== 'test') {
 }
 module.exports = {
   adminRole: {
-    title: 'admin'
+    title: 'admin',
   },
 
   regularRole: {
-    title: 'regular'
+    title: 'regular',
   },
   newRole: {
-    title: 'spatacus'
+    title: 'spatacus',
   },
 
   regularUser: {
@@ -21,7 +21,7 @@ module.exports = {
     username: 'seyikeye',
     email: 'aromokeyes2@gmail.com',
     password: faker.internet.password(),
-    RoleId: 2
+    RoleId: 2,
   },
 
   adminUser: {
@@ -30,7 +30,7 @@ module.exports = {
     username: 'admin',
     email: 'admin@gmail.com',
     password: 'password',
-    RoleId: '1'
+    RoleId: '1',
   },
   adminUser1: {
     firstname: 'fatima',
@@ -38,7 +38,7 @@ module.exports = {
     username: 'fati',
     email: 'fatima@gmail.com',
     password: 'fatima',
-    RoleId: 1
+    RoleId: 1,
   },
 
   createdByAdmin: {
@@ -52,22 +52,22 @@ module.exports = {
 
   publicDocument: {
     title: 'Its out there',
-    content: faker.lorem.paragraph()
+    content: faker.lorem.paragraph(),
   },
   privateDocument: {
     title: 'My Secret',
     content: faker.lorem.paragraph(),
     access: 'private',
-    OwnerId: 1
+    OwnerId: 1,
   },
   userDetails: {
     firstname: faker.name.firstName(),
     lastname: faker.name.lastName(),
     username: faker.internet.userName(),
     email: faker.internet.email(),
-    password: faker.internet.password()
+    password: faker.internet.password(),
   },
   documentAdmin: {
-    title: 'admin'
-  }
+    title: 'admin',
+  },
 };

@@ -54,7 +54,7 @@ describe('Document API:', () => {
   });
   after((done) => {
     models.sequelize.sync({
-      force: true
+      force: true,
     }).then(() => done());
   });
   it('Create document: has published date', (done) => {
@@ -118,7 +118,7 @@ describe('Document API:', () => {
     const nullTitleDoc = {
       title: null,
       content: 'content',
-      OwnerId: 1
+      OwnerId: 1,
     };
     server
         .post('/api/v1/documents')
@@ -237,7 +237,7 @@ describe('Document API:', () => {
 
     it('fails to edit if invalid id is provided', (done) => {
       const newContent = {
-        content: 'replace previous document'
+        content: 'replace previous document',
       };
       server
           .put('/api/v1/documents/123')
@@ -254,7 +254,7 @@ describe('Document API:', () => {
 
     it('fails to edit for un-authorized User', (done) => {
       const newContent = {
-        content: 'replace previous document'
+        content: 'replace previous document',
       };
       server
           .put('/api/v1/documents/1')
@@ -264,7 +264,7 @@ describe('Document API:', () => {
 
     it('fails to edit document if request is not made by the owner', (done) => {
       const newContent = {
-        content: 'replace previous document'
+        content: 'replace previous document',
       };
       server
           .put('/api/v1/documents/2')
@@ -283,7 +283,7 @@ describe('Document API:', () => {
 
     it('edits document if valid id is provided', (done) => {
       const newContent = {
-        content: 'replace previous document'
+        content: 'replace previous document',
       };
       server
           .put('/api/v1/documents/2')
@@ -321,7 +321,7 @@ describe('Document API:', () => {
 
   it('Fails to delete if user is not authorized', (done) => {
     const newContent = {
-      content: 'replace previous document'
+      content: 'replace previous document',
     };
     server
         .delete('/api/v1/documents/2')

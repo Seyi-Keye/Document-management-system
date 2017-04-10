@@ -5,7 +5,9 @@ import { expect } from 'chai';
 export default class Sample extends React.Component {
   constructor() {
     super();
-    this.checkTest = this.checkTest.bind(this);
+    this.checkTest = this
+      .checkTest
+      .bind(this);
   }
   checkTest() {
     console.log('sample test button', this.props);
@@ -14,7 +16,9 @@ export default class Sample extends React.Component {
     return (
       <div>
         <p className="home">This is a sample Component</p>
-        <button onClick={this.checkTest}> Test Button </button>
+        <button onClick={this.checkTest}>
+          Test Button
+        </button>
       </div>
     );
   }
@@ -22,6 +26,8 @@ export default class Sample extends React.Component {
 describe('Sample Test case', () => {
   it('should have a component', () => {
     const wrapper = shallow(<Sample />);
-    expect(wrapper.text()).to.equal('This is a sample Component Test Button ');
+    expect(wrapper.text())
+      .to
+      .equal('This is a sample Component Test Button ');
   });
 });
