@@ -6,15 +6,13 @@ dotenv.config();
 module.exports = {
   up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Users', [{
-      id: 1,
-      username: process.env.USERNAME,
-      firstName: process.env.FIRSTNAME,
-      lastName: process.env.LASTNAME,
-      email: process.env.EMAIL,
+      username: process.env.username,
+      firstname: process.env.firstname,
+      lastname: process.env.lastname,
+      email: process.env.email,
       password: bcrypt.hashSync(process.env.password,
         bcrypt.genSaltSync(8)),
-      token: process.env.TOKEN,
-      RoleId: process.env.ROLEID,
+      RoleId: process.env.RoleId,
       createdAt: new Date(),
       updatedAt: new Date()
     }

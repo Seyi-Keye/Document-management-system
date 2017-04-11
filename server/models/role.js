@@ -5,18 +5,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        min: 3
-      }
-    }
+        min: 3,
+      },
+    },
   }, {
     classMethods: {
       associate: (models) => {
         // associations can be defined here
         Role.hasMany(models.User, {
-          foreignKey: 'RoleId'
+          foreignKey: 'RoleId',
         });
-      }
-    }
+      },
+    },
   });
   return Role;
 };

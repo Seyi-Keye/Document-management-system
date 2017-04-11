@@ -1,78 +1,84 @@
 /* eslint-disable no-unused-expressions */
 import chai from 'chai';
 import supertest from 'supertest';
-import {Docment, Role, User} from '../../models';
+import models from '../../models';
 import app from '../../../server';
 import helper from '../helpers/specHelpers';
 import SeedHelper from '../helpers/seedHelper';
 
-const request = supertest.agent(app);
+const server = supertest.agent(app);
 const expect = chai.expect;
 
-const adminRole = helper.adminRole;
-const regularRole = helper.regularRole;
+// const adminRole = helper.adminRole;
+// const regularRole = helper.regularRole;
 const adminUserDetails = helper.adminUser;
 const regularUserDetails = helper.regularUser;
 const publicDocument = helper.publicDocument;
 const privateDocument = helper.privateDocument;
 
 describe('Search document', () => {
-  let document; // eslint-disable-line no-unused-vars
-  let regularToken;
-  let privDocument;
-  let regularUser;
-  let adminUser;
-  let adminToken;
+  // eslint-disable-line no-unused-vars
+  let
+    document,
+    regularToken,
+    privDocument,
+    regularUser,
+    adminUser,
+    adminToken;
+
+  const promisify = (path, data, header) => new Promise((resolve, reject) => {
+    server
+      .post(path)
+      .set('Content-Type', 'application/json')
+      .set({ 'x-access-token': header || '' })
+      .send(data)
+      .end((err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      });
+  });
 
   before((done) => {
     SeedHelper
       .init()
-      .then(() => {
-        request
-          .post('/api/v1/users')
-          .send(adminUserDetails)
-          .end((error, response) => {
-            adminUser = response.body.user;
-            adminToken = response.body.token;
-            privateDocument.OwnerId = response.body.user.id;
-
-            request
-              .post('/api/v1/users')
-              .send(regularUserDetails)
-              .end((err, res) => {
-                regularUser = res.body.user;
-                regularToken = res.body.token;
-                publicDocument.OwnerId = res.body.user.id;
-
-                request
-                  .post('/api/v1/documents')
-                  .set({'x-access-token': adminToken})
-                  .send(privateDocument)
-                  .end((err, res) => {
-                    privDocument = res.body;
-
-                    request
-                      .post('/api/v1/documents')
-                      .set({'x-access-token': regularToken})
-                      .send(publicDocument)
-                      .end((err, res) => {
-                        document = res.body;
-                        done();
-                      });
-                  });
-              });
-            // });
-          });
+      .then((res) => {
+        adminUser = res[1];
+        return promisify('/api/v1/users/login', adminUserDetails);
+      })
+      .then((res) => {
+        adminToken = res.body.token;
+        privateDocument.OwnerId = adminUser.id;
+      })
+      .then(() => promisify('/api/v1/users', regularUserDetails))
+      .then((res) => {
+        regularUser = res.body.user;
+        regularToken = res.body.token;
+        publicDocument.OwnerId = res.body.user.id;
+      })
+      .then(() => promisify('/api/v1/documents', privateDocument, adminToken))
+      .then((res) => {
+        privDocument = res.body;
+      })
+      .then(() => promisify('/api/v1/documents', publicDocument, regularToken))
+      .then((res) => {
+        document = res.body;
+        done();
       });
   });
-  // }); after(() => {   User.sequelize.sync({ force: true });
-  // Docment.sequelize.sync({ force: true }); });
 
-  describe('find document', () => {
+  after((done) => {
+    models.sequelize.sync({
+      force: true,
+    }).then(() => done());
+  });
+
+  describe('Search document', () => {
     it('searches document for a string query', (done) => {
-      request
+      server
         .get('/api/v1/search/documents/?query=out&limit=1&offset=0')
-        .set({'x-access-token': adminToken})
+        .set({ 'x-access-token': adminToken })
         .expect(201)
         .end((err, res) => {
           expect(typeof res.body)
@@ -88,9 +94,9 @@ describe('Search document', () => {
     });
 
     it('returns error message for invalid input', (done) => {
-      request
+      server
         .get('/api/v1/search/documents?q=out&limit=1&offset=hello')
-        .set({'x-access-token': adminToken})
+        .set({ 'x-access-token': adminToken })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body)
@@ -104,11 +110,10 @@ describe('Search document', () => {
     });
 
 
-
     it('returns error message for invalid input', (done) => {
-      request
+      server
         .get('/api/v1/documents/limit=1&offset=hello')
-        .set({'x-access-token': regularToken})
+        .set({ 'x-access-token': regularToken })
         .expect(200)
         .end((err, res) => {
           expect(typeof res.body)

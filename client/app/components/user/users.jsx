@@ -1,19 +1,18 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import { browserHistory, Link } from 'react-router'
-import ReactDOM from 'react-dom';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import jwt from 'jwt-decode';
-import * as adminAction from '../../actions/adminAction.js';
+import * as adminAction from '../../actions/adminAction';
 
 class Users extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: []
+      users: [],
     };
     this.userView = this.userView.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-  };
+  }
 
   componentWillMount() {
     this.props.handleFetchUsers();
@@ -35,45 +34,51 @@ class Users extends React.Component {
           <i className="material-icons">filter_drama</i>
           <h5>Username:{user.username} {user.firstname} {user.lastname}</h5>
           <div>
-            <button><Link to={`updateUser/${user.id}`}>
+            <button><Link to={`users/${user.id}`}>
               <i className="material-icons">edit</i></Link>
             </button>
-            <button id={user.id} onClick={this.handleDelete}><i id={user.id} className="material-icons">delete</i>
+            <button id={user.id} onClick={this.handleDelete}>
+              <i id={user.id} className="material-icons">delete</i>
             </button>
           </div>
         </div>
-        <div className="collapsible-body"><h5>FIRSTNAME:</h5>{user.firstname} <h5>LASTNAME:</h5>{user.lastname}</div>
+        <div className="collapsible-body"><h5>FIRSTNAME:</h5>
+          {user.firstname} <h5>LASTNAME:</h5>{user.lastname}</div>
       </li>
-    )
+    );
   }
   render() {
-    let  {users} = this.props.users;
-       if (users) {
-          return (
-          <ul className="collapsible popout" data-collapsible="accordion">
-            { users.map(this.userView) }
-          </ul>
-        )
-       }
+    const { users } = this.props.users;
+    if (users) {
+      return (
+        <ul className="collapsible popout" data-collapsible="accordion">
+          { users.map(this.userView) }
+        </ul>
+      );
+    }
     return (
       <div>
         No User Found
       </div>
-    )
+    );
   }
 }
 
-const stateToProps = (state, ownProps) => {
-  const token = localStorage.getItem('token');
-  const decoded = jwt(token);
-  return { user: decoded, documents: state.document, users: state.admin }
+Users.propTypes = {
+  handleFetchUsers: PropTypes.func.isRequired,
+  handleDeleteUser: PropTypes.func.isRequired,
+  users: PropTypes.func.isRequired,
 };
 
-const dispatchToProps = (dispatch) => {
-  return {
-    handleFetchUsers: () => dispatch(adminAction.handleFetchUsers()),
-    handleDeleteUser: id => dispatch(adminAction.handleDeleteUser(id))
-  };
-}
+const stateToProps = (state) => {
+  const token = localStorage.getItem('token');
+  const decoded = jwt(token);
+  return { user: decoded, documents: state.document, users: state.admin };
+};
+
+const dispatchToProps = dispatch => ({
+  handleFetchUsers: () => dispatch(adminAction.handleFetchUsers()),
+  handleDeleteUser: id => dispatch(adminAction.handleDeleteUser(id)),
+});
 
 export default connect(stateToProps, dispatchToProps)(Users);

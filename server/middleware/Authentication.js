@@ -12,7 +12,7 @@ const authentication = {
       jwt.verify(token, process.env.SECRET, (error, decoded) => {
         if (error) {
           return response.status(401).send({
-            message: 'Invalid token'
+            message: 'Invalid token',
           });
         }
         request.decoded = decoded;
@@ -20,7 +20,7 @@ const authentication = {
       });
     } else {
       return response.status(401).send({
-        message: 'Token required for access'
+        message: 'Token required for access',
       });
     }
   },
@@ -33,7 +33,7 @@ const authentication = {
   generateToken(user) {
     return jwt.sign({
       UserId: user.id,
-      RoleId: user.RoleId
+      RoleId: user.RoleId,
     }, process.env.SECRET);
   },
 
@@ -51,14 +51,14 @@ const authentication = {
           next();
         } else {
           response.status(401).send({
-            error: 'Not authorized'
+            error: 'Not authorized',
           });
         }
       }).catch((error) => {
         response.status(500).send({
-          errors: error
+          errors: error,
         });
       });
-  }
+  },
 };
 export default authentication;

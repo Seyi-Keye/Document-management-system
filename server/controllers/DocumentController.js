@@ -9,12 +9,18 @@ const DocumentController = {
    * @returns {Object} res Response object
    */
   createDocument(req, res) {
-    Document.create(req.body)
+    const doc = req.body;
+    doc.OwnerId = req.decoded.UserId;
+    Document.create(doc)
       .then((document) => {
         res.status(201).json(document);
+      }, (err) => {
+        res.status(500).json({
+          message: ControllerHelpers.errorHandler(err.errors),
+        });
       }).catch((error) => {
         res.status(500).json({
-          message: ControllerHelpers.errorHandler(error.errors)
+          message: ControllerHelpers.errorHandler(error.errors),
         });
       });
   },
@@ -32,17 +38,46 @@ const DocumentController = {
     .findAndCountAll({
       limit,
       offset,
-      order: '"createdAt" DESC'
+      order: '"createdAt" DESC',
+      include: [{
+        model: User,
+        attributes: ['RoleId'],
+      }],
     })
-    .then((documents) => {
-      const pagination = limit && offset ? { totalCount: documents.count,
-        pages: Math.ceil(documents.count / limit),
+    .then((result) => {
+      const allDocuments = result.rows;
+      if (allDocuments.length <= 0) {
+        return res.status(404)
+        .send({
+          message: 'No document(s) found',
+        });
+      }
+      const documents = allDocuments.filter((document) => {
+        if (document.dataValues.access === 'public') {
+          return true;
+        }
+        if ((document.dataValues.access === 'private') &&
+        ((document.dataValues.OwnerId === req.decoded.UserId) ||
+        req.decoded.RoleId === 1)) {
+          return true;
+        }
+        if (
+          document.dataValues.access === 'role' &&
+          ((req.decoded.RoleId === document.dataValues.User.RoleId) ||
+          (req.decoded.RoleId === 1))) {
+          return true;
+        }
+        return false;
+      });
+
+      const pagination = limit && offset ? { totalCount: result.count,
+        pages: Math.ceil(result.count / limit),
         currentPage: Math.floor(offset / limit) + 1,
-        pageSize: documents.rows.length } : null;
-      res.status(200).send({ documents: documents.rows, pagination, });
+        pageSize: result.rows.length } : null;
+      res.status(200).send({ documents, pagination });
     })
     .catch(error => res.status(400).send({
-      message: error.message
+      message: error.message,
     }));
   },
 
@@ -58,7 +93,7 @@ const DocumentController = {
         if (!foundDocument) {
           return res.status(404)
           .send({
-            message: 'Document Not Found'
+            message: 'Document Not Found',
           });
         }
         if (foundDocument.access === 'public') {
@@ -79,17 +114,17 @@ const DocumentController = {
               }
               return res.status(401)
                 .send({
-                  message: 'You cannot view this document'
+                  message: 'You cannot view this document',
                 });
             });
         }
         return res.status(401)
           .send({
-            message: 'You cannot view this document'
+            message: 'You cannot view this document',
           });
       })
       .catch(error => res.status(400).send({
-        message: error.message
+        message: error.message,
       }));
   },
 
@@ -107,7 +142,7 @@ const DocumentController = {
       where: { access: req.query.access },
       limit,
       offset,
-      order: '"createdAt" DESC'
+      order: '"createdAt" DESC',
     })
     .then((documents) => {
       const pagination = limit && offset ? { totalCount: documents.count,
@@ -117,7 +152,7 @@ const DocumentController = {
       res.status(200).send({ documents: documents.rows, pagination });
     })
     .catch(error => res.status(400).send({
-      message: error.message
+      message: error.message,
     }));
   },
 
@@ -132,18 +167,18 @@ const DocumentController = {
     const query = {
       where: {
         $and: [{ $or: [
-          { access: 'public' }
+          { access: 'public' },
         ] }],
       },
       limit: req.query.limit || 10,
       offset: req.query.offset || 0,
-      order: '"createdAt" DESC'
+      order: '"createdAt" DESC',
     };
 
     if (userQuery) {
       query.where.$and.push({ $or: [
-        { title: { $like: `%${userQuery}%` } },
-        { content: { $like: `%${userQuery}%` } }
+        { title: { $ilike: `%${userQuery}%` } },
+        { content: { $ilike: `%${userQuery}%` } },
       ] });
     }
     Document.findAndCountAll(query)
@@ -156,7 +191,7 @@ const DocumentController = {
         res.send({ documents: documents.rows, pagination });
       })
       .catch(error => res.status(400).send({
-        message: error.message
+        message: error.message,
       }));
   },
 
@@ -177,7 +212,7 @@ const DocumentController = {
       }
       if (document.OwnerId !== req.decoded.UserId) {
         return res.status(401).send({
-          message: 'You cannot update this document'
+          message: 'You cannot update this document',
         });
       }
       return document
@@ -185,7 +220,7 @@ const DocumentController = {
         .then(() => res.status(200).send(document));
     })
     .catch(error => res.status(400).send({
-      message: error.message
+      message: error.message,
     }));
   },
 
@@ -206,17 +241,17 @@ const DocumentController = {
         }
         if (document.OwnerId !== req.decoded.UserId) {
           return res.status(401).send({
-            message: 'You cannot delete this document'
+            message: 'You cannot delete this document',
           });
         }
         return document
           .destroy()
           .then(() => res.status(200).send({
-            message: 'Document Deleted'
+            message: 'Document Deleted',
           }));
       })
       .catch(error => res.status(400).send({
-        message: error.message
+        message: error.message,
       }));
   },
 };

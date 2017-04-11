@@ -1,62 +1,64 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import * as adminAction from '../../actions/adminAction.js';
 import toastr from 'toastr';
-import { Input, Button, Row, Col, Icon } from 'react-materialize';
+import { Input, Button, Row } from 'react-materialize';
+import * as adminAction from '../../actions/adminAction';
 
 class Role extends React.Component {
 
   constructor(props) {
     super(props);
-      this.state = {
-        title: ''
-      }
+    this.state = {
+      title: '',
+    };
 
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-  };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-   handleChange(event) {
-     console.log(event.target.name);
-      this.setState({ [event.target.name]: event.target.value });
-   }
+  handleChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
 
-   handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault();
     this.props.handleCreateRole(this.state);
     browserHistory.push('/roles');
-   }
+  }
 
-   render() {
-      return (
-        <div>
-         <form onSubmit={this.handleSubmit}>
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>
           {this.props.hasError && toastr.error(this.props.error)}
-            <Row>
-              <h4>CREATE ROLE FORM:</h4>
-              <Input className="formControl" name="title" s={6}
+          <Row>
+            <h4>CREATE ROLE FORM:</h4>
+            <Input
+              className="formControl" name="title" s={6}
               label="Title" value={this.state.title}
-              onChange={this.handleChange}/>
-              <Button className="button" waves='light'>Create Role</Button>
-            </Row>
-         </form>
-        </div>
-      );
-   }
+              onChange={this.handleChange}
+            />
+            <Button className="button" waves="light">Create Role</Button>
+          </Row>
+        </form>
+      </div>
+    );
+  }
 }
 
-const stateToProps = (state) => {
-  console.log(state, "the role state in role page");
-  return {
-    role: state.admin.role
-  }
+Role.propTypes = {
+  handleCreateRole: PropTypes.func.isRequired,
+  hasError: PropTypes.func.isRequired,
+  error: PropTypes.func.isRequired,
 };
 
-const dispatchToProps = (dispatch) => {
-  return {
-    handleCreateRole: title => dispatch(adminAction.handleCreateRole(title)),
-  };
-}
+const stateToProps = state => ({
+  role: state.admin.role,
+});
 
-export default connect(stateToProps, dispatchToProps) (Role);
+const dispatchToProps = dispatch => ({
+  handleCreateRole: title => dispatch(adminAction.handleCreateRole(title)),
+});
+
+export default connect(stateToProps, dispatchToProps)(Role);

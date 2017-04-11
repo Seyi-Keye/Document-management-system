@@ -1,17 +1,16 @@
-import path from 'path';
 import { Router } from 'express';
 import RoleController from '../controllers/RoleController';
 import UserController from '../controllers/UserController';
 import DocumentController from '../controllers/DocumentController';
 import authentication from '../middleware/Authentication';
+
 const router = Router();
-// default route
 
 
 // roles routes
 
 router.route('/api/v1/roles')
-.post(authentication.verifyToken,authentication.validateAdmin, RoleController.createRole)
+.post(authentication.verifyToken, authentication.validateAdmin, RoleController.createRole)
 .get(authentication.verifyToken, authentication.validateAdmin,
 RoleController.findAllRoles);
 
@@ -32,7 +31,7 @@ UserController.findAllUsers);
 router.post('/api/v1/users/login', UserController.userLogin);
 router.post('/api/v1/users/logout', UserController.userLogout);
 
-router.route('api/v1/users/:id')
+router.route('/api/v1/users/:id')
 .get(authentication.verifyToken,
 UserController.findUser)
 .put(authentication.verifyToken,

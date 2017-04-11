@@ -1,17 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { browserHistory } from 'react-router'
-import  Documents from '../document/documents';
+import { connect } from 'react-redux';
+import DocumentsComponent from '../document/Documents';
 
 class Dashboard extends React.Component {
-   render() {
-      return (
-         <div>
-            <h1>All Documents...</h1>
-            <Documents/>
-         </div>
-      )
-   }
+  componentDidMount() {
+    $('.collapsible').collapsible();
+  }
+  render() {
+    return (
+      <div>
+        <h1>All Documents...</h1>
+        <DocumentsComponent />
+      </div>
+    );
+  }
 }
 
 export default Dashboard;

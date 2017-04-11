@@ -5,16 +5,16 @@
     "database": "dm",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "logging": false
+    "logging": true
   },
   "test": {
-    "use_env_variable": "TESTDB"
-    },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+    "username": "",
+    "password": "",
+    "database": "database_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
   }
 }

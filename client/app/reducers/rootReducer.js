@@ -6,7 +6,7 @@ import admin from './admin';
 const rootReducer = combineReducers({
   user,
   document,
-  admin
+  admin,
 });
 
 export default rootReducer;

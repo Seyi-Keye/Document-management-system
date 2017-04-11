@@ -7,40 +7,40 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false,
       validate: {
-        min: 3
-      }
+        min: 3,
+      },
     },
     firstname: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        min: 3
-      }
+        min: 3,
+      },
     },
     lastname: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        min: 3
-      }
+        min: 3,
+      },
     },
     RoleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 2
+      defaultValue: 2,
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
       validate: {
-        isEmail: true
+        isEmail: true,
       },
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
-    }
+      allowNull: false,
+    },
   },
     {
       classMethods: {
@@ -48,13 +48,13 @@ module.exports = (sequelize, DataTypes) => {
         // model association
           User.hasMany(models.Document, {
             foreignKey: 'OwnerId',
-            onDelete: 'CASCADE'
+            onDelete: 'CASCADE',
           });
           User.belongsTo(models.Role, {
             foreignKey: 'RoleId',
             onDelete: 'CASCADE',
           });
-        }
+        },
       },
       instanceMethods: {
       /**
@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
        */
         hashPassword() {
           this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
-        }
+        },
       },
 
       hooks: {
@@ -86,8 +86,8 @@ module.exports = (sequelize, DataTypes) => {
           if (user._changed.password) {
             user.hashPassword();
           }
-        }
-      }
+        },
+      },
     });
   return User;
 };

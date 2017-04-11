@@ -1,50 +1,49 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { connect, Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
-import App from './components/main';
-import initialState from '../store/initialState.js';
-import '../styles/styles.css';
+import '../styles/styles.scss';
 import '../../node_modules/toastr/build/toastr.min.css';
-import Document from './components/document/document';
-import configureStore from '../store/configureStore.js';
-import Main from './components/main';
-import SignUpForm from './components/signUp/signUp';
-import Login from './components/login/login';
-import Dashboard from './components/dashboard/dashboard';
-import UpdateDocument from './components/document/updateDocument';
-import UpdateUser from './components/user/updateUser';
-import Users from './components/user/users';
-import Roles from './components/role/roleDashboard';
-import Search from './components/search/search';
+import Document from './components/document/AddDocument';
+import configureStore from '../store/configureStore';
+import Main from './components/Main';
+import SignUpForm from './components/signUp/SignUp';
+import Login from './components/login/Login';
+import Dashboard from './components/dashboard/Dashboard';
+import UpdateDocument from './components/document/UpdateDocument';
+import UpdateUser from './components/user/UpdateUser';
+import Users from './components/user/Users';
+import Roles from './components/role/RoleDashboard';
+import Search from './components/search/Search';
 
 
 const store = configureStore;
 const onEnter = (next, replace, cb) => {
-   const token = localStorage.getItem('token');
-  if(!token && next.location.pathname.indexOf('dashboard') > -1) {
+  const token = localStorage.getItem('token');
+  if (!token && next.location.pathname.indexOf('dashboard') > -1) {
     replace('/login');
   }
-  if(token && (next.location.pathname.indexOf('login') > -1 || next.location.pathname.indexOf('signup') > -1)) {
+  if (token && (next.location.pathname.indexOf('login') > -1 ||
+  next.location.pathname.indexOf('signup') > -1)) {
     replace('/dashboard');
   }
   cb();
-}
+};
 render(
-<Provider store={store}>
-<Router history={browserHistory}>
-  <Route path="/" component={Main}>
-    <IndexRedirect to="/login" />
-    <Route path="dashboard/document" component={Document} onEnter={onEnter}/>
-    <Route path="signup" component={SignUpForm} onEnter={onEnter} />
-    <Route path="login" component={Login} onEnter={onEnter} />
-    <Route path="dashboard" component={Dashboard} onEnter={onEnter}/>
-    <Route path="updateDoc" component={UpdateDocument} onEnter={onEnter}/>
-    <Route path="updateUser/:id" component={UpdateUser} onEnter={onEnter}/>
-    <Route path="users" component={Users} onEnter={onEnter}/>
-    <Route path="roles" component={Roles} onEnter={onEnter}/>
-    <Route path="search" component={Search} onEnter={onEnter}/>
-  </Route>
-</Router>
-</Provider>,
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route path="/" component={Main}>
+        <IndexRedirect to="/login" />
+        <Route path="dashboard/document" component={Document} onEnter={onEnter} />
+        <Route path="signup" component={SignUpForm} onEnter={onEnter} />
+        <Route path="login" component={Login} onEnter={onEnter} />
+        <Route path="dashboard" component={Dashboard} onEnter={onEnter} />
+        <Route path="documents" component={UpdateDocument} onEnter={onEnter} />
+        <Route path="users/:id" component={UpdateUser} onEnter={onEnter} />
+        <Route path="users" component={Users} onEnter={onEnter} />
+        <Route path="roles" component={Roles} onEnter={onEnter} />
+        <Route path="search" component={Search} onEnter={onEnter} />
+      </Route>
+    </Router>
+  </Provider>,
  document.getElementById('app'));
