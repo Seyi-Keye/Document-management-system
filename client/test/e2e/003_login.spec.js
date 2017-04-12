@@ -1,24 +1,28 @@
-process.env.NODE_ENV = 'test';
-const config = require('../../../nightwatch.conf');
-
 module.exports = {
-  'SignUp with empty details Spec': function (browser) {
+  'Login with empty details Spec': function (browser) {
     browser
-      .url('http://localhost:5000')
+      .url('http://localhost:5000/login')
       .waitForElementVisible('body', 1000)
       .pause(1000)
-      .click('#signupButton')
+      .click('.signupButton')
       .pause(1000)
-      .click('button[type=submit]')
-      .pause(1000)
-      .assert.containsText('.statusDisplay', 'Username cannot be empty')
-      .assert.containsText('.statusDisplay', 'Username cannot be less than six characters')
-      .assert.containsText('.statusDisplay', 'First Name cannot be empty')
-      .assert.containsText('.statusDisplay', 'Last Name cannot be empty')
-      .assert.containsText('.statusDisplay', 'Password cannot be empty')
-      .assert.containsText('.statusDisplay', 'Email cannot be empty')
-      .assert.containsText('.statusDisplay', 'Password Confirmation cannot be empty')
+      .assert.containsText('.toast-error', 'User not found')
       .end();
+  },
+  'Login with unregistered details': function(browser) {
+    // const password = faker.internet.password();
+    browser
+    .url('http://localhost:5000/login')
+    .waitForElementVisible('body', 1000)
+    .pause(1000)
+    .click('.signupButton')
+    .pause(1000)
+    .setValue('input[name=email]', 'seyi@gmail.com')
+    .setValue('input[name=password', 'password')
+    .click('.signupButton')
+    .pause(1000)
+    .assert.containsText('.toast-error', 'User not found')
+    .end();
   },
   // 'SignUp with valid details': function (browser) {
   //   const password = faker.internet.password();

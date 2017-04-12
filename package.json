@@ -12,7 +12,9 @@
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
     "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
     "test:watch": "npm run test -- --watch",
-    "e2e": "nightwatch --config nightwatch.conf.js"
+    "pree2e": "NODE_ENV=test babel-node ./.setup-e2e.js",
+    "e2e": "nightwatch --config nightwatch.conf.js",
+    "poste2e": "NODE_ENV=test babel-node ./.setup-poste2e.js"
   },
   "repository": {
     "type": "git",

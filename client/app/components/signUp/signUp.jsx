@@ -36,11 +36,11 @@ export class SignUpFormComponent extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="container" onSubmit={this.handleSubmit}>
         {this.props.hasError && toastr.error(this.props.error)}
 
-        <Row>
-          <h4>SIGNUP FORM:</h4>
+        <Row className="form">
+          <h4>SIGNUP FORM</h4>
           <Input
             className="formControl" name="firstname" s={6}
             label="First Name" value={this.state.firstname}
@@ -74,7 +74,7 @@ export class SignUpFormComponent extends React.Component {
             value={this.state.email} onChange={this.handleChange}
           />
           <Col s={7}>
-            <Button className="button" waves="light">Sign Up</Button>
+            <Button className="signupButton" waves="light">Sign Up</Button>
           </Col>
         </Row>
       </form>

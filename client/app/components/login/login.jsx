@@ -26,8 +26,9 @@ export class LoginComponent extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <Row>
+      <form onSubmit={this.handleSubmit} className="container">
+        <Row className="form">
+          <h4>LOGIN</h4>
           <Input
             name="email" className="formControl" type="email"
             label="Email" s={7} value={this.state.email}
@@ -39,7 +40,7 @@ export class LoginComponent extends React.Component {
             s={7}
           />
           <Col s={7}>
-            <Button className="button" waves="light">Login</Button>
+            <Button className="signupButton" waves="light">Login</Button>
           </Col>
         </Row>
       </form>
