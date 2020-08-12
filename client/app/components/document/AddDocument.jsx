@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction';
@@ -27,8 +28,11 @@ export class AddDocument extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.handleCreateDocument(this.state.title, this.state.content,
-     this.state.access);
+    this.props.handleCreateDocument(
+      this.state.title,
+      this.state.content,
+      this.state.access
+    );
     browserHistory.push('/dashboard');
   }
 
@@ -42,8 +46,10 @@ export class AddDocument extends React.Component {
               <div className="card-content black-text">
                 <div className="card-title s7">
                   <input
-                    name="title" className="docTitle"
-                    placeholder="Title Goes here" value={this.state.title}
+                    name="title"
+                    className="docTitle"
+                    placeholder="Title Goes here"
+                    value={this.state.title}
                     onChange={this.handleChange}
                   />
 
@@ -53,31 +59,34 @@ export class AddDocument extends React.Component {
                       value={this.state.select}
                       className="browser-default"
                       onChange={this.handleChange}
-                      name="access" id="mySelectBox"
+                      name="access"
+                      id="mySelectBox"
                     >
-                      <option value="" disabled>Select an access level</option>
+                      <option value="" disabled>
+                        Select an access level
+                      </option>
                       <option value="public">Public</option>
                       <option value="private">Private</option>
                       <option value="role">Role</option>
                     </select>
                   </div>
-
                 </div>
                 <div className="docContent">
                   <textarea
-                    name="content" placeholder="Write Something"
+                    name="content"
+                    placeholder="Write Something"
                     onChange={this.handleChange}
                   />
                 </div>
               </div>
               <div className="card-action">
-                <button onClick={this.handleSubmit}><i
-                  className="material-icons"
-                >
-                  save</i>Save</button>
-                <button href="#"><i className="material-icons" >cancel</i>
-                  <Link to="/dashboard"> Cancel</Link></button>
-
+                <button onClick={this.handleSubmit}>
+                  <i className="material-icons">save</i>Save
+                </button>
+                <button href="#">
+                  <i className="material-icons">cancel</i>
+                  <Link to="/dashboard"> Cancel</Link>
+                </button>
               </div>
             </div>
           </div>
@@ -87,15 +96,15 @@ export class AddDocument extends React.Component {
   }
 }
 
-export const stateToProps = state => ({
+export const stateToProps = (state) => ({
   documents: state.document,
 });
 AddDocument.propTypes = {
   handleCreateDocument: PropTypes.func.isRequired,
 };
-export const dispatchToProps = dispatch => ({
+export const dispatchToProps = (dispatch) => ({
   handleCreateDocument: (title, content, access) =>
-  dispatch(documentAction.handleCreateDocument(title, content, access)),
+    dispatch(documentAction.handleCreateDocument(title, content, access)),
 });
 
 export default connect(stateToProps, dispatchToProps)(AddDocument);

@@ -5,9 +5,19 @@ const bcrypt = require('bcrypt');
  * @method
  * @returns {void} no return
  */
-var hashPassword = function (password) {
+const hashPassword = function (password) {
   console.log('I got here');
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+};
+
+/**
+ * Compare plain password to user's hashed password
+ * @method
+ * @param {String} password
+ * @returns {Boolean} password match
+ */
+const validPassword = function (password) {
+  return bcrypt.compareSync(password, user.password);
 };
 
 module.exports = (sequelize, DataTypes) => {
@@ -55,31 +65,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      classMethods: {
-        associate: (models) => {
-          // model association
-          User.hasMany(models.Document, {
-            foreignKey: 'OwnerId',
-            onDelete: 'CASCADE',
-          });
-          User.belongsTo(models.Role, {
-            foreignKey: 'RoleId',
-            onDelete: 'CASCADE',
-          });
-        },
-      },
-      instanceMethods: {
-        /**
-         * Compare plain password to user's hashed password
-         * @method
-         * @param {String} password
-         * @returns {Boolean} password match
-         */
-        validPassword(password) {
-          return bcrypt.compareSync(password, user.password);
-        },
-      },
-
       hooks: {
         beforeCreate(user) {
           return hashPassword(user.password);

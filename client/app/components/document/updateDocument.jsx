@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'underscore';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
@@ -52,39 +53,50 @@ export class UpdateDocumentComponent extends React.Component {
               <div className="card-content black-text">
                 <div className="card-title s7">
                   <input
-                    name="title" className="docTitle"
-                    placeholder="Title Goes here" value={this.state.title}
+                    name="title"
+                    className="docTitle"
+                    placeholder="Title Goes here"
+                    value={this.state.title}
                     onChange={this.handleChange}
                   />
 
                   <label htmlFor="Control your access">
-                    Control your access</label>
+                    Control your access
+                  </label>
                   <div className="input-field col s12">
                     <select
                       value={this.state.select}
-                      className="browser-default" onChange={this.handleChange}
-                      name="access" id="mySelectBox"
+                      className="browser-default"
+                      onChange={this.handleChange}
+                      name="access"
+                      id="mySelectBox"
                     >
-                      <option value="" disabled>Select an access level</option>
+                      <option value="" disabled>
+                        Select an access level
+                      </option>
                       <option value="public">Public</option>
                       <option value="private">Private</option>
                       <option value="role">Role</option>
                     </select>
                   </div>
-
                 </div>
                 <div className="docContent">
                   <textarea
-                    name="content" value={this.state.content}
-                    placeholder="Write Something" onChange={this.handleChange}
+                    name="content"
+                    value={this.state.content}
+                    placeholder="Write Something"
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
               <div className="card-action">
                 <button onClick={this.handleSubmit}>
-                  <i className="material-icons">save</i>Save</button>
-                <button href="#"><i className="material-icons">
-                  cancel</i><Link to="/dashboard"> Cancel</Link></button>
+                  <i className="material-icons">save</i>Save
+                </button>
+                <button href="#">
+                  <i className="material-icons">cancel</i>
+                  <Link to="/dashboard"> Cancel</Link>
+                </button>
               </div>
             </div>
           </div>
@@ -110,9 +122,11 @@ export const stateToProps = (state, ownProps) => {
   };
 };
 
-export const dispatchToProps = dispatch => ({
+export const dispatchToProps = (dispatch) => ({
   handleUpdateDocument: (id, title, content, access) =>
-    dispatch(documentAction.handleUpdateDocument({ id, title, content, access })),
+    dispatch(
+      documentAction.handleUpdateDocument({ id, title, content, access })
+    ),
 });
 
 export default connect(stateToProps, dispatchToProps)(UpdateDocumentComponent);

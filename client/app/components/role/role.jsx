@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import toastr from 'toastr';
@@ -6,7 +7,6 @@ import { Input, Button, Row } from 'react-materialize';
 import * as adminAction from '../../actions/adminAction';
 
 class Role extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -35,11 +35,16 @@ class Role extends React.Component {
           <Row>
             <h4>CREATE ROLE FORM:</h4>
             <Input
-              className="formControl" name="title" s={6}
-              label="Title" value={this.state.title}
+              className="formControl"
+              name="title"
+              s={6}
+              label="Title"
+              value={this.state.title}
               onChange={this.handleChange}
             />
-            <Button className="button" waves="light">Create Role</Button>
+            <Button className="button" waves="light">
+              Create Role
+            </Button>
           </Row>
         </form>
       </div>
@@ -53,12 +58,12 @@ Role.propTypes = {
   error: PropTypes.func.isRequired,
 };
 
-const stateToProps = state => ({
+const stateToProps = (state) => ({
   role: state.admin.role,
 });
 
-const dispatchToProps = dispatch => ({
-  handleCreateRole: title => dispatch(adminAction.handleCreateRole(title)),
+const dispatchToProps = (dispatch) => ({
+  handleCreateRole: (title) => dispatch(adminAction.handleCreateRole(title)),
 });
 
 export default connect(stateToProps, dispatchToProps)(Role);

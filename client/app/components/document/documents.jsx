@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import jwt from 'jwt-decode';
@@ -15,10 +16,14 @@ export class DocumentsComponent extends React.Component {
   }
 
   componentWillMount() {
-    this.props.handleFetchDocuments();
+    console.log('In the lifecycle');
+    //this.props.handleFetchDocuments();
   }
 
   componentDidMount() {
+    debugger;
+    console.log('whats going on');
+    //this.props.handleFetchDocuments();
     $('.collapsible').collapsible();
   }
 
@@ -33,36 +38,39 @@ export class DocumentsComponent extends React.Component {
         <div className="collapsible-header">
           <i className="material-icons">filter_drama</i>
           <h5>{document.title}</h5>
-          { document.OwnerId === this.props.user.UserId ?
+          {document.OwnerId === this.props.user.UserId ? (
             <div>
-              <button><Link to={`documents/${document.id}`}>
-                <i className="material-icons">edit</i></Link>
+              <button>
+                <Link to={`documents/${document.id}`}>
+                  <i className="material-icons">edit</i>
+                </Link>
               </button>
               <button id={document.id} onClick={this.handleDelete}>
-                <i id={document.id} className="material-icons">delete</i>
+                <i id={document.id} className="material-icons">
+                  delete
+                </i>
               </button>
             </div>
-            : ''
-          }
+          ) : (
+            ''
+          )}
         </div>
         <div className="collapsible-body">{document.content}</div>
       </li>
     );
   }
+
   render() {
     const { documents } = this.props.documents;
+    console.log('In the rrrrenderrrr');
     if (documents) {
       return (
         <ul className="collapsible popout" data-collapsible="accordion">
-          { documents.map(this.documentView) }
+          {documents.map(this.documentView)}
         </ul>
       );
     }
-    return (
-      <div>
-        No Document Found
-      </div>
-    );
+    return <div>No Document Found</div>;
   }
 }
 
@@ -82,7 +90,8 @@ const stateToProps = (state, ownProps) => {
 const dispatchToProps = (dispatch) => {
   return {
     handleFetchDocuments: () => dispatch(documentAction.handleFetchDocuments()),
-    handleDeleteDocument: id => dispatch(documentAction.handleDeleteDocument(id)),
+    handleDeleteDocument: (id) =>
+      dispatch(documentAction.handleDeleteDocument(id)),
   };
 };
 
