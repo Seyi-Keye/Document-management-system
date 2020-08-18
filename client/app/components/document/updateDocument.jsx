@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'underscore';
+import { findWhere } from 'underscore';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction';
@@ -115,7 +115,7 @@ export const stateToProps = (state, ownProps) => {
   const token = localStorage.getItem('token');
   const decoded = jwt(token);
   const documentId = ownProps.params.id;
-  const doc = _.findWhere(state.document[0], { id: parseInt(documentId, 10) });
+  const doc = findWhere(state.document[0], { id: parseInt(documentId, 10) });
   return {
     document: doc,
     user: decoded,

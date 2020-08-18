@@ -7,7 +7,6 @@ const commonConfig = require('./webpack.config.common');
 module.exports = merge(commonConfig, {
   entry: './client/app/index.jsx',
   mode: 'production',
-  devtool: 'source-map',
   module: {
     rules: [
       {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _ from 'underscore';
+import { findWhere } from 'underscore';
 import { Input, Button, Row } from 'react-materialize';
 import { browserHistory } from 'react-router';
 import * as adminAction from '../../actions/adminAction';
@@ -78,7 +78,7 @@ UpdateUserComponent.propTypes = {
 
 const stateToProps = (state, ownProps) => {
   const UserId = ownProps.params.id;
-  const foundUser = _.findWhere(state.admin.users, {
+  const foundUser = findWhere(state.admin.users, {
     id: parseInt(UserId, 10),
   });
 
