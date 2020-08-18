@@ -9,13 +9,14 @@
     "build": "rm -rf dist && webpack --mode development --config webpack.config.server.js && webpack --config=webpack.config.prod.js",
     "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
     "coveralls": "nyc report --reporter=text-lcov |  coveralls",
-    "start:dev": "node ./dist/server.js",
-    "start": "babel-node ./dist/server.js",
-    "test": "npm run seed && npm run thetest",
+    "e2e": "nightwatch --config nightwatch.conf.js",
+    "heroku-postbuild": "rm -rf ./dist && yarn run build && cd dist/server && sequelize db:migrate",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
-    "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
+    "start": "node ./dist/server.js",
+    "start:dev": "node ./dist/server.js",
+    "test": "npm run seed && npm run thetest",
     "test:watch": "npm run test -- --watch",
-    "e2e": "nightwatch --config nightwatch.conf.js"
+    "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js"
   },
   "repository": {
     "type": "git",
