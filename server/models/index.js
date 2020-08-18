@@ -1,9 +1,9 @@
 let fs = require('fs');
 let path = require('path');
 let Sequelize = require('sequelize');
-let basename = path.basename(module.filename);
+let basename = path.basename('./index.js');
 let env = process.env.NODE_ENV || 'development';
-let config = require(__dirname + '/../config/config.json')[env];
+let config = require('../config/config')[env];
 let db = {};
 let dotenv = require('dotenv');
 
@@ -36,31 +36,30 @@ Object.keys(db).forEach(function (modelName) {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
-});
 
-db.Role.hasMany(db.User, {
-  foreignKey: 'RoleId',
-  as: 'user',
-});
+  db.Role.hasMany(db.User, {
+    foreignKey: 'RoleId',
+    as: 'user',
+  });
 
-db.User.hasMany(db.Document, {
-  foreignKey: 'OwnerId',
-  onDelete: 'CASCADE',
-  as: 'documents',
-});
+  db.User.hasMany(db.Document, {
+    foreignKey: 'OwnerId',
+    onDelete: 'CASCADE',
+    as: 'documents',
+  });
 
-db.User.belongsTo(db.Role, {
-  foreignKey: 'RoleId',
-  onDelete: 'CASCADE',
-  as: 'role',
-});
+  db.User.belongsTo(db.Role, {
+    foreignKey: 'RoleId',
+    onDelete: 'CASCADE',
+    as: 'role',
+  });
 
-db.Document.belongsTo(db.User, {
-  foreignKey: 'OwnerId',
-  onDelete: 'CASCADE',
-  as: 'owner',
+  db.Document.belongsTo(db.User, {
+    foreignKey: 'OwnerId',
+    onDelete: 'CASCADE',
+    as: 'owner',
+  });
 });
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

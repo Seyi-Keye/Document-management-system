@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
  * @returns {void} no return
  */
 const hashPassword = function (password) {
-  console.log('I got here');
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 

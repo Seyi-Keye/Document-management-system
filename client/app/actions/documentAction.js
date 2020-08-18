@@ -85,22 +85,26 @@ export const handleCreateDocument = (title, content, access) => (dispatch) => {
 };
 
 export const handleFetchDocuments = () => (dispatch) => {
-  // dispatch(fetchDocumentRequest());
+  dispatch(fetchDocumentRequest());
+  // eslint-disable-next-line no-console
   console.log('---I am here - - -');
-  // const token = localStorage.getItem('token');
-  // return request
-  //   .get('/api/v1/documents')
-  //   .set({ 'x-access-token': token })
-  //   .end((error, response) => {
-  //     console.log(response, '---response---');
-  //     if (error) {
-  //       console.log(error, '-----Theeee errrroooor---');
-  //       toastr.error(errorMsg);
-  //       return dispatch(fetchDocumentError(error));
-  //     }
-  //     console.log(response, '---response---');
-  //     return dispatch(fetchDocumentSuccessful(response.body.documents));
-  //   });
+  const token = localStorage.getItem('token');
+  return request
+    .get('/api/v1/documents')
+    .set({ 'x-access-token': token })
+    .end((error, response) => {
+      // eslint-disable-next-line no-console
+      console.log(response, '---response---');
+      if (error) {
+        // eslint-disable-next-line no-console
+        console.log(error, '-----Theeee errrroooor---');
+        toastr.error(error);
+        return dispatch(fetchDocumentError(error));
+      }
+      // eslint-disable-next-line no-console
+      console.log(response, '---response---');
+      return dispatch(fetchDocumentSuccessful(response.body.documents));
+    });
 };
 
 export const handleUpdateDocument = ({ id, title, content, access }) => (

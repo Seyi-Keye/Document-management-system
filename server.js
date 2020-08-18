@@ -3,11 +3,38 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import router from './server/routes/routes';
+import config from './webpack.config.dev';
 
-// setup the app
 const app = express();
+const DIST_DIR = __dirname;
+const HTML_FILE = path.join(DIST_DIR, 'index.html');
+const compiler = webpack(config);
+
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+  })
+);
+
+app.use(webpackHotMiddleware(compiler));
+
+app.get('*', (req, res, next) => {
+  const filename = path.resolve(compiler.outputPath, 'index.html');
+  compiler.outputFileSystem.readFile(filename, (err, result) => {
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type', 'text/html');
+    res.send(result);
+    res.end();
+  });
+});
+
 const port = parseInt(process.env.PORT, 10) || 5000;
 
 // Log entry data (https://github.com/expressjs/morgan)
@@ -16,21 +43,14 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(router);
-app.use(express.static(path.resolve(__dirname + '/client/public')));
+// app.use(express.static(path.resolve(__dirname + '/client/public')));
 
-app.get('*', function (request, response){
-  response.sendFile(path.resolve(__dirname + '/client/index.html'));
-})
+// app.get('*', function (request, response) {
+//   response.sendFile(path.resolve(__dirname + '/client/index.html'));
+// });
 
 app.listen(port, () => {
   console.log('\nApplication is running on port ', port);
 });
 
 export default app;
-
-
-
-
-
-
-
