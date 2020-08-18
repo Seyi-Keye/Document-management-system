@@ -16,14 +16,11 @@ export class DocumentsComponent extends React.Component {
   }
 
   componentWillMount() {
-    console.log('In the lifecycle');
-    //this.props.handleFetchDocuments();
+    this.props.handleFetchDocuments();
   }
 
   componentDidMount() {
-    debugger;
-    console.log('whats going on');
-    //this.props.handleFetchDocuments();
+    this.props.handleFetchDocuments();
     $('.collapsible').collapsible();
   }
 
@@ -62,7 +59,6 @@ export class DocumentsComponent extends React.Component {
 
   render() {
     const { documents } = this.props.documents;
-    console.log('In the rrrrenderrrr');
     if (documents) {
       return (
         <ul className="collapsible popout" data-collapsible="accordion">
