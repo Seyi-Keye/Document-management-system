@@ -39,25 +39,25 @@ Object.keys(db).forEach(function (modelName) {
 
   db.Role.hasMany(db.User, {
     foreignKey: 'RoleId',
-    as: 'user',
+    // as: 'user',
   });
 
   db.User.hasMany(db.Document, {
     foreignKey: 'OwnerId',
     onDelete: 'CASCADE',
-    as: 'documents',
+    // as: 'documents',
   });
 
   db.User.belongsTo(db.Role, {
     foreignKey: 'RoleId',
     onDelete: 'CASCADE',
-    as: 'role',
+    // as: 'role',
   });
 
   db.Document.belongsTo(db.User, {
     foreignKey: 'OwnerId',
     onDelete: 'CASCADE',
-    as: 'owner',
+    // as: 'owner',
   });
 });
 db.sequelize = sequelize;
