@@ -6,13 +6,14 @@ import path from 'path';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+// import webpackHotServerMiddleware from 'webpack-hot-server-middleware';
 
 import router from './server/routes/routes';
 import config from './webpack.config.dev';
+// import serverConfig from './webpack.config.server';
 
 const app = express();
 const DIST_DIR = __dirname;
-const HTML_FILE = path.join(DIST_DIR, 'index.html');
 const compiler = webpack(config);
 
 app.use(
@@ -22,6 +23,7 @@ app.use(
 );
 
 app.use(webpackHotMiddleware(compiler));
+// app.use(webpackHotServerMiddleware(compiler));
 
 app.get('*', (req, res, next) => {
   const filename = path.resolve(compiler.outputPath, 'index.html');
@@ -34,6 +36,7 @@ app.get('*', (req, res, next) => {
     res.end();
   });
 });
+console.log('I am heeeee');
 
 const port = parseInt(process.env.PORT, 10) || 5000;
 

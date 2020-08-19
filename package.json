@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "buildDev": "rm -rf dist && webpack --mode development --config webpack.config.server.js && webpack --mode development --config webpack.config.dev.js",
+    "buildDev": "rm -rf dist && webpack --config webpack.config.server.js && webpack --config webpack.config.dev.js",
     "buildProd": "rm -rf dist && webpack --mode production --config webpack.config.server.js && webpack --mode production --config webpack.config.prod.js",
     "build": "rm -rf dist && webpack --mode development --config webpack.config.server.js && webpack --config=webpack.config.prod.js",
     "cover": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover _mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js",
@@ -13,7 +13,7 @@
     "heroku-postbuild": "rm -rf ./dist && yarn run build && cd dist/server && sequelize db:migrate",
     "seed": "NODE_ENV=test babel-node server/test/helpers/seedHelper.js",
     "start": "node ./dist/server.js",
-    "start:dev": "node ./dist/server.js",
+    "start:server:dev": "nodemon server.js --exec babel-node",
     "test": "npm run seed && npm run thetest",
     "test:watch": "npm run test -- --watch",
     "thetest": "NODE_ENV=test mocha ./**/test/**/*.spec.* --require ./client/test/.setup.js"
@@ -51,6 +51,7 @@
     "mock-require": "^2.0.2",
     "morgan": "^1.8.1",
     "node-sass": "^4.5.2",
+    "nodemon": "^2.0.4",
     "pg": "^6.1.4",
     "pg-hstore": "^2.3.2",
     "prop-types": "^15.7.2",
@@ -82,6 +83,7 @@
     "webpack-dev-middleware": "^1.6.1"
   },
   "devDependencies": {
+    "@babel/node": "^7.10.5",
     "babel-istanbul": "^0.12.2",
     "babel-loader": "^8.1.0",
     "coveralls": "^3.1.0",
@@ -107,6 +109,7 @@
     "terser-webpack-plugin": "^4.1.0",
     "webpack-cli": "^3.3.12",
     "webpack-hot-middleware": "^2.25.0",
+    "webpack-hot-server-middleware": "^0.6.1",
     "webpack-merge": "^5.1.1",
     "webpack-node-externals": "^2.5.1"
   }
