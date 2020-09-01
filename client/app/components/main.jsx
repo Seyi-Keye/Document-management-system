@@ -43,6 +43,11 @@ export class App extends React.Component {
       <nav>
         <div className="nav-wrapper cyan accent-4 z-depth-3">
           <ul>
+            {
+              <li>
+                <Link to="/home">Landing Page </Link>
+              </li>
+            }
             {token && (
               <li>
                 {' '}

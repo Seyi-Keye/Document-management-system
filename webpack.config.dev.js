@@ -1,10 +1,15 @@
 const webpack = require('webpack');
-const { merge } = require('webpack-merge');
-const commonConfig = require('./webpack.config.common');
+const path = require('path');
+const dotenv = require('dotenv');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = merge(commonConfig, {
+module.exports = {
   entry: {
     main: ['webpack-hot-middleware/client', './client/app/index.jsx'],
+  },
+  output: {
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
   },
   mode: 'development',
   devtool: 'inline-source-map',
@@ -12,8 +17,27 @@ module.exports = merge(commonConfig, {
     // contentBase: './dist',
     hot: true,
   },
+  target: 'web',
   module: {
     rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /[\\/]node_modules[\\/]/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        // Loads the javascript into html template provided.
+        // Entry point is set below in HtmlWebPackPlugin in Plugins
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            //options: { minimize: true }
+          },
+        ],
+      },
       {
         enforce: 'pre',
         test: /\.js$/,
@@ -29,13 +53,40 @@ module.exports = merge(commonConfig, {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /(\.scss)$/,
+        loaders: ['style-loader', 'sass-loader'],
+      },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+      { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/octet-stream',
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=image/svg+xml',
+      },
+      {
+        test: /\.(jpg|png|svg|jpeg)$/,
+        loader: 'url-loader',
+        options: { limit: 25000 },
+      },
     ],
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      inject: true,
+      template: './client/index.html',
+    }),
     // OccurrenceOrderPlugin is needed for webpack 1.x only
     // new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     // Use NoErrorsPlugin for webpack 1.x
     new webpack.NoEmitOnErrorsPlugin(),
   ],
-});
+  resolve: {
+    extensions: ['*', '.js', '.jsx'],
+  },
+};

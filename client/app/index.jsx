@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
-import '../styles/styles.scss';
+import '../styles/styles.css';
 import '../../node_modules/toastr/build/toastr.min.css';
 import Document from './components/document/AddDocument';
 import configureStore from '../store/configureStore';
@@ -15,7 +15,7 @@ import UpdateUser from './components/user/UpdateUser';
 import Users from './components/user/Users';
 import Roles from './components/role/RoleDashboard';
 import Search from './components/search/Search';
-
+import LandingPage from './components/landingPage/landingPage';
 
 const store = configureStore;
 const onEnter = (next, replace, cb) => {
@@ -23,8 +23,11 @@ const onEnter = (next, replace, cb) => {
   if (!token && next.location.pathname.indexOf('dashboard') > -1) {
     replace('/login');
   }
-  if (token && (next.location.pathname.indexOf('login') > -1 ||
-  next.location.pathname.indexOf('signup') > -1)) {
+  if (
+    token &&
+    (next.location.pathname.indexOf('login') > -1 ||
+      next.location.pathname.indexOf('signup') > -1)
+  ) {
     replace('/dashboard');
   }
   cb();
@@ -34,7 +37,11 @@ render(
     <Router history={browserHistory}>
       <Route path="/" component={Main}>
         <IndexRedirect to="/login" />
-        <Route path="dashboard/document" component={Document} onEnter={onEnter} />
+        <Route
+          path="dashboard/document"
+          component={Document}
+          onEnter={onEnter}
+        />
         <Route path="signup" component={SignUpForm} onEnter={onEnter} />
         <Route path="login" component={Login} onEnter={onEnter} />
         <Route path="dashboard" component={Dashboard} onEnter={onEnter} />
@@ -43,7 +50,9 @@ render(
         <Route path="users" component={Users} onEnter={onEnter} />
         <Route path="roles" component={Roles} onEnter={onEnter} />
         <Route path="search" component={Search} onEnter={onEnter} />
+        <Route path="home" component={LandingPage} onEnter={onEnter} />
       </Route>
     </Router>
   </Provider>,
- document.getElementById('app'));
+  document.getElementById('app')
+);

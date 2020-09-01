@@ -36,7 +36,6 @@ app.get('*', (req, res, next) => {
     res.end();
   });
 });
-console.log('I am heeeee');
 
 const port = parseInt(process.env.PORT, 10) || 5000;
 
