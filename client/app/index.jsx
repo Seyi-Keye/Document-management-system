@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
-import '../styles/styles.css';
+import '../assets/sass/styles.scss';
 import '../../node_modules/toastr/build/toastr.min.css';
 import Document from './components/document/AddDocument';
 import configureStore from '../store/configureStore';
@@ -16,6 +16,7 @@ import Users from './components/user/Users';
 import Roles from './components/role/RoleDashboard';
 import Search from './components/search/Search';
 import LandingPage from './components/landingPage/landingPage';
+import '../assets/sass/App.scss';
 
 const store = configureStore;
 const onEnter = (next, replace, cb) => {

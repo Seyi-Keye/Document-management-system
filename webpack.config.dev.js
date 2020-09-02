@@ -55,7 +55,7 @@ module.exports = {
       },
       {
         test: /(\.scss)$/,
-        loaders: ['style-loader', 'sass-loader'],
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
       },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
       { test: /\.(woff|woff2)$/, loader: 'url?prefix=font/&limit=5000' },
