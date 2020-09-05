@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Input, Button, Row, Col } from 'react-materialize';
-import toastr from 'toastr';
+import { InputGroup, Button, Row, Col } from 'react-bootstrap';
+// import toastr from 'toastr';
 import * as userAction from '../../actions/userAction';
 
 export class SignUpFormComponent extends React.Component {
@@ -42,11 +42,11 @@ export class SignUpFormComponent extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        {this.props.hasError && toastr.error(this.props.error)}
+        {/* {this.props.hasError && // toastr.error(this.props.error)} */}
 
         <Row>
           <h4>SIGNUP FORM:</h4>
-          <Input
+          <InputGroup
             className="formControl"
             name="firstname"
             s={6}
@@ -54,7 +54,7 @@ export class SignUpFormComponent extends React.Component {
             value={this.state.firstname}
             onChange={this.handleChange}
           />
-          <Input
+          <InputGroup
             name="lastname"
             className="formControl"
             s={6}
@@ -62,7 +62,7 @@ export class SignUpFormComponent extends React.Component {
             value={this.state.lastname}
             onChange={this.handleChange}
           />
-          <Input
+          <InputGroup
             name="username"
             className="formControl"
             s={6}
@@ -70,7 +70,7 @@ export class SignUpFormComponent extends React.Component {
             value={this.state.username}
             onChange={this.handleChange}
           />
-          <Input
+          <InputGroup
             name="password"
             className="formControl"
             type="password"
@@ -79,7 +79,7 @@ export class SignUpFormComponent extends React.Component {
             onChange={this.handleChange}
             s={6}
           />
-          <Input
+          <InputGroup
             name="passwordConfirmation"
             className="formControl"
             s={6}
@@ -88,7 +88,7 @@ export class SignUpFormComponent extends React.Component {
             value={this.state.passwordConfirmation}
             onChange={this.handleChange}
           />
-          <Input
+          <InputGroup
             name="email"
             className="formControl"
             type="email"

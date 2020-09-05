@@ -52,7 +52,7 @@ Tech Stack
 * [React] - A javascript library for building user interfaces
 * [Redux] - A predictable state container for JavaScript apps.
 * [Enzyme] - A JavaScript Testing utility for React
-* [Materialize] - great UI boilerplate for modern web apps
+* [Bootstrap] - UI boilerplate
 * [node.js] - evented I/O for the backend
 * [Express] - fast node.js network app framework
 * [Webpack] - the streaming build system

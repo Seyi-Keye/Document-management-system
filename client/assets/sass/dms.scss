@@ -1,0 +1,43 @@
+.bg-img {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('https://source.unsplash.com/5wCGsFe62Ls/1920x1280');
+  color: yellow;
+  height: 350px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.home-container {
+  &__row {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    height: 20rem;
+  }
+  &__text-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5em;
+    padding-right: 5em;
+    text-align: left;
+  }
+  &__card {
+    margin-left: 5em;
+    margin-right: 5em;
+    box-shadow: 0.4em 0.6em #d2d6d8;
+    opacity: 0.5;
+  }
+  .home-footer {
+    height: 3em;
+    background-color: black;
+    color: darkgray;
+    display: flex;
+    justify-content: center;
+    font-size: small;
+    &__text {
+      margin-top: 0.7em;
+      display: flex;
+    }
+  }
+}

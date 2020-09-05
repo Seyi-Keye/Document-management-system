@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
 import '../assets/sass/styles.scss';
-import '../../node_modules/toastr/build/toastr.min.css';
 import Document from './components/document/AddDocument';
 import configureStore from '../store/configureStore';
 import Main from './components/Main';

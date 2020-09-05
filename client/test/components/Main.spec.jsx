@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { browserHistory } from 'react-router';
-import { Input } from 'react-materialize';
+import { Input } from 'react-bootstrap';
 
 import { App } from '../../app/components/Main';
 
@@ -18,14 +18,14 @@ describe('Describe <App /> Component:', () => {
   });
 
   it('should have state in props', () => {
-    expect(wrapper.state())
-      .to
-      .deep
-      .equal(initialState);
+    expect(wrapper.state()).to.deep.equal(initialState);
   });
 
   it('should fire handleSearchChange', () => {
-    const handleSearchChangeSpy = sinon.spy(App.prototype, 'handleSearchChange');
+    const handleSearchChangeSpy = sinon.spy(
+      App.prototype,
+      'handleSearchChange'
+    );
 
     wrapper = shallow(<App />);
     wrapper
@@ -37,9 +37,7 @@ describe('Describe <App /> Component:', () => {
           value: 'to',
         },
       });
-    expect(handleSearchChangeSpy.calledOnce)
-      .to
-      .equal(true);
+    expect(handleSearchChangeSpy.calledOnce).to.equal(true);
     handleSearchChangeSpy.reset();
   });
 
@@ -54,10 +52,12 @@ describe('Describe <App /> Component:', () => {
     const browserHistorySpy = sinon
       .stub(browserHistory, 'push')
       .callsFake(() => null);
-    const wrapper = shallow(<App
-      handleSearchUsers={handleSearchUsersSpy}
-      handleSearchDocuments={handleSearchDocumentsSpy}
-    />);
+    const wrapper = shallow(
+      <App
+        handleSearchUsers={handleSearchUsersSpy}
+        handleSearchDocuments={handleSearchDocumentsSpy}
+      />
+    );
     wrapper
       .find('form')
       .first()
@@ -67,18 +67,10 @@ describe('Describe <App /> Component:', () => {
         },
         preventDefault: () => null,
       });
-    expect(browserHistorySpy.calledOnce)
-      .to
-      .equal(true);
-    expect(handleSubmitSpy.calledOnce)
-      .to
-      .equal(true);
-    expect(handleSearchUsersSpy.calledOnce)
-      .to
-      .equal(true);
-    expect(handleSearchDocumentsSpy.calledOnce)
-      .to
-      .equal(true);
+    expect(browserHistorySpy.calledOnce).to.equal(true);
+    expect(handleSubmitSpy.calledOnce).to.equal(true);
+    expect(handleSearchUsersSpy.calledOnce).to.equal(true);
+    expect(handleSearchDocumentsSpy.calledOnce).to.equal(true);
     browserHistorySpy.restore();
     handleSubmitSpy.reset();
   });

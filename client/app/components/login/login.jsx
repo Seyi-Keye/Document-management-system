@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Button, Col, Input, Row } from 'react-materialize';
+import { Button, Col, InputGroup, Row } from 'react-bootstrap';
 import * as userAction from '../../actions/userAction';
 
 export class LoginComponent extends React.Component {
@@ -29,7 +29,7 @@ export class LoginComponent extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <Row>
-          <Input
+          <InputGroup
             name="email"
             className="formControl"
             type="email"
@@ -38,7 +38,7 @@ export class LoginComponent extends React.Component {
             value={this.state.email}
             onChange={this.handleChange}
           />
-          <Input
+          <InputGroup
             name="password"
             className="formControl"
             type="password"

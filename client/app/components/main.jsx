@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
-import { Input } from 'react-materialize';
-import toastr from 'toastr';
+import { InputGroup, Nav } from 'react-bootstrap';
+// import toastr from 'toastr';
 import { handleSearchUsers } from '../actions/adminAction';
 import { handleSearchDocuments } from '../actions/documentAction';
 
@@ -33,15 +33,48 @@ export class App extends React.Component {
   handleLogout() {
     // eslint-disable-line
     localStorage.removeItem('token');
-    toastr.success('You have been Logged Out');
+    // toastr.success('You have been Logged Out');
     browserHistory.push('/login');
   }
 
   renderNavBar() {
     const token = localStorage.getItem('token');
     return (
-      <nav>
-        <div className="nav-wrapper cyan accent-4 z-depth-3">
+      <Nav activeKey="/home" role="navigation">
+        <Nav.Item>
+          <Nav.Link href="/home">Home</Nav.Link>
+        </Nav.Item>
+        {token && (
+          <Nav.Item>
+            <Nav.Link href="/dashboard/document">Create Document</Nav.Link>
+          </Nav.Item>
+        )}{' '}
+        {!token && (
+          <Nav.Item>
+            <Nav.Link href="/signup">Sign Up</Nav.Link>
+          </Nav.Item>
+        )}{' '}
+        {!token && (
+          <Nav.Item>
+            <Nav.Link href="/login">Login</Nav.Link>
+          </Nav.Item>
+        )}
+        {token && (
+          <Nav.Item>
+            <Nav.Link href="/dashboard"> Dashboard</Nav.Link>
+          </Nav.Item>
+        )}
+        {token && (
+          <Nav.Item>
+            <Nav.Link href="/users"> Users</Nav.Link>
+          </Nav.Item>
+        )}
+        {token && (
+          <Nav.Item>
+            <Nav.Link href="/roles"> Manage Role</Nav.Link>
+          </Nav.Item>
+        )}
+        {/* <div className="nav-wrapper cyan accent-4 z-depth-3">
           <ul>
             {
               <li>
@@ -88,7 +121,7 @@ export class App extends React.Component {
               <li>
                 <form onSubmit={this.handleSearchSubmit}>
                   <div className="input-field">
-                    <Input
+                    <InputGroup
                       placeholder="Search Here"
                       id="search"
                       onChange={this.handleSearchChange}
@@ -109,8 +142,9 @@ export class App extends React.Component {
               </button>
             )}
           </ul>
-        </div>
-      </nav>
+        </div> */}
+        <hr />
+      </Nav>
     );
   }
 

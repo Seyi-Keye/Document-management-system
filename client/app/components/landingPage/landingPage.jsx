@@ -1,30 +1,44 @@
 import React from 'react';
-import '../../../assets/sass/landingPage.scss';
 
-export default function LandingPage() {
+const LandingPage = () => {
   return (
     <div className="home-container">
-      <div className="bg-img "></div>
-      <div className="content">
+      <div className="bg-img container-fluid"></div>
+      <div className="content container text-center">
         <section>
-          <div>
-            <h2>EE rrj fhuedn jdue</h2>
-            <p>kdi kiiq nujdiei nbuhdeu absye hbcdy jueu jugyg tftft gfre e4</p>
+          <div className="row home-container__row">
+            <div className="col home-container__text-section">
+              <h2>No longer loose any vital documents</h2>
+              <p>
+                Keep your documents in a truly secured space that provides you
+                with features that help your ideas come to live.
+              </p>
+            </div>
+            <div className="card col home-container__card"></div>
           </div>
-          <div className="card"></div>
         </section>
         <section>
-          <div>
-            <h2>EE rrj fhuedn jdue</h2>
-            <p>kdi kiiq nujdiei nbuhdeu absye hbcdy jueu jugyg tftft gfre e4</p>
+          <div className="row home-container__row flex-row-reverse">
+            <div className="col home-container__text-section">
+              <h2>Keep your notes in one place</h2>
+              <p>
+                Have access to your documents anywhere you are and update on the
+                file. You can mange your document permission with one click and
+                share with friends
+              </p>
+            </div>
+            <div className="card col home-container__card"></div>
           </div>
-          <div className="card"></div>
         </section>
-        {/* <h1 className="overlay">I am here</h1>
-        <div className="content-card"></div> */}
       </div>
+      <footer className="home-footer container-fluid">
+        <div className="home-footer__text">
+          <p>Copyright &copy; 2020. All rights reserved</p>
+        </div>
+      </footer>
     </div>
   );
-}
+};
 
 // https://source.unsplash.com/EeS69TTPQ18
+export default LandingPage;
