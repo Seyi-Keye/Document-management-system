@@ -143,7 +143,6 @@ export class App extends React.Component {
             )}
           </ul>
         </div> */}
-        <hr />
       </Nav>
     );
   }
@@ -151,7 +150,14 @@ export class App extends React.Component {
   render() {
     return (
       <div>
-        {this.renderNavBar()}
+        <hr />
+        <header>
+          <a href="/home">
+            <p className="app-name">DOCkie</p>
+          </a>
+          {this.renderNavBar()}
+        </header>
+        <hr />
         {this.props.children}
       </div>
     );

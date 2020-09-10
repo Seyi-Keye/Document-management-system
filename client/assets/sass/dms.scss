@@ -1,3 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap');
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em;
+}
+
+hr {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background-color: black;
+}
+
+.app-name {
+  font-family: 'Slabo 27px', serif;
+  font-size: xx-large;
+  margin-bottom: 0;
+  color: #ff5200;
+  cursor: pointer;
+}
+
+.app-name:focus {
+  outline-color: white;
+}
+
 .bg-img {
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
     url('https://source.unsplash.com/5wCGsFe62Ls/1920x1280');
@@ -40,4 +67,18 @@
       display: flex;
     }
   }
+}
+
+.nav-item {
+  a {
+    color: #383e56;
+  }
+}
+
+.nav-link:hover {
+  color: #ec823a;
+}
+
+a:hover {
+  text-decoration: none;
 }

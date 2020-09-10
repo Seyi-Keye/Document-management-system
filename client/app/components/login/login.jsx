@@ -1,62 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Button, Col, InputGroup, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row, FormControl } from 'react-bootstrap';
+import Modal from '../common/Modal';
 import * as userAction from '../../actions/userAction';
 
-export class LoginComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const LoginComponent = (props) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
-  handleSubmit(event) {
+  const handleChange = (event) => {
+    setEmail({ [event.target.name]: event.target.value });
+  };
+  const handleSubmit = (event) => {
     event.preventDefault();
-    this.props.handleLogin(this.state.email, this.state.password);
+    props.handleLogin(email, password);
     browserHistory.push('/dashboard');
-  }
+  };
 
-  render() {
+  const loginForm = () => {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <Row>
-          <InputGroup
-            name="email"
-            className="formControl"
-            type="email"
-            label="Email"
-            s={7}
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-          <InputGroup
-            name="password"
-            className="formControl"
-            type="password"
-            label="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-            s={7}
-          />
-          <Col s={7}>
-            <Button className="button" waves="light">
-              Login
-            </Button>
-          </Col>
-        </Row>
-      </form>
+      <Form className="col-md-8 login" onSubmit={handleSubmit}>
+        <div>
+          <h1>Login to your Account!</h1>
+          <p>Sign in to your Account here</p>
+        </div>
+        <Form.Group controlId="email" className="col-md-4">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" />
+        </Form.Group>
+
+        <Form.Group controlId="password" className="col-md-4">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" />
+        </Form.Group>
+        <Form.Group controlId="rememberPassword" className="col-md-4">
+          <Form.Control type="radio" label="Remember Password" />
+        </Form.Group>
+        <Button variant="primary" size="sm" type="submit">
+          Login
+        </Button>
+      </Form>
     );
-  }
-}
+  };
+
+  return (
+    <div className="row">
+      <Modal children={loginForm()} title="Login" />
+    </div>
+  );
+};
 
 LoginComponent.propTypes = {
   handleLogin: PropTypes.func.isRequired,
