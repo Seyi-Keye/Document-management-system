@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import LoginComponent from '../login/login';
+import React from 'react';
 
 const LandingPage = () => {
-  const showModal = false;
-
   return (
     <div className="home-container">
       <div className="bg-img container-fluid"></div>
@@ -39,7 +36,6 @@ const LandingPage = () => {
           <p>Copyright &copy; 2020. All rights reserved</p>
         </div>
       </footer>
-      <LoginComponent showModal={showModal} />
     </div>
   );
 };

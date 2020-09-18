@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Button, Col, Form, Row, FormControl } from 'react-bootstrap';
 import Modal from '../common/Modal';
 import * as userAction from '../../actions/userAction';
 
-const LoginComponent = (props) => {
+const LoginComponent = () => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleChange = (event) => {
-    setEmail({ [event.target.name]: event.target.value });
-  };
+  // const handleChange = (event) => {
+  //   setEmail({ [event.target.name]: event.target.value });
+  // };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    props.handleLogin(email, password);
-    browserHistory.push('/dashboard');
+    dispatch(userAction.handleLogin(email, password));
+    <Redirect to="/dashboard" />;
   };
 
   const loginForm = () => {
@@ -51,17 +55,4 @@ const LoginComponent = (props) => {
     </div>
   );
 };
-
-LoginComponent.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-};
-
-export const stateToProps = (state) => ({
-  user: state.user,
-});
-
-export const dispatchToProps = (dispatch) => ({
-  handleLogin: (email, password) =>
-    dispatch(userAction.handleLogin(email, password)),
-});
-export default connect(stateToProps, dispatchToProps)(LoginComponent);
+export default LoginComponent;

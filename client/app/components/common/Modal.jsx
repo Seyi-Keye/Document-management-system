@@ -8,7 +8,7 @@ const ModalComponent = ({
   showModal,
   successText,
 }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);

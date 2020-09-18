@@ -9,7 +9,7 @@ const Header = () => {
       <ul>
         {
           <li>
-            <Link to="/home">Landing Page </Link>
+            <Link to="/">Landing Page </Link>
           </li>
         }
         {token && (
@@ -27,7 +27,15 @@ const Header = () => {
         {!token && (
           <li>
             {' '}
-            <Link to="/login"> Login </Link>
+            <Link
+              to={{
+                pathname: '/login',
+                state: { modal: true },
+              }}
+            >
+              {' '}
+              Login{' '}
+            </Link>
           </li>
         )}
         {token && (
