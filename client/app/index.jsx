@@ -1,11 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
+import {
+  BrowserRouter as Router,
+  browserHistory,
+  Switch,
+  Link,
+  Redirect,
+  Route,
+  IndexRedirect,
+} from 'react-router-dom';
 import '../assets/sass/styles.scss';
 import Document from './components/document/AddDocument';
 import configureStore from '../store/configureStore';
-import Main from './components/Main';
+import App from './components/App';
 import SignUpForm from './components/signUp/SignUp';
 import Login from './components/login/Login';
 import Dashboard from './components/dashboard/Dashboard';
@@ -32,10 +40,12 @@ const onEnter = (next, replace, cb) => {
   }
   cb();
 };
+
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={Main}>
+      <Switch>
+        <Route path="/" component={App} />
         <IndexRedirect to="/login" />
         <Route
           path="dashboard/document"
@@ -51,7 +61,7 @@ render(
         <Route path="roles" component={Roles} onEnter={onEnter} />
         <Route path="search" component={Search} onEnter={onEnter} />
         <Route path="home" component={LandingPage} onEnter={onEnter} />
-      </Route>
+      </Switch>
     </Router>
   </Provider>,
   document.getElementById('app')

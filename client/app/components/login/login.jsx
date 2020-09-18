@@ -26,12 +26,12 @@ const LoginComponent = (props) => {
           <h1>Login to your Account!</h1>
           <p>Sign in to your Account here</p>
         </div>
-        <Form.Group controlId="email" className="col-md-4">
+        <Form.Group controlId="email" className="col-md">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" />
         </Form.Group>
 
-        <Form.Group controlId="password" className="col-md-4">
+        <Form.Group controlId="password" className="col-md">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" />
         </Form.Group>

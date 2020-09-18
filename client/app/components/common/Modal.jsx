@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const ModalComponent = ({ title, children, closeText, successText }) => {
+const ModalComponent = ({
+  title,
+  children,
+  closeText,
+  showModal,
+  successText,
+}) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleShow = () => setShow(true);
 
   return (
     <>
@@ -15,9 +21,9 @@ const ModalComponent = ({ title, children, closeText, successText }) => {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
+        {/* <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        </Modal.Header> */}
         <Modal.Body>{children}</Modal.Body>
         {closeText ||
           (successText && (
@@ -34,5 +40,9 @@ const ModalComponent = ({ title, children, closeText, successText }) => {
     </>
   );
 };
+
+// ModalComponent.defaultProps = {
+//   show: true,
+// };
 
 export default ModalComponent;
