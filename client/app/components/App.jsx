@@ -16,7 +16,7 @@ import { handleSearchUsers } from '../actions/adminAction';
 import { handleSearchDocuments } from '../actions/documentAction';
 import Header from './Header';
 import SignUpForm from './signUp/signUp';
-import Login from './login/Login';
+import Login, { LoginForm } from './login/Login';
 import Dashboard from './dashboard/Dashboard';
 import UpdateDocument from './document/UpdateDocument';
 import UpdateUser from './user/UpdateUser';
@@ -77,22 +77,26 @@ export class App extends React.Component {
   }
 
   render() {
-    console.log(this.props, 'iiiii');
     const { location } = this.props;
     const isModal =
       location.state &&
       location.state.modal &&
       this.previousLocation !== location;
+    console.log(
+      this.previousLocation,
+      '<= this.previousLocation..',
+      location,
+      '<====location'
+    );
     return (
       <div className="app">
         <Header />
         {isModal ? <Route exact path="/login" component={Login} /> : null}
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" component={Login} />
-
+          <Route exact path="/login" render={() => <LoginForm />} />
+          <Route>{<p>404</p>}</Route>
           {/* 
-          <Route>{'404'}</Route>
           <Route exact path="/dashboard/document" component={Document} />
           <Route exact path="/signup" component={SignUpForm} />
           <Route exact path="/dashboard" component={Dashboard} />
