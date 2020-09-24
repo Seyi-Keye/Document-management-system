@@ -16,7 +16,7 @@ import { handleSearchUsers } from '../actions/adminAction';
 import { handleSearchDocuments } from '../actions/documentAction';
 import Header from './Header';
 import SignUpForm from './signUp/signUp';
-import Login, { LoginForm } from './login/Login';
+import Login from './login/Login';
 import Dashboard from './dashboard/Dashboard';
 import UpdateDocument from './document/UpdateDocument';
 import UpdateUser from './user/UpdateUser';
@@ -77,24 +77,25 @@ export class App extends React.Component {
   }
 
   render() {
+    // https://blog.logrocket.com/building-a-modal-module-for-react-with-react-router/
     const { location } = this.props;
     const isModal =
       location.state &&
       location.state.modal &&
       this.previousLocation !== location;
-    console.log(
-      this.previousLocation,
-      '<= this.previousLocation..',
-      location,
-      '<====location'
-    );
     return (
       <div className="app">
         <Header />
-        {isModal ? <Route exact path="/login" component={Login} /> : null}
+        {isModal ? (
+          <Route
+            exact
+            path="/login"
+            render={(props) => <Login {...props} isModal={isModal} />}
+          />
+        ) : null}
         <Switch location={isModal ? this.previousLocation : location}>
-          <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" render={() => <LoginForm />} />
+          <Route exact path="/" render={() => <LandingPage />} />
+          <Route exact path="/login" render={() => <Login />} />
           <Route>{<p>404</p>}</Route>
           {/* 
           <Route exact path="/dashboard/document" component={Document} />

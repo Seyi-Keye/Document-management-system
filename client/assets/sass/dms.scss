@@ -82,3 +82,62 @@ hr {
 a:hover {
   text-decoration: none;
 }
+.modal-header {
+  border-bottom: 0;
+}
+
+.modal-dialog {
+  .modal-body {
+    padding-top: 0;
+    .login--header {
+      h1 {
+        font-size: 3rem;
+        margin-left: 8.5rem;
+        margin-right: 8.5rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        padding: 0.4rem;
+        font-weight: 700;
+      }
+
+      p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        margin-left: 7rem;
+        margin-right: 7rem;
+        color: darkgray;
+      }
+    }
+  }
+}
+
+.no-modal-wrapper {
+  .login--header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-block {
+    display: block;
+    width: 57%;
+    margin: auto;
+  }
+
+  .login {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+
+    h1 {
+      font-size: 3rem;
+      margin-left: 8.5rem;
+      margin-right: 8.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+      padding: 0.4rem;
+      font-weight: 700;
+    }
+  }
+}

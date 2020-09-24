@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 
 const ModalComponent = ({
   title,
@@ -7,11 +8,15 @@ const ModalComponent = ({
   closeText,
   showModal,
   successText,
+  history,
 }) => {
   const [show, setShow] = useState(true);
 
-  const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setShow(false);
+    history.goBack();
+  };
+  const handleShow = () => setShow(false);
 
   return (
     <>
@@ -21,9 +26,11 @@ const ModalComponent = ({
         backdrop="static"
         keyboard={false}
       >
-        {/* <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header> */}
+        <div className="modal-header">
+          <button type="button" className="close" onClick={handleClose}>
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
         <Modal.Body>{children}</Modal.Body>
         {closeText ||
           (successText && (
@@ -40,9 +47,5 @@ const ModalComponent = ({
     </>
   );
 };
-
-// ModalComponent.defaultProps = {
-//   show: true,
-// };
 
 export default ModalComponent;
