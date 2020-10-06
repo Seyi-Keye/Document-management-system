@@ -15,7 +15,7 @@ import { InputGroup, Nav } from 'react-bootstrap';
 import { handleSearchUsers } from '../actions/adminAction';
 import { handleSearchDocuments } from '../actions/documentAction';
 import Header from './Header';
-import SignUpForm from './signUp/signUp';
+import SignUp from './signUp/signUp';
 import Login from './login/Login';
 import Dashboard from './dashboard/Dashboard';
 import UpdateDocument from './document/UpdateDocument';
@@ -93,13 +93,25 @@ export class App extends React.Component {
             render={(props) => <Login {...props} isModal={isModal} />}
           />
         ) : null}
+        {isModal ? (
+          <Route
+            exact
+            path="/signup"
+            render={(props) => <SignUp {...props} isModal={isModal} />}
+          />
+        ) : null}
+
         <Switch location={isModal ? this.previousLocation : location}>
           <Route exact path="/" render={() => <LandingPage />} />
           <Route exact path="/login" render={() => <Login />} />
+          <Route
+            exact
+            path="/signup"
+            render={() => <SignUp isModal={false} />}
+          />
           <Route>{<p>404</p>}</Route>
           {/* 
           <Route exact path="/dashboard/document" component={Document} />
-          <Route exact path="/signup" component={SignUpForm} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/documents" component={UpdateDocument} />
           <Route exact path="/users/:id" component={UpdateUser} />
@@ -108,6 +120,11 @@ export class App extends React.Component {
           <Route exact path="/search" component={Search} />
            */}
         </Switch>
+        <footer className="home-footer container-fluid">
+          <div className="home-footer__text">
+            <p>Copyright &copy; 2020. All rights reserved</p>
+          </div>
+        </footer>
       </div>
     );
   }

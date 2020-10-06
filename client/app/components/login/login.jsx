@@ -7,19 +7,12 @@ import Modal from '../common/Modal';
 import * as userAction from '../../actions/userAction';
 
 function LoginComponent(props) {
-  const user = useSelector((state) => state.user);
+  // const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleChange = (event) => {
-    if (event.target.id === 'email') {
-      setEmail(event.target.value);
-    }
-    if (event.target.id === 'password') {
-      setPassword(event.target.value);
-    }
-  };
+  const [state, setState] = React.useState({
+    email: '',
+    password: '',
+  });
 
   const { isModal, history } = props;
 
@@ -30,7 +23,15 @@ function LoginComponent(props) {
     // <Redirect to="/dashboard" />;
   };
 
-  const LoginForm = (props) => {
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setState({
+      ...state,
+      [evt.target.name]: value,
+    });
+  };
+
+  const LoginForm = () => {
     return (
       <Form className="col-md-12 login">
         {/* onSubmit={handleSubmit} */}
@@ -43,6 +44,7 @@ function LoginComponent(props) {
           <Form.Control
             type="email"
             placeholder="Email"
+            value={state.email}
             onChange={handleChange}
           />
         </Form.Group>
@@ -51,6 +53,7 @@ function LoginComponent(props) {
           <Form.Control
             type="password"
             placeholder="Password"
+            value={state.password}
             onChange={handleChange}
           />
         </Form.Group>
