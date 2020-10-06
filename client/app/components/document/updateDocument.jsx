@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { findWhere } from 'underscore';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { Redirect, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction';
 
 const jwt = require('jwt-decode');
@@ -40,7 +40,9 @@ export class UpdateDocumentComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.handleUpdateDocument({ ...this.state });
-    browserHistory.push('/dashboard');
+    <Redirect to="/dashboard" />;
+
+    // browserHistory.push('/dashboard');
   }
 
   render() {

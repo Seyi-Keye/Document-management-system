@@ -1,6 +1,6 @@
 import request from 'superagent';
 import jwt from 'jwt-decode';
-import toastr from 'toastr';
+// import toastr from 'toastr';
 import * as ActionTypes from './actionTypes';
 import { errorMessage } from '../utils/utils';
 
@@ -76,10 +76,10 @@ export const handleCreateDocument = (title, content, access) => (dispatch) => {
     .end((error, response) => {
       if (error) {
         const errorMsg = errorMessage(error);
-        toastr.error(errorMsg);
+        // toastrerror(errorMsg);
         return dispatch(documentCreateError(errorMsg));
       }
-      toastr.success('Document Created');
+      // toastrsuccess('Document Created');
       return dispatch(documentCreateSuccessful(response.body));
     });
 };
@@ -92,7 +92,7 @@ export const handleFetchDocuments = () => (dispatch) => {
     .set({ 'x-access-token': token })
     .end((error, response) => {
       if (error) {
-        toastr.error(error);
+        // toastrerror(error);
         return dispatch(fetchDocumentError(error));
       }
       return dispatch(fetchDocumentSuccessful(response.body.documents));
@@ -112,7 +112,7 @@ export const handleUpdateDocument = ({ id, title, content, access }) => (
       if (error) {
         return dispatch(updateDocumentError(error));
       }
-      toastr.success('Update on document was successful');
+      // toastrsuccess('Update on document was successful');
       return dispatch(updateDocumentSuccessful(response.body.documents));
     });
 };
@@ -127,7 +127,7 @@ export const handleDeleteDocument = (id) => (dispatch) => {
       if (error) {
         return dispatch(deleteDocumentError(error));
       }
-      toastr.success('Document was deleted');
+      // toastrsuccess('Document was deleted');
       return dispatch(deleteDocumentSuccessful(id));
     });
 };

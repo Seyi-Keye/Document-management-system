@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { findWhere } from 'underscore';
-import { Input, Button, Row } from 'react-materialize';
+import { InputGroup, Button, Row } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import * as adminAction from '../../actions/adminAction';
 
@@ -45,7 +45,7 @@ class UpdateUserComponent extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <Row>
           <h4>UPDATE USER FORM:</h4>
-          <Input
+          <InputGroup
             className="formControl"
             name="firstname"
             s={6}
@@ -53,7 +53,7 @@ class UpdateUserComponent extends React.Component {
             value={this.state.firstname}
             onChange={this.handleChange}
           />
-          <Input
+          <InputGroup
             name="lastname"
             className="formControl"
             s={6}

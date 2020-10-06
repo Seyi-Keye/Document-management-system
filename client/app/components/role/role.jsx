@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import toastr from 'toastr';
-import { Input, Button, Row } from 'react-materialize';
+// import toastr from 'toastr';
+import { InputGroup, Button, Row } from 'react-bootstrap';
 import * as adminAction from '../../actions/adminAction';
 
 class Role extends React.Component {
@@ -31,10 +31,10 @@ class Role extends React.Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          {this.props.hasError && toastr.error(this.props.error)}
+          {/* {this.props.hasError && toastr.error(this.props.error)} */}
           <Row>
             <h4>CREATE ROLE FORM:</h4>
-            <Input
+            <InputGroup
               className="formControl"
               name="title"
               s={6}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { Redirect, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction';
 
 export class AddDocument extends React.Component {
@@ -33,7 +33,9 @@ export class AddDocument extends React.Component {
       this.state.content,
       this.state.access
     );
-    browserHistory.push('/dashboard');
+    <Redirect to="/dashboard" />;
+
+    // browserHistory.push('/dashboard');
   }
 
   render() {
