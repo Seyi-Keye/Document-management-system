@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import DocumentsComponent from '../document/Documents';
 
 class Dashboard extends React.Component {

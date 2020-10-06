@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as adminAction from '../../actions/adminAction';
 import * as documentAction from '../../actions/documentAction';
@@ -12,7 +13,8 @@ export class SearchComponent extends React.Component {
     $('.collapsible').collapsible();
   }
 
-  userView(id, username, firstname, lastname) { // eslint-disable-line
+  userView(id, username, firstname, lastname) {
+    // eslint-disable-line
     return (
       <li key={id}>
         <div className="collapsible-header">
@@ -20,18 +22,25 @@ export class SearchComponent extends React.Component {
           <h5>Username: {username}</h5>
         </div>
         <div className="collapsible-body">
-          <h5>FIRSTNAME:</h5>{firstname} <h5>LASTNAME:</h5>{lastname}</div>
+          <h5>FIRSTNAME:</h5>
+          {firstname} <h5>LASTNAME:</h5>
+          {lastname}
+        </div>
       </li>
     );
   }
-  documentView(id, title, content) { // eslint-disable-line
+  documentView(id, title, content) {
+    // eslint-disable-line
     return (
       <li key={id}>
         <div className="collapsible-header">
           <i className="material-icons">filter_drama</i>
           <h5>Title: {title}</h5>
         </div>
-        <div className="collapsible-body"><h5>Content:</h5>{content}</div>
+        <div className="collapsible-body">
+          <h5>Content:</h5>
+          {content}
+        </div>
       </li>
     );
   }
@@ -40,8 +49,9 @@ export class SearchComponent extends React.Component {
     if (documents.length > 0) {
       return (
         <ul className="collapsible popout" data-collapsible="accordion">
-          { documents.map(document =>
-          this.documentView(document.id, document.title, document.content)) }
+          {documents.map((document) =>
+            this.documentView(document.id, document.title, document.content)
+          )}
         </ul>
       );
     }
@@ -57,8 +67,9 @@ export class SearchComponent extends React.Component {
     if (users.length > 0) {
       return (
         <ul className="collapsible popout" data-collapsible="accordion">
-          { users.map(user => this.userView(user.id, user.username,
-          user.firstname, user.lastname)) }
+          {users.map((user) =>
+            this.userView(user.id, user.username, user.firstname, user.lastname)
+          )}
         </ul>
       );
     }
@@ -72,9 +83,9 @@ export class SearchComponent extends React.Component {
     return (
       <div>
         <h3> Documents </h3>
-        { this.renderDocument() }
+        {this.renderDocument()}
         <h3> Users </h3>
-        { this.renderUser() }
+        {this.renderUser()}
       </div>
     );
   }
@@ -96,11 +107,11 @@ export const stateToProps = (state, ownProps) => {
   };
 };
 
-export const dispatchToProps = dispatch => ({
-  handleSearchUsers: searchQeury =>
-  dispatch(adminAction.handleSearchUsers(searchQeury)),
-  handleSearchDocuments: searchQeury =>
-  dispatch(documentAction.handleSearchDocuments(searchQeury)),
+export const dispatchToProps = (dispatch) => ({
+  handleSearchUsers: (searchQeury) =>
+    dispatch(adminAction.handleSearchUsers(searchQeury)),
+  handleSearchDocuments: (searchQeury) =>
+    dispatch(documentAction.handleSearchDocuments(searchQeury)),
 });
 
 export default connect(stateToProps, dispatchToProps)(SearchComponent);

@@ -1,12 +1,12 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _ from 'underscore';
-import { Input, Button, Row } from 'react-materialize';
+import { findWhere } from 'underscore';
+import { InputGroup, Button, Row } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
 import * as adminAction from '../../actions/adminAction';
 
 class UpdateUserComponent extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -43,20 +43,27 @@ class UpdateUserComponent extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-
         <Row>
           <h4>UPDATE USER FORM:</h4>
-          <Input
-            className="formControl" name="firstname" s={6}
-            label="First Name" value={this.state.firstname}
+          <InputGroup
+            className="formControl"
+            name="firstname"
+            s={6}
+            label="First Name"
+            value={this.state.firstname}
             onChange={this.handleChange}
           />
-          <Input
-            name="lastname" className="formControl" s={6}
+          <InputGroup
+            name="lastname"
+            className="formControl"
+            s={6}
             label="Last Name"
-            value={this.state.lastname} onChange={this.handleChange}
+            value={this.state.lastname}
+            onChange={this.handleChange}
           />
-          <Button className="button" waves="light" onClick={this.handleSubmit}>Update User</Button>
+          <Button className="button" waves="light" onClick={this.handleSubmit}>
+            Update User
+          </Button>
         </Row>
       </form>
     );
@@ -71,17 +78,18 @@ UpdateUserComponent.propTypes = {
 
 const stateToProps = (state, ownProps) => {
   const UserId = ownProps.params.id;
-  const foundUser = _.findWhere(state.admin.users,
-  { id: parseInt(UserId, 10) });
+  const foundUser = findWhere(state.admin.users, {
+    id: parseInt(UserId, 10),
+  });
 
   return {
     user: foundUser,
   };
 };
 
-const dispatchToProps = dispatch => ({
+const dispatchToProps = (dispatch) => ({
   handleUpdateUser: (id, firstname, lastname) =>
-  dispatch(adminAction.handleUpdateUser(id, firstname, lastname)),
+    dispatch(adminAction.handleUpdateUser(id, firstname, lastname)),
 });
 
 export default connect(stateToProps, dispatchToProps)(UpdateUserComponent);

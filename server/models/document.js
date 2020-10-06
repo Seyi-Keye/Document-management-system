@@ -25,15 +25,6 @@ module.exports = (sequelize, DataTypes) => {
         min: 3,
       },
     },
-  }, {
-    classMethods: {
-      associate: (models) => {
-        Document.belongsTo(models.User, {
-          foreignKey: 'OwnerId',
-          onDelete: 'CASCADE',
-        });
-      },
-    },
   });
   return Document;
 };

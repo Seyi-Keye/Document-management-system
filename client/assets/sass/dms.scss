@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap');
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em;
+}
+
+hr {
+  margin-top: 0;
+  margin-bottom: 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  background-color: black;
+}
+
+.app-name {
+  font-family: 'Slabo 27px', serif;
+  font-size: xx-large;
+  margin-bottom: 0;
+  color: #ff5200;
+  cursor: pointer;
+}
+
+.app-name:focus {
+  outline-color: white;
+}
+
+.bg-img {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('https://source.unsplash.com/5wCGsFe62Ls/1920x1280');
+  color: yellow;
+  height: 350px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.home-container {
+  &__row {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    height: 20rem;
+  }
+  &__text-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5em;
+    padding-right: 5em;
+    text-align: left;
+  }
+  &__card {
+    margin-left: 5em;
+    margin-right: 5em;
+    box-shadow: 0.4em 0.6em #d2d6d8;
+    opacity: 0.5;
+  }
+}
+
+.home-footer {
+  height: 3em;
+  background-color: black;
+  color: darkgray;
+  display: flex;
+  justify-content: center;
+  font-size: small;
+  &__text {
+    margin-top: 0.7em;
+    display: flex;
+  }
+}
+
+.nav-item {
+  a {
+    color: #383e56;
+  }
+}
+
+.nav-link:hover {
+  color: #ec823a;
+}
+
+a:hover {
+  text-decoration: none;
+}
+.modal-header {
+  border-bottom: 0;
+}
+
+.modal-dialog {
+  .modal-body {
+    padding-top: 0;
+    .login--header,
+    .signup--header {
+      h1 {
+        font-size: 3rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        padding: 0.4rem;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: darkgray;
+      }
+    }
+  }
+}
+
+.no-modal-wrapper {
+  .login--header,
+  .signup--header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-block {
+    display: block;
+    width: 57%;
+    margin: auto;
+  }
+
+  .login,
+  .signup {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+
+    h1 {
+      font-size: 3rem;
+      // margin-left: 8.5rem;
+      // margin-right: 8.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+      padding: 0.4rem;
+      font-weight: 700;
+    }
+  }
+}

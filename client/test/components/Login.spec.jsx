@@ -3,8 +3,12 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { expect } from 'chai';
 import { browserHistory } from 'react-router';
-import { Input, Col } from 'react-materialize';
-import { dispatchToProps, LoginComponent as Login, stateToProps } from '../../app/components/login/Login';
+import { Input, Col } from 'react-bootstrap';
+import {
+  dispatchToProps,
+  LoginComponent as Login,
+  stateToProps,
+} from '../../app/components/login/Login';
 
 describe('Describe <Login /> Component:', () => {
   let wrapper;
@@ -17,31 +21,19 @@ describe('Describe <Login /> Component:', () => {
   });
 
   it('should have state in props', () => {
-    expect(wrapper.state())
-      .to
-      .deep
-      .equal(initialState);
+    expect(wrapper.state()).to.deep.equal(initialState);
   });
 
   it('should have 2 input tags', () => {
-    expect(wrapper.find(Input))
-      .to
-      .have
-      .length(2);
+    expect(wrapper.find(Input)).to.have.length(2);
   });
 
   it('should have 1 Col tags', () => {
-    expect(wrapper.find(Col))
-      .to
-      .have
-      .length(1);
+    expect(wrapper.find(Col)).to.have.length(1);
   });
 
   it('should have 2 formControl classes', () => {
-    expect(wrapper.find('.formControl'))
-      .to
-      .have
-      .length(2);
+    expect(wrapper.find('.formControl')).to.have.length(2);
   });
 
   it('should fire handle change', () => {
@@ -57,9 +49,7 @@ describe('Describe <Login /> Component:', () => {
           value: 'wathever@gmail.com',
         },
       });
-    expect(handleChangeSpy.calledOnce)
-      .to
-      .equal(true);
+    expect(handleChangeSpy.calledOnce).to.equal(true);
     handleChangeSpy.reset();
   });
 
@@ -80,15 +70,9 @@ describe('Describe <Login /> Component:', () => {
         },
         preventDefault: () => null,
       });
-    expect(browserHistorySpy.calledOnce)
-      .to
-      .equal(true);
-    expect(handleSubmitSpy.calledOnce)
-      .to
-      .equal(true);
-    expect(handleLoginSpy.calledOnce)
-      .to
-      .equal(true);
+    expect(browserHistorySpy.calledOnce).to.equal(true);
+    expect(handleSubmitSpy.calledOnce).to.equal(true);
+    expect(handleLoginSpy.calledOnce).to.equal(true);
     browserHistorySpy.restore();
     handleSubmitSpy.reset();
   });
@@ -97,17 +81,11 @@ describe('Describe <Login /> Component:', () => {
     const state = {
       user: 'bihiuguggi',
     };
-    expect(stateToProps(state).user)
-      .to
-      .equal(state.user);
+    expect(stateToProps(state).user).to.equal(state.user);
   });
   it('should dispatch to props', () => {
     const dispatch = () => null;
-    expect(typeof dispatchToProps(dispatch).handleLogin)
-      .to
-      .equal('function');
-    expect(dispatchToProps(dispatch).handleLogin())
-      .to
-      .equal(null);
+    expect(typeof dispatchToProps(dispatch).handleLogin).to.equal('function');
+    expect(dispatchToProps(dispatch).handleLogin()).to.equal(null);
   });
 });

@@ -1,7 +1,8 @@
-import React, { PropTypes } from 'react';
-import _ from 'underscore';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { findWhere } from 'underscore';
 import { connect } from 'react-redux';
-import { browserHistory, Link } from 'react-router';
+import { Redirect, Link } from 'react-router';
 import * as documentAction from '../../actions/documentAction';
 
 const jwt = require('jwt-decode');
@@ -39,7 +40,9 @@ export class UpdateDocumentComponent extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.handleUpdateDocument({ ...this.state });
-    browserHistory.push('/dashboard');
+    <Redirect to="/dashboard" />;
+
+    // browserHistory.push('/dashboard');
   }
 
   render() {
@@ -52,39 +55,50 @@ export class UpdateDocumentComponent extends React.Component {
               <div className="card-content black-text">
                 <div className="card-title s7">
                   <input
-                    name="title" className="docTitle"
-                    placeholder="Title Goes here" value={this.state.title}
+                    name="title"
+                    className="docTitle"
+                    placeholder="Title Goes here"
+                    value={this.state.title}
                     onChange={this.handleChange}
                   />
 
                   <label htmlFor="Control your access">
-                    Control your access</label>
+                    Control your access
+                  </label>
                   <div className="input-field col s12">
                     <select
                       value={this.state.select}
-                      className="browser-default" onChange={this.handleChange}
-                      name="access" id="mySelectBox"
+                      className="browser-default"
+                      onChange={this.handleChange}
+                      name="access"
+                      id="mySelectBox"
                     >
-                      <option value="" disabled>Select an access level</option>
+                      <option value="" disabled>
+                        Select an access level
+                      </option>
                       <option value="public">Public</option>
                       <option value="private">Private</option>
                       <option value="role">Role</option>
                     </select>
                   </div>
-
                 </div>
                 <div className="docContent">
                   <textarea
-                    name="content" value={this.state.content}
-                    placeholder="Write Something" onChange={this.handleChange}
+                    name="content"
+                    value={this.state.content}
+                    placeholder="Write Something"
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
               <div className="card-action">
                 <button onClick={this.handleSubmit}>
-                  <i className="material-icons">save</i>Save</button>
-                <button href="#"><i className="material-icons">
-                  cancel</i><Link to="/dashboard"> Cancel</Link></button>
+                  <i className="material-icons">save</i>Save
+                </button>
+                <button href="#">
+                  <i className="material-icons">cancel</i>
+                  <Link to="/dashboard"> Cancel</Link>
+                </button>
               </div>
             </div>
           </div>
@@ -103,16 +117,18 @@ export const stateToProps = (state, ownProps) => {
   const token = localStorage.getItem('token');
   const decoded = jwt(token);
   const documentId = ownProps.params.id;
-  const doc = _.findWhere(state.document[0], { id: parseInt(documentId, 10) });
+  const doc = findWhere(state.document[0], { id: parseInt(documentId, 10) });
   return {
     document: doc,
     user: decoded,
   };
 };
 
-export const dispatchToProps = dispatch => ({
+export const dispatchToProps = (dispatch) => ({
   handleUpdateDocument: (id, title, content, access) =>
-    dispatch(documentAction.handleUpdateDocument({ id, title, content, access })),
+    dispatch(
+      documentAction.handleUpdateDocument({ id, title, content, access })
+    ),
 });
 
 export default connect(stateToProps, dispatchToProps)(UpdateDocumentComponent);

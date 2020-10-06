@@ -1,61 +1,83 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-import { Button, Col, Input, Row } from 'react-materialize';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
+import Modal from '../common/Modal';
 import * as userAction from '../../actions/userAction';
 
-export class LoginComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+function LoginComponent(props) {
+  // const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [state, setState] = React.useState({
+    email: '',
+    password: '',
+  });
 
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
-  }
-  handleSubmit(event) {
+  const { isModal, history } = props;
+
+  const handleSubmit = (event) => {
     event.preventDefault();
-    this.props.handleLogin(this.state.email, this.state.password);
-    browserHistory.push('/dashboard');
-  }
+    console.log('Se mo de bi?');
+    dispatch(userAction.handleLogin(email, password));
+    // <Redirect to="/dashboard" />;
+  };
 
-  render() {
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setState({
+      ...state,
+      [evt.target.name]: value,
+    });
+  };
+
+  const LoginForm = () => {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <Row>
-          <Input
-            name="email" className="formControl" type="email"
-            label="Email" s={7} value={this.state.email}
-            onChange={this.handleChange}
+      <Form className="col-md-12 login">
+        {/* onSubmit={handleSubmit} */}
+        <div className="login--header">
+          <h1>Login!</h1>
+          <p>Sign into your Account here.</p>
+        </div>
+        <Form.Group controlId="email" className="col-md">
+          <Form.Label>Email </Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Email"
+            value={state.email}
+            onChange={handleChange}
           />
-          <Input
-            name="password" className="formControl" type="password"
-            label="password" value={this.state.password} onChange={this.handleChange}
-            s={7}
+        </Form.Group>
+        <Form.Group controlId="password" className="col-md">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={state.password}
+            onChange={handleChange}
           />
-          <Col s={7}>
-            <Button className="button" waves="light">Login</Button>
-          </Col>
-        </Row>
-      </form>
+        </Form.Group>
+        <Button
+          variant="primary"
+          size="sm"
+          type="submit"
+          block
+          onClick={handleSubmit}
+        >
+          Login
+        </Button>
+      </Form>
     );
-  }
+  };
+
+  return isModal ? (
+    <div className="row">
+      <Modal children={LoginForm()} history={history} />
+    </div>
+  ) : (
+    <div className="no-modal-wrapper">
+      <LoginForm />
+    </div>
+  );
 }
-
-LoginComponent.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-};
-
-export const stateToProps = state => ({
-  user: state.user,
-});
-
-export const dispatchToProps = dispatch => ({
-  handleLogin: (email, password) => dispatch(userAction.handleLogin(email, password)),
-});
-export default connect(stateToProps, dispatchToProps)(LoginComponent);
+export default LoginComponent;

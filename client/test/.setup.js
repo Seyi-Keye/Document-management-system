@@ -14,7 +14,7 @@ Object.keys(document.defaultView).forEach((property) => {
 });
 
 global.navigator = {
-  userAgent: 'node.js'
+  userAgent: 'node.js',
 };
 
 function noop() {
@@ -23,8 +23,8 @@ function noop() {
 global.localStorage = {
   getItem: () => 'atokenforall',
   setItem: noop,
-}
-global.$ = () => ({collapsible: () => null });
+};
+global.$ = () => ({ collapsible: () => null });
 require.extensions['.css'] = noop;
 require.extensions['.scss'] = noop;
 require.extensions['.md'] = noop;

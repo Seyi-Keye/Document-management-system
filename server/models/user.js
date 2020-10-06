@@ -1,94 +1,81 @@
 const bcrypt = require('bcrypt');
 
+/**
+ * Hash user's password
+ * @method
+ * @returns {void} no return
+ */
+const hashPassword = function (password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+};
+
+/**
+ * Compare plain password to user's hashed password
+ * @method
+ * @param {String} password
+ * @returns {Boolean} password match
+ */
+const validPassword = function (password) {
+  return bcrypt.compareSync(password, user.password);
+};
+
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        min: 3,
-      },
-    },
-    firstname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        min: 3,
-      },
-    },
-    lastname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        min: 3,
-      },
-    },
-    RoleId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 2,
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        isEmail: true,
-      },
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
+  const User = sequelize.define(
+    'User',
     {
-      classMethods: {
-        associate: (models) => {
-        // model association
-          User.hasMany(models.Document, {
-            foreignKey: 'OwnerId',
-            onDelete: 'CASCADE',
-          });
-          User.belongsTo(models.Role, {
-            foreignKey: 'RoleId',
-            onDelete: 'CASCADE',
-          });
+      username: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+        validate: {
+          min: 3,
         },
       },
-      instanceMethods: {
-      /**
-       * Compare plain password to user's hashed password
-       * @method
-       * @param {String} password
-       * @returns {Boolean} password match
-       */
-        validPassword(password) {
-          return bcrypt.compareSync(password, this.password);
-        },
-
-      /**
-       * Hash user's password
-       * @method
-       * @returns {void} no return
-       */
-        hashPassword() {
-          this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
+      firstname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          min: 3,
         },
       },
-
+      lastname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          min: 3,
+        },
+      },
+      RoleId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 2,
+      },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+        validate: {
+          isEmail: true,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+    },
+    {
       hooks: {
         beforeCreate(user) {
-          user.hashPassword();
+          return hashPassword(user.password);
         },
 
         beforeUpdate(user) {
           if (user._changed.password) {
-            user.hashPassword();
+            hashPassword(user.password);
           }
         },
       },
-    });
+    }
+  );
   return User;
 };
-

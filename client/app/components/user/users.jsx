@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import jwt from 'jwt-decode';
@@ -32,18 +33,27 @@ class Users extends React.Component {
       <li key={user.id}>
         <div className="collapsible-header">
           <i className="material-icons">filter_drama</i>
-          <h5>Username:{user.username} {user.firstname} {user.lastname}</h5>
+          <h5>
+            Username:{user.username} {user.firstname} {user.lastname}
+          </h5>
           <div>
-            <button><Link to={`users/${user.id}`}>
-              <i className="material-icons">edit</i></Link>
+            <button>
+              <Link to={`users/${user.id}`}>
+                <i className="material-icons">edit</i>
+              </Link>
             </button>
             <button id={user.id} onClick={this.handleDelete}>
-              <i id={user.id} className="material-icons">delete</i>
+              <i id={user.id} className="material-icons">
+                delete
+              </i>
             </button>
           </div>
         </div>
-        <div className="collapsible-body"><h5>FIRSTNAME:</h5>
-          {user.firstname} <h5>LASTNAME:</h5>{user.lastname}</div>
+        <div className="collapsible-body">
+          <h5>FIRSTNAME:</h5>
+          {user.firstname} <h5>LASTNAME:</h5>
+          {user.lastname}
+        </div>
       </li>
     );
   }
@@ -52,15 +62,11 @@ class Users extends React.Component {
     if (users) {
       return (
         <ul className="collapsible popout" data-collapsible="accordion">
-          { users.map(this.userView) }
+          {users.map(this.userView)}
         </ul>
       );
     }
-    return (
-      <div>
-        No User Found
-      </div>
-    );
+    return <div>No User Found</div>;
   }
 }
 
@@ -76,9 +82,9 @@ const stateToProps = (state) => {
   return { user: decoded, documents: state.document, users: state.admin };
 };
 
-const dispatchToProps = dispatch => ({
+const dispatchToProps = (dispatch) => ({
   handleFetchUsers: () => dispatch(adminAction.handleFetchUsers()),
-  handleDeleteUser: id => dispatch(adminAction.handleDeleteUser(id)),
+  handleDeleteUser: (id) => dispatch(adminAction.handleDeleteUser(id)),
 });
 
 export default connect(stateToProps, dispatchToProps)(Users);
